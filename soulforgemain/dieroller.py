@@ -162,12 +162,7 @@ class dieroller(wxFrame):
 
     def onpool(self,event):
         self.dicepool.pool = self.poolctl.GetValue()
-	self.successlabel.SetLabel("0/" + str(self.dicepool.pool))
-	self.successgauge.SetRange(self.dicepool.pool)
-	self.failurelabel.SetLabel("0/" + str(self.dicepool.pool))
-	self.failuregauge.SetRange(self.dicepool.pool)
-	self.botchlabel.SetLabel("0/" + str(self.dicepool.pool))
-	self.botchgauge.SetRange(self.dicepool.pool)
+	self.freshen()
 
     def onfaces(self,event):
         self.dicepool.faces = self.facectl.GetValue()
@@ -181,14 +176,13 @@ class dieroller(wxFrame):
 
     def onbotch(self,event):
         self.dicepool.botch = self.botchctl.GetValue()
-	self.botchtag.Enable(self.dicepool.tabulate and self.dicepool.botch)
-	self.botchlabel.Enable(self.dicepool.tabulate and self.dicepool.botch)
-	self.botchgauge.Enable(self.dicepool.tabulate and self.dicepool.botch)
-	self.botchlabel.SetLabel("0/" + str(self.dicepool.pool))
-	self.botchgauge.SetValue(0)
+	self.freshen()
 
     def ontab(self,event):
         self.dicepool.tabulate = self.tabctl.GetValue()
+	self.freshen()
+
+    def freshen(self):
 	self.difflabel.Enable(self.dicepool.tabulate)
 	self.diffctl.Enable(self.dicepool.tabulate)
 	self.successtag.Enable(self.dicepool.tabulate)
@@ -201,10 +195,13 @@ class dieroller(wxFrame):
 	self.botchlabel.Enable(self.dicepool.tabulate and self.dicepool.botch)
 	self.botchgauge.Enable(self.dicepool.tabulate and self.dicepool.botch)
 	self.successlabel.SetLabel("0/" + str(self.dicepool.pool))
+	self.successgauge.SetRange(self.dicepool.pool)
 	self.successgauge.SetValue(0)
 	self.failurelabel.SetLabel("0/" + str(self.dicepool.pool))
+	self.failuregauge.SetRange(self.dicepool.pool)
 	self.failuregauge.SetValue(0)
 	self.botchlabel.SetLabel("0/" + str(self.dicepool.pool))
+	self.botchgauge.SetRange(self.dicepool.pool)
 	self.botchgauge.SetValue(0)
 	self.finallabel.Enable(self.dicepool.tabulate)
 	self.finalscore.Enable(self.dicepool.tabulate)
