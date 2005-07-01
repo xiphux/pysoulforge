@@ -23,3 +23,18 @@ class sfrootframe(wxFrame):
 	menubar.Append(helpmenu, u"&Help")
 	
 	self.SetMenuBar(menubar)
+
+	EVT_MENU(self,SFROOTFRAME_QUIT,self.onquit)
+	EVT_MENU(self,SFROOTFRAME_ABOUT,self.onabout)
+	EVT_MENU(self,SFROOTFRAME_DIEROLLER,self.ondieroller)
+
+    def onquit(self,event):
+        self.Close(true)
+
+    def onabout(self,event):
+        abt = wxMessageDialog(self,u"Soulforge by Christopher Han\nCopyright (C) 2005\nLicensed under the GNU GPL",u"About Soulforge",wxOK)
+	abt.ShowModal()
+	abt.Destroy()
+
+    def ondieroller(self,event):
+        pass
