@@ -1,4 +1,5 @@
 from wxPython.wx import *
+import dieroller
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102
@@ -37,4 +38,5 @@ class sfrootframe(wxFrame):
 	abt.Destroy()
 
     def ondieroller(self,event):
-        pass
+        dr = dieroller.dieroller(self,-1,u"Dieroller")
+	dr.Show(true)
