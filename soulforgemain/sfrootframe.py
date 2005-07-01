@@ -20,7 +20,7 @@
 #
 
 from wxPython.wx import *
-import dieroller
+import dieroller,sfcontrols
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102
@@ -45,6 +45,12 @@ class sfrootframe(wxFrame):
 	menubar.Append(helpmenu, u"&Help")
 	
 	self.SetMenuBar(menubar)
+
+	root = wxBoxSizer(wxVERTICAL)
+	tmp = sfcontrols.sfstat(self,-1,u"Test")
+	root.Add(tmp,1,wxEXPAND)
+
+	self.SetSizer(root)
 	self.Centre(wxBOTH)
 
 	EVT_MENU(self,SFROOTFRAME_QUIT,self.onquit)
