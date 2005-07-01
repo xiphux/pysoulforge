@@ -12,6 +12,7 @@ class dicepool(object):
 	self.successes = 0
 	self.failures = 0
 	self.botches = 0
+	self.dice = []
 	
     def setrng(self,rngname):
         if rngname == "Mersenne Twister":
@@ -28,6 +29,8 @@ class dicepool(object):
         self.successes = 0
 	self.failures = 0
 	self.botches = 0
+	del self.dice
+	self.dice = []
         for i in range(self.pool):
 	    v = self.rngfunc(1,self.faces)
 	    if self.tabulate:
@@ -37,4 +40,4 @@ class dicepool(object):
 		    self.botches += 1
 		else:
 		    self.failures += 1
-            self.dice[i] = v
+            self.dice.append(v)

@@ -32,8 +32,8 @@ class dieroller(wxFrame):
 	rngbox = wxBoxSizer(wxVERTICAL)
 	rngbox.Add(wxStaticText(self,-1,u"Pseudo-random number generator:"),0)
 	rngstrings = [ u"Mersenne Twister", u"Wichmann-Hill", u"urandom()" ]
-	self.rngcontrol = wxChoice(self,DIEROLLER_RNG,wxDefaultPosition,wxDefaultSize,rngstrings)
-	rngbox.Add(self.rngcontrol,1,wxEXPAND)
+	self.rngctl = wxChoice(self,DIEROLLER_RNG,wxDefaultPosition,wxDefaultSize,rngstrings)
+	rngbox.Add(self.rngctl,1,wxEXPAND)
 	controls.Add(rngbox,0,wxEXPAND)
 
 	roll = wxButton(self,DIEROLLER_ROLL,u"Roll")
@@ -63,13 +63,17 @@ class dieroller(wxFrame):
         self.Destroy()
 
     def onroll(self,event):
-        pass
+        self.resultbox.Clear()
+	self.dicepool.roll()
+	for i in range(self.dicepool.pool):
+	    self.resultbox.AppendText(str(self.dicepool.dice[i]))
+	    self.resultbox.AppendText('\n')
 
     def onpool(self,event):
-        pass
+        self.dicepool.pool = self.poolctl.GetValue()
 
     def onfaces(self,event):
-        pass
+        self.dicepool.faces = self.facectl.GetValue()
 
     def onrng(self,event):
-        pass
+        self.dicepool.setrng(self.rngctl.GetStringSelection())
