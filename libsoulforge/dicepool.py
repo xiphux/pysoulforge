@@ -12,6 +12,7 @@ class dicepool(object):
 	self.successes = 0
 	self.failures = 0
 	self.botches = 0
+	self.final = 0
 	self.dice = []
 	
     def setrng(self,rngname):
@@ -29,6 +30,7 @@ class dicepool(object):
         self.successes = 0
 	self.failures = 0
 	self.botches = 0
+	self.final = 0
 	del self.dice
 	self.dice = []
         for i in range(self.pool):
@@ -41,3 +43,5 @@ class dicepool(object):
 		else:
 		    self.failures += 1
             self.dice.append(v)
+	if self.tabulate:
+	    self.final = self.successes - self.botches
