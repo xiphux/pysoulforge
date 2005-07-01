@@ -1,4 +1,4 @@
-from random import *
+import random
 
 class dicepool(object):
     def __init__(self):
@@ -20,7 +20,7 @@ class dicepool(object):
 	elif rngname == "Wichmann-Hill":
 	    self.rng = random.WichmannHill()
 	    self.rngfunc = self.rng.randint
-	elif rngname == "urandom":
+	elif rngname == "urandom()":
 	    self.rng = random.SystemRandom()
 	    self.rngfunc = self.rng.randint
 
@@ -35,6 +35,6 @@ class dicepool(object):
 		    self.successes += 1
 		elif self.botch and v == 1:
 		    self.botches += 1
-		else
+		else:
 		    self.failures += 1
             self.dice[i] = v
