@@ -25,12 +25,17 @@ import dieroller,sfcontrols
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102
 SFROOTFRAME_DIEROLLER = 103
+SFROOTFRAME_LOAD = 104
+SFROOTFRAME_SAVE = 105
 
 class sfrootframe(wxFrame):
     def __init__(self, parent, ID, title):
         wxFrame.__init__(self, parent, ID, title, wxDefaultPosition, wxDefaultSize)
 
 	filemenu = wxMenu()
+	filemenu.Append(SFROOTFRAME_LOAD, u"&Load", u"Load character")
+	filemenu.Append(SFROOTFRAME_SAVE, u"&Save", u"Save character")
+	filemenu.AppendSeparator()
 	filemenu.Append(SFROOTFRAME_QUIT, u"E&xit", u"Quit Soulforge")
 
 	toolsmenu = wxMenu()
@@ -62,6 +67,8 @@ class sfrootframe(wxFrame):
 	EVT_MENU(self,SFROOTFRAME_QUIT,self.onquit)
 	EVT_MENU(self,SFROOTFRAME_ABOUT,self.onabout)
 	EVT_MENU(self,SFROOTFRAME_DIEROLLER,self.ondieroller)
+	EVT_MENU(self,SFROOTFRAME_LOAD,self.onload)
+	EVT_MENU(self,SFROOTFRAME_SAVE,self.onsave)
 
     def onquit(self,event):
         self.Close(true)
@@ -74,3 +81,11 @@ class sfrootframe(wxFrame):
     def ondieroller(self,event):
         dr = dieroller.dieroller(self,-1,u"Dieroller")
 	dr.Show(true)
+
+    def onload(self,event):
+        loaddlg = wxFileDialog(self,u"Load character","","",u"Soulforge Data (*.sfd)|*.sfd|XML (*.xml)|*.xml|All files (*.*)|*.*",wxOPEN|wxFILE_MUST_EXIST)
+	if loaddlg.ShowModal() == wxID_OK:
+	    pass
+
+    def onsave(self,event):
+        pass
