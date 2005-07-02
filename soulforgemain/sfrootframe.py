@@ -49,6 +49,12 @@ class sfrootframe(wxFrame):
 	root = wxBoxSizer(wxVERTICAL)
 	tmp = sfcontrols.sfstat(self,-1,u"Test")
 	root.Add(tmp,1,wxEXPAND)
+	tmp = sfcontrols.sfstat(self,-1,u"Test2",wxHORIZONTAL,5,True)
+	root.Add(tmp,1,wxEXPAND)
+	tmp = sfcontrols.sfpool(self,-1)
+	root.Add(tmp,1,wxEXPAND)
+	tmp = sfcontrols.sfpool(self,-1,2,10,True)
+	root.Add(tmp,1,wxEXPAND)
 
 	self.SetSizer(root)
 	self.Centre(wxBOTH)
