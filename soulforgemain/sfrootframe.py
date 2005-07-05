@@ -20,19 +20,21 @@
 #
 
 from wxPython.wx import *
-import dieroller,sfcontrols
+import dieroller,sfcontrols,sfsheet
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102
 SFROOTFRAME_DIEROLLER = 103
 SFROOTFRAME_LOAD = 104
 SFROOTFRAME_SAVE = 105
+SFROOTFRAME_NEW = 106
 
 class sfrootframe(wxFrame):
     def __init__(self, parent, ID, title):
         wxFrame.__init__(self, parent, ID, title, wxDefaultPosition, wxDefaultSize)
 
 	filemenu = wxMenu()
+	filemenu.Append(SFROOTFRAME_NEW, u"&New", u"New character")
 	filemenu.Append(SFROOTFRAME_LOAD, u"&Load", u"Load character")
 	filemenu.Append(SFROOTFRAME_SAVE, u"&Save", u"Save character")
 	filemenu.AppendSeparator()
@@ -69,6 +71,7 @@ class sfrootframe(wxFrame):
 	EVT_MENU(self,SFROOTFRAME_DIEROLLER,self.ondieroller)
 	EVT_MENU(self,SFROOTFRAME_LOAD,self.onload)
 	EVT_MENU(self,SFROOTFRAME_SAVE,self.onsave)
+	EVT_MENU(self,SFROOTFRAME_NEW,self.onnew)
 
     def onquit(self,event):
         self.Close(true)
@@ -89,3 +92,7 @@ class sfrootframe(wxFrame):
 
     def onsave(self,event):
         pass
+
+    def onnew(self,event):
+        sh = sfsheet.sfsheet(self,-1,u"Vampire: The Masquerade","xrc/vampire_the_masquerade.xrc")
+	sh.Show()
