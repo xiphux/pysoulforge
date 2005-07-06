@@ -19,9 +19,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+import sfcontrols
 from wxPython.wx import *
 from wxPython.xrc import *
-import sfcontrols
 
 SFSHEET_OK = 401
 SFSHEET_CANCEL = 402
