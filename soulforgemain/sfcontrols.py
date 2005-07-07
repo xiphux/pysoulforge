@@ -25,7 +25,7 @@ SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301
 
 class sfstat(wxPanel):
-    def __init__(self,parent,ID,label,orient = wxHORIZONTAL,buttons = 5,alternate = False):
+    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = 5,alternate = False):
         wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
 
 	self.value = 0

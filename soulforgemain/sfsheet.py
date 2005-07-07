@@ -22,6 +22,7 @@
 import sfcontrols
 from wxPython.wx import *
 from wxPython.xrc import *
+from sheets import vampire_the_masquerade
 
 SFSHEET_OK = 401
 SFSHEET_CANCEL = 402
@@ -32,10 +33,9 @@ class sfsheet(wxFrame):
 
 	root = wxBoxSizer(wxVERTICAL)
 
-	self.res = wxXmlResource(resource)
-	sheet = self.res.LoadPanel(self,"vampire_the_masquerade")
+	sheet = vampire_the_masquerade.vampire_the_masquerade(self,-1)
 
-	root.Add(sheet,1,wxEXPAND)
+	root.Add(sheet,0,wxEXPAND)
 
 	controls = wxBoxSizer(wxHORIZONTAL)
 	self.okbutton = wxButton(self,SFSHEET_OK,u"Ok")
@@ -45,7 +45,7 @@ class sfsheet(wxFrame):
 
 	root.Add(controls,0,wxEXPAND)
 
-	self.SetSizer(root)
+	self.SetSizerAndFit(root)
 	self.Centre(wxBOTH)
 
 	EVT_BUTTON(self,SFSHEET_OK,self.onok)
