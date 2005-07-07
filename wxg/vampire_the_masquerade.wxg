@@ -56,7 +56,7 @@
                                 <option>0</option>
                                 <object class="wxStaticText" name="label_2" base="EditStaticText">
                                     <attribute>1</attribute>
-                                    <label>Nature</label>
+                                    <label>Nature:</label>
                                 </object>
                             </object>
                             <object class="sizeritem">
@@ -184,7 +184,7 @@
                                 <option>0</option>
                                 <object class="wxStaticText" name="label_7" base="EditStaticText">
                                     <attribute>1</attribute>
-                                    <label>Chronicle</label>
+                                    <label>Chronicle:</label>
                                 </object>
                             </object>
                             <object class="sizeritem">
@@ -332,6 +332,7 @@
                             <arguments>
                                 <argument>$parent</argument>
                                 <argument>$id</argument>
+				<argument>label="Charisma"</argument>
                             </arguments>
                         </object>
                     </object>

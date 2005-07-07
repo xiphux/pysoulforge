@@ -33,9 +33,9 @@ class sfstat(wxPanel):
 
 	root = wxBoxSizer(orient)
 
-	self.label = wxStaticText(self,-1,label)
-
-	root.Add(self.label,1,wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL)
+	if label != "":
+	    self.label = wxStaticText(self,-1,label)
+	    root.Add(self.label,1,wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL)
 
 	self.buttons = []
 	self.dummy = []
