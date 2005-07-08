@@ -22,6 +22,8 @@
 import parser
 from xml.dom import minidom
 
+universe = 'Vampire: The Masquerade'
+
 archetypes = ['','Architect','Autocrat','Bon Vivant','Bravo','Caregiver','Celebrant','Child','Competitor','Conformist','Conniver','Curmudgeon','Deviant','Director','Fanatic','Gallant','Judge','Loner','Martyr','Masochist','Monster','Pedagogue','Penitent','Perfectionist','Rebel','Rogue','Survivor','Thrill-Seeker','Traditionalist','Trickster','Visionary']
 
 clans = ['','Brujah','Gangrel','Malkavian','Nosferatu','Toreador','Tremere','Ventrue','Lasombra','Tzimisce','Assamite','Followers of Set','Giovanni','Ravnos']
@@ -44,7 +46,7 @@ class vampire_the_masquerade_parser(parser.sheetparser):
 	
     def sheet2xml(self,sheet,dom):
         root = dom.documentElement
-	root.setAttribute("universe","vampire_the_masquerade")
+	root.setAttribute("universe",universe)
 
 	node = dom.createElement("name")
 	node2 = dom.createTextNode(sheet.name.GetValue())
@@ -53,6 +55,11 @@ class vampire_the_masquerade_parser(parser.sheetparser):
 	
 	node = dom.createElement("player")
 	node2 = dom.createTextNode(sheet.player.GetValue())
+	node.appendChild(node2)
+	root.appendChild(node)
+
+	node = dom.createElement("chronicle")
+	node2 = dom.createTextNode(sheet.chronicle.GetValue())
 	node.appendChild(node2)
 	root.appendChild(node)
 	
@@ -73,6 +80,16 @@ class vampire_the_masquerade_parser(parser.sheetparser):
 
 	node = dom.createElement("generation")
 	node2 = dom.createTextNode(str(sheet.generation.GetValue()))
+	node.appendChild(node2)
+	root.appendChild(node)
+
+	node = dom.createElement("haven")
+	node2 = dom.createTextNode(sheet.haven.GetValue())
+	node.appendChild(node2)
+	root.appendChild(node)
+
+	node = dom.createElement("concept")
+	node2 = dom.createTextNode(sheet.concept.GetValue())
 	node.appendChild(node2)
 	root.appendChild(node)
 	
