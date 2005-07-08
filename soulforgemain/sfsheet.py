@@ -28,14 +28,14 @@ SFSHEET_OK = 401
 SFSHEET_CANCEL = 402
 
 class sfsheet(wxFrame):
-    def __init__(self,parent,ID,title,resource):
+    def __init__(self,parent,ID,title="Soulforge"):
         wxFrame.__init__(self, parent, ID, title, wxDefaultPosition, wxDefaultSize)
 
 	root = wxBoxSizer(wxVERTICAL)
 
-	sheet = vampire_the_masquerade.vampire_the_masquerade(self,-1)
+	self.sheet = vampire_the_masquerade.vampire_the_masquerade(self,-1)
 
-	root.Add(sheet,0,wxEXPAND)
+	root.Add(self.sheet,0,wxEXPAND)
 
 	controls = wxBoxSizer(wxHORIZONTAL)
 	self.okbutton = wxButton(self,SFSHEET_OK,u"Ok")
@@ -55,4 +55,4 @@ class sfsheet(wxFrame):
         self.Destroy()
 
     def onok(self,event):
-        pass
+        event.Skip()
