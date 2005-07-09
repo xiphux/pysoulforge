@@ -20,11 +20,10 @@
 #
 
 from wxPython.wx import *
+import sfuniverses
 
 SFUNIVERSECHOOSER_OK = 601
 SFUNIVERSECHOOSER_CANCEL = 602
-
-universes = ['Vampire: The Masquerade']
 
 class sfuniversechooser(wxDialog):
     def __init__(self,parent,ID,title="Select universe"):
@@ -33,7 +32,7 @@ class sfuniversechooser(wxDialog):
 	self.universe = None
 	
 	root = wxBoxSizer(wxVERTICAL)
-	self.uchooser = wxChoice(self,-1,wxDefaultPosition,wxDefaultSize,universes)
+	self.uchooser = wxChoice(self,-1,wxDefaultPosition,wxDefaultSize,sfuniverses.universes)
 	root.Add(self.uchooser,1,wxEXPAND)
 
 	bbox = wxBoxSizer(wxHORIZONTAL)

@@ -21,6 +21,8 @@
 
 from sheets import vampire_the_masquerade,vampire_the_masquerade_data
 
+universes = ['Vampire: The Masquerade']
+
 universe_sheets = {
 	'Vampire: The Masquerade': vampire_the_masquerade.vampire_the_masquerade
 }

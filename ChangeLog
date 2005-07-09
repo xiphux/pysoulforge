@@ -1,4 +1,35 @@
 ------------------------------------------------------------------------
+r42 | xiphux | 2005-07-09 08:44:56 -0400 (Sat, 09 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+   M /pysoulforge/trunk/soulforgemain/sfsheet.py
+   A /pysoulforge/trunk/soulforgemain/sfuniversechooser.py
+   A /pysoulforge/trunk/soulforgemain/sfuniverses.py
+   M /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade_data.py
+
+Set up basic multi-universe infrastructure
+------------------------------------------------------------------------
+r41 | xiphux | 2005-07-09 06:57:42 -0400 (Sat, 09 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforge.py
+
+__main__ checking
+------------------------------------------------------------------------
+r40 | xiphux | 2005-07-09 06:56:07 -0400 (Sat, 09 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforge.py
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+   M /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade_data.py
+
+Optimise sheet2xml and xml2sheet slightly, started adding commandline option parsing
+------------------------------------------------------------------------
+r39 | xiphux | 2005-07-09 05:21:16 -0400 (Sat, 09 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/ChangeLog
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+
+Added option to close sheet and a few message dialogs for idiot-proofing
+------------------------------------------------------------------------
 r38 | xiphux | 2005-07-09 02:32:17 -0400 (Sat, 09 Jul 2005) | 1 line
 Changed paths:
    M /pysoulforge/trunk/libsoulforge/xmlutils.py
