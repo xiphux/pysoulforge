@@ -1,0 +1,66 @@
+Soulforge
+Christopher Han <xiphux@gmail.com
+
+
+---
+
+Extending Soulforge
+
+Soulforge is designed to be an extensible multi-universe
+character sheet manager.  While adding support for another
+universe is admittedly not a piece of cake, it's not extremely
+difficult either, with just a little knowledge of the Python
+programming language, wxWidgets, and XML.
+
+There are basically three files you will need to edit.
+
+
+soulforgemain/sfuniverses.py:
+This holds the data on the universes - which ones are available,
+and what to do for each one.  You'll want to import the modules
+that your other universe code is in (we'll get to those shortly).
+
+"universes" is just an array of the various universes available.
+The string you put in here will be the unique identifier for your
+universe, which will be used in sheets to identify the universe
+as well as presented to the user in the universe chooser dialog.
+So, for example,
+
+universes = ['Vampire: The Masquerade','World of Darkness,'Vampire: The Requiem']
+
+would make those three universes available.
+
+"universe_sheets" is a dictionary that will map the universe's identifier
+to the class that makes the character sheet GUI.  The key is the
+identifier you chose for your universe, and the data is the class.
+So, for example,
+
+universe_sheets = {
+	'Vampire: The Masquerade': vampire_the_masquerade.vampire_the_masquerade,
+	'World of Darkness': world_of_darkness.wod_sheet
+}
+
+would map those universe identifiers to those character sheet objects.
+It doesn't matter what the classes are called, as long as you map them
+correctly in this file.
+"universe_sheet2xml" and "universe_xml2sheet" are the same way, except
+they point to the functions used to translate the data from the character
+sheet object to the XML DOM that gets saved to a file, and vice versa.
+
+
+soulforgemain/sheets/<your_universe>.py:
+(with, of course, <your_universe> replaced with the actual universe name)
+Technically, you don't even have to call it that.  It's just the convention
+I used, so you should probably stick with it.  Inside this file is the class
+that displays the editable character sheet.  There is too much to go into detail
+about here - I recommend using wxGlade to create the interface.  You can
+look at the file "wxg/vampire_the_masquerade.wxg" to see the wxglade template
+used to create the "Vampire: The Masquerade" sheet.
+
+
+soulforgemain/sheets/<your_universe>_data.py:
+This file contains the sheet2xml and xml2sheet functions.  Again, there's too
+much to go into about here; I recommend just looking at the existing
+vampire_the_masquerade functions to get an idea of what's going on.  I also
+use this file to specify dynamic data that gets filled into the sheet - for
+example, lists of disciplines, backgrounds, clans, etc.
