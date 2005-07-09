@@ -32,6 +32,7 @@ SFROOTFRAME_LOAD = 104
 SFROOTFRAME_SAVE = 105
 SFROOTFRAME_NEW = 106
 SFROOTFRAME_EDIT = 107
+SFROOTFRAME_CLOSE = 108
 SFSHEET_OK = 401
 
 class sfrootframe(wxFrame):
@@ -48,6 +49,8 @@ class sfrootframe(wxFrame):
 	filemenu.Append(SFROOTFRAME_LOAD, u"&Load", u"Load character")
 	self.save = wxMenuItem(filemenu,SFROOTFRAME_SAVE,u"&Save",u"Save character")
 	filemenu.AppendItem(self.save)
+	self.close = wxMenuItem(filemenu,SFROOTFRAME_CLOSE,u"&Close",u"Close character")
+	filemenu.AppendItem(self.close)
 	filemenu.AppendSeparator()
 	filemenu.Append(SFROOTFRAME_QUIT, u"E&xit", u"Quit Soulforge")
 
@@ -95,6 +98,7 @@ class sfrootframe(wxFrame):
 	EVT_MENU(self,SFROOTFRAME_DIEROLLER,self.ondieroller)
 	EVT_MENU(self,SFROOTFRAME_LOAD,self.onload)
 	EVT_MENU(self,SFROOTFRAME_SAVE,self.onsave)
+	EVT_MENU(self,SFROOTFRAME_CLOSE,self.onclose)
 	EVT_MENU(self,SFROOTFRAME_NEW,self.onnew)
 	EVT_BUTTON(self,SFSHEET_OK,self.onsheetok)
 	EVT_BUTTON(self,SFROOTFRAME_EDIT,self.onedit)
@@ -114,6 +118,11 @@ class sfrootframe(wxFrame):
     def onload(self,event):
         loaddlg = wxFileDialog(self,u"Load character","","",u"Soulforge Data (*.sfd)|*.sfd|XML (*.xml)|*.xml|All files (*.*)|*.*",wxOPEN|wxFILE_MUST_EXIST)
 	if loaddlg.ShowModal() == wxID_OK:
+	    if self.dom:
+	        err = wxMessageDialog(self,u"If you load this character sheet, current character data will be cleared.  Are you sure?",u"Are you sure?",wxOK|wxCANCEL)
+		err.Centre(wxBOTH)
+		if err.ShowModal() == wxID_CANCEL:
+		    return
 	    self.file = loaddlg.GetPath()
 	    self.dom = xmlutils.loaddata(self.file)
 	    self.populatefields()
@@ -136,6 +145,17 @@ class sfrootframe(wxFrame):
 	self.updategui()
 
     def onnew(self,event):
+        if self.dom:
+	    err = wxMessageDialog(self,u"If you start a new sheet, previous character data will be cleared.  Are you sure?","Are you sure?",wxOK|wxCANCEL)
+	    err.Centre(wxBOTH)
+	    if err.ShowModal() == wxID_OK:
+	        self.dom.unlink()
+		self.dom = None
+		self.file = None
+		self.populatefields()
+		self.updategui()
+	    else:
+	        return
         self.sh = sfsheet.sfsheet(self,-1,u"Vampire: The Masquerade")
 	self.sh.Show()
 
@@ -167,8 +187,15 @@ class sfrootframe(wxFrame):
 	    self.player.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("player")[0]))
 	    self.clan.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("clan")[0]))
 	    self.universe.SetValue(self.dom.documentElement.getAttribute("universe"))
+	else:
+	    self.name.SetValue(u"")
+	    self.player.SetValue(u"")
+	    self.clan.SetValue(u"")
+	    self.universe.SetValue(u"")
 	if self.file:
 	    self.filename.SetValue(self.file)
+	else:
+	    self.filename.SetValue(u"")
 
     def updategui(self):
         self.save.Enable(self.modified)
@@ -176,3 +203,24 @@ class sfrootframe(wxFrame):
 	    self.edit.Enable(True)
 	else:
 	    self.edit.Enable(False)
+	if self.file or self.modified:
+	    self.close.Enable(True)
+	else:
+	    self.close.Enable(False)
+
+    def onclose(self,event):
+        if self.modified:
+	    err = wxMessageDialog(self,u"Character is still unsaved.  Close anyway?",u"Are you sure?",wxOK|wxCANCEL)
+	    err.Centre(wxBOTH)
+	    if err.ShowModal() == wxID_CANCEL:
+	        return
+	self.file = None
+	if self.dom:
+	    self.dom.unlink()
+	    self.dom = None
+	if self.sh:
+	    self.sh.Destroy()
+	    self.sh = None
+	self.modified = False
+	self.populatefields()
+	self.updategui()

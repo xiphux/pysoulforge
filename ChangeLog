@@ -1,0 +1,203 @@
+------------------------------------------------------------------------
+r38 | xiphux | 2005-07-09 02:32:17 -0400 (Sat, 09 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/libsoulforge/xmlutils.py
+
+Implement bz2 compression for .sfd files
+------------------------------------------------------------------------
+r37 | xiphux | 2005-07-09 02:09:45 -0400 (Sat, 09 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/setup.py
+
+Fix win32 build script
+------------------------------------------------------------------------
+r36 | xiphux | 2005-07-09 00:08:34 -0400 (Sat, 09 Jul 2005) | 1 line
+Changed paths:
+   A /pysoulforge/trunk/setup.py
+
+Win32 setup script
+------------------------------------------------------------------------
+r35 | xiphux | 2005-07-08 23:52:00 -0400 (Fri, 08 Jul 2005) | 1 line
+Changed paths:
+   A /pysoulforge/trunk/libsoulforge/xmlutils.py
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+   M /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade_data.py
+
+Basic XML DOM -> sheet handling
+------------------------------------------------------------------------
+r34 | xiphux | 2005-07-07 21:51:39 -0400 (Thu, 07 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+   M /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade.py
+   M /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade_data.py
+
+Set up basic XML DOM -> XML file conversion
+------------------------------------------------------------------------
+r33 | xiphux | 2005-07-07 20:52:29 -0400 (Thu, 07 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+   M /pysoulforge/trunk/soulforgemain/sfsheet.py
+   A /pysoulforge/trunk/soulforgemain/sheets/parser.py
+   M /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade_data.py
+
+Set up basic sheet->xml conversion
+------------------------------------------------------------------------
+r32 | xiphux | 2005-07-06 20:31:46 -0400 (Wed, 06 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfcontrols.py
+   M /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade.py
+   A /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade_data.py
+   M /pysoulforge/trunk/wxg/vampire_the_masquerade.wxg
+
+Add some of the combobox data and tune the sheet layout a bit
+------------------------------------------------------------------------
+r31 | xiphux | 2005-07-06 17:54:26 -0400 (Wed, 06 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfcontrols.py
+   M /pysoulforge/trunk/soulforgemain/sfsheet.py
+   M /pysoulforge/trunk/soulforgemain/sheets
+   A /pysoulforge/trunk/soulforgemain/sheets/__init__.py
+   M /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade.py
+   M /pysoulforge/trunk/wxg/vampire_the_masquerade.wxg
+
+Set up basic VtM sheet
+------------------------------------------------------------------------
+r30 | xiphux | 2005-07-06 02:32:25 -0400 (Wed, 06 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfsheet.py
+   A /pysoulforge/trunk/soulforgemain/sheets
+   A /pysoulforge/trunk/soulforgemain/sheets/vampire_the_masquerade.py
+   A /pysoulforge/trunk/wxg
+   A /pysoulforge/trunk/wxg/vampire_the_masquerade.wxg
+   D /pysoulforge/trunk/xrc
+
+Vampire: The Masquerade wxglade panel
+------------------------------------------------------------------------
+r29 | xiphux | 2005-07-05 02:52:55 -0400 (Tue, 05 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+   A /pysoulforge/trunk/soulforgemain/sfsheet.py
+   A /pysoulforge/trunk/xrc
+   A /pysoulforge/trunk/xrc/vampire_the_masquerade.xrc
+
+Start xml character sheet interface
+------------------------------------------------------------------------
+r28 | xiphux | 2005-07-01 20:09:13 -0400 (Fri, 01 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+
+Started implementing load/save dialogs
+------------------------------------------------------------------------
+r27 | xiphux | 2005-07-01 17:40:10 -0400 (Fri, 01 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/sfcontrols.py
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+
+Wrote (blood)pool control class
+------------------------------------------------------------------------
+r26 | xiphux | 2005-07-01 10:55:05 -0400 (Fri, 01 Jul 2005) | 1 line
+Changed paths:
+   A /pysoulforge/trunk/soulforgemain/sfcontrols.py
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+
+Started character sheet gui controls
+------------------------------------------------------------------------
+r25 | xiphux | 2005-07-01 07:42:08 -0400 (Fri, 01 Jul 2005) | 1 line
+Changed paths:
+   A /pysoulforge/trunk/AUTHORS
+   A /pysoulforge/trunk/COPYING
+   A /pysoulforge/trunk/ChangeLog
+   A /pysoulforge/trunk/NEWS
+   A /pysoulforge/trunk/README
+   A /pysoulforge/trunk/THANKS
+
+Standard GNU documentation
+------------------------------------------------------------------------
+r24 | xiphux | 2005-07-01 07:39:48 -0400 (Fri, 01 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/libsoulforge
+   M /pysoulforge/trunk/libsoulforge/dicepool.py
+   M /pysoulforge/trunk/soulforge.py
+   M /pysoulforge/trunk/soulforgemain/dieroller.py
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+
+GPL Notice and centered windows
+------------------------------------------------------------------------
+r23 | xiphux | 2005-07-01 01:36:41 -0400 (Fri, 01 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/dieroller.py
+
+Consolidated a bit of the dieroller gui code
+------------------------------------------------------------------------
+r22 | xiphux | 2005-07-01 01:30:47 -0400 (Fri, 01 Jul 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/libsoulforge/dicepool.py
+   M /pysoulforge/trunk/soulforgemain/dieroller.py
+
+Added roll statistics to dieroller window
+------------------------------------------------------------------------
+r21 | xiphux | 2005-06-30 23:34:16 -0400 (Thu, 30 Jun 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain/dieroller.py
+
+Added botch/difficulty gui options
+------------------------------------------------------------------------
+r20 | xiphux | 2005-06-30 22:31:12 -0400 (Thu, 30 Jun 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/libsoulforge/dicepool.py
+   M /pysoulforge/trunk/soulforgemain/dieroller.py
+
+Link diceroller controls to dicepool settings/functions
+------------------------------------------------------------------------
+r19 | xiphux | 2005-06-30 21:51:03 -0400 (Thu, 30 Jun 2005) | 1 line
+Changed paths:
+   D /pysoulforge/trunk/libsoulforge/dicepool
+   A /pysoulforge/trunk/libsoulforge/dicepool.py
+   M /pysoulforge/trunk/soulforgemain/dieroller.py
+
+Rearrange libsoulforge a bit, link libsoulforge.dicepool into soulforgemain.dieroller
+------------------------------------------------------------------------
+r18 | xiphux | 2005-06-30 20:33:43 -0400 (Thu, 30 Jun 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforge.py
+   A /pysoulforge/trunk/soulforgemain/dieroller.py
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+
+Started dieroller window
+------------------------------------------------------------------------
+r17 | xiphux | 2005-06-30 19:35:06 -0400 (Thu, 30 Jun 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk/soulforgemain
+   M /pysoulforge/trunk/soulforgemain/sfrootframe.py
+
+Started main window event handlers
+------------------------------------------------------------------------
+r16 | xiphux | 2005-06-30 11:09:28 -0400 (Thu, 30 Jun 2005) | 1 line
+Changed paths:
+   M /pysoulforge/trunk
+   A /pysoulforge/trunk/libsoulforge/__init__.py
+   A /pysoulforge/trunk/libsoulforge/dicepool/__init__.py
+   A /pysoulforge/trunk/soulforge.py
+   A /pysoulforge/trunk/soulforgemain
+   A /pysoulforge/trunk/soulforgemain/__init__.py
+   A /pysoulforge/trunk/soulforgemain/sfrootframe.py
+
+Created main wxApp class skeleton
+------------------------------------------------------------------------
+r15 | xiphux | 2005-06-30 10:30:42 -0400 (Thu, 30 Jun 2005) | 1 line
+Changed paths:
+   A /pysoulforge/trunk/libsoulforge
+   A /pysoulforge/trunk/libsoulforge/dicepool
+   A /pysoulforge/trunk/libsoulforge/dicepool/dicepool.py
+
+Started dicepool python class
+------------------------------------------------------------------------
+r14 | xiphux | 2005-06-30 08:16:00 -0400 (Thu, 30 Jun 2005) | 1 line
+Changed paths:
+   A /pysoulforge
+   A /pysoulforge/branches
+   A /pysoulforge/tags
+   A /pysoulforge/trunk
+
+PySoulForge initial project layout
+------------------------------------------------------------------------
