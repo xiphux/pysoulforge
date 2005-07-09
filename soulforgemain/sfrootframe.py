@@ -20,8 +20,7 @@
 #
 
 from wxPython.wx import *
-import dieroller,sfcontrols,sfsheet
-from sheets import vampire_the_masquerade_data
+import dieroller,sfcontrols,sfsheet,sfuniverses,sfuniversechooser
 from xml.dom import minidom
 from libsoulforge import xmlutils
 
@@ -163,31 +162,34 @@ class sfrootframe(wxFrame):
 		self.updategui()
 	    else:
 	        return
-        self.sh = sfsheet.sfsheet(self,-1,u"Vampire: The Masquerade")
-	self.sh.Show()
+	uni = sfuniversechooser.sfuniversechooser(self,-1)
+	ret = uni.ShowModal()
+	if ret == wxID_OK:
+            self.sh = sfsheet.sfsheet(self,-1,uni.universe)
+	    self.sh.Show()
+	uni.Destroy()
 
     def onsheetok(self,event):
         if self.dom:
 	    self.dom.unlink()
 	self.dom = minidom.getDOMImplementation().createDocument(None,"soulforge_character",None)
-	vtmp = vampire_the_masquerade_data.vampire_the_masquerade_parser()
-	vtmp.sheet2xml(self.sh.sheet,self.dom)
+	sfuniverses.universe_sheet2xml[self.sh.universe](self.sh.sheet,self.dom)
 	self.sh.Destroy()
 	self.populatefields()
 	self.modified = True
 	self.updategui()
 
     def onedit(self,event):
-        self.sh = sfsheet.sfsheet(self,-1,u"Vampire: The Masquerade")
-	vtmp = vampire_the_masquerade_data.vampire_the_masquerade_parser()
-	vtmp.xml2sheet(self.dom,self.sh.sheet)
+        uni = self.dom.documentElement.getAttribute("universe")
+        self.sh = sfsheet.sfsheet(self,-1,uni)
+	sfuniverses.universe_xml2sheet[uni](self.dom,self.sh.sheet)
 	self.sh.Show()
 
     def populatefields(self):
         if self.sh:
 	    self.name.SetValue(self.sh.sheet.name.GetValue())
 	    self.player.SetValue(self.sh.sheet.player.GetValue())
-	    self.universe.SetValue(vampire_the_masquerade_data.universe)
+	    self.universe.SetValue(self.sh.universe)
 	    self.clan.SetValue(self.sh.sheet.clan.GetValue())
 	elif self.dom:
 	    self.name.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("name")[0]))

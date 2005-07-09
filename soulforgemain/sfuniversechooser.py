@@ -19,41 +19,37 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import sfcontrols,sfuniverses
 from wxPython.wx import *
 
-SFSHEET_OK = 401
-SFSHEET_CANCEL = 402
+SFUNIVERSECHOOSER_OK = 601
+SFUNIVERSECHOOSER_CANCEL = 602
 
-class sfsheet(wxFrame):
-    def __init__(self,parent,ID,univ):
-        wxFrame.__init__(self, parent, ID, univ, wxDefaultPosition, wxDefaultSize)
+universes = ['Vampire: The Masquerade']
 
-	self.universe = univ
+class sfuniversechooser(wxDialog):
+    def __init__(self,parent,ID,title="Select universe"):
+        wxDialog.__init__(self,parent,ID,title)
 
+	self.universe = None
+	
 	root = wxBoxSizer(wxVERTICAL)
+	self.uchooser = wxChoice(self,-1,wxDefaultPosition,wxDefaultSize,universes)
+	root.Add(self.uchooser,1,wxEXPAND)
 
-	sh = sfuniverses.universe_sheets[univ]
-	self.sheet = sh(self,-1)
-
-	root.Add(self.sheet,0,wxEXPAND)
-
-	controls = wxBoxSizer(wxHORIZONTAL)
-	self.okbutton = wxButton(self,SFSHEET_OK,u"Ok")
-	controls.Add(self.okbutton,1,wxEXPAND)
-
-	controls.Add(wxButton(self,SFSHEET_CANCEL,u"Cancel"),1,wxEXPAND)
-
-	root.Add(controls,0,wxEXPAND)
+	bbox = wxBoxSizer(wxHORIZONTAL)
+	bbox.Add(wxButton(self,SFUNIVERSECHOOSER_OK,u"Ok"),1,wxEXPAND)
+	bbox.Add(wxButton(self,SFUNIVERSECHOOSER_CANCEL,u"Cancel"),1,wxEXPAND)
+	root.Add(bbox,0,wxEXPAND)
 
 	self.SetSizerAndFit(root)
 	self.Centre(wxBOTH)
 
-	EVT_BUTTON(self,SFSHEET_OK,self.onok)
-	EVT_BUTTON(self,SFSHEET_CANCEL,self.oncancel)
-
-    def oncancel(self,event):
-        self.Destroy()
+	EVT_BUTTON(self,SFUNIVERSECHOOSER_OK,self.onok)
+	EVT_BUTTON(self,SFUNIVERSECHOOSER_CANCEL,self.oncancel)
 
     def onok(self,event):
-        event.Skip()
+        self.universe = self.uchooser.GetStringSelection()
+	self.EndModal(wxID_OK)
+
+    def oncancel(self,event):
+        self.EndModal(wxID_CANCEL)
