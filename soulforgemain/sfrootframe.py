@@ -121,23 +121,28 @@ class sfrootframe(wxFrame):
 	    if self.dom:
 	        err = wxMessageDialog(self,u"If you load this character sheet, current character data will be cleared.  Are you sure?",u"Are you sure?",wxOK|wxCANCEL)
 		err.Centre(wxBOTH)
-		if err.ShowModal() == wxID_CANCEL:
+		ret = err.ShowModal()
+		err.Destroy()
+		if ret == wxID_CANCEL:
 		    return
 	    self.file = loaddlg.GetPath()
 	    self.dom = xmlutils.loaddata(self.file)
 	    self.populatefields()
 	    self.updategui()
+	loaddlg.Destroy()
 
     def onsave(self,event):
         if not self.dom:
 	    err = wxMessageDialog(self,u"Error: No character data to save",u"Error!",wxOK)
 	    err.Centre(wxBOTH)
 	    err.ShowModal()
+	    err.Destroy()
 	    return
         if not self.file:
 	    savedlg = wxFileDialog(self,u"Save character","","",u"Soulforge Data (*.sfd)|*.sfd|XML (*.xml)|*.xml|All files (*.*)|*.*",wxSAVE|wxOVERWRITE_PROMPT)
 	    if savedlg.ShowModal() == wxID_OK:
 	        self.file = savedlg.GetPath()
+	    savedlg.Destroy()
 	if self.file:
 	    xmlutils.savedata(self.dom, self.file)
 	    self.modified = False
@@ -148,7 +153,9 @@ class sfrootframe(wxFrame):
         if self.dom:
 	    err = wxMessageDialog(self,u"If you start a new sheet, previous character data will be cleared.  Are you sure?","Are you sure?",wxOK|wxCANCEL)
 	    err.Centre(wxBOTH)
-	    if err.ShowModal() == wxID_OK:
+	    ret = err.ShowModal()
+	    err.Destroy()
+	    if ret == wxID_OK:
 	        self.dom.unlink()
 		self.dom = None
 		self.file = None
@@ -212,7 +219,9 @@ class sfrootframe(wxFrame):
         if self.modified:
 	    err = wxMessageDialog(self,u"Character is still unsaved.  Close anyway?",u"Are you sure?",wxOK|wxCANCEL)
 	    err.Centre(wxBOTH)
-	    if err.ShowModal() == wxID_CANCEL:
+	    ret = err.ShowModal()
+	    err.Destroy()
+	    if ret == wxID_CANCEL:
 	        return
 	self.file = None
 	if self.dom:
