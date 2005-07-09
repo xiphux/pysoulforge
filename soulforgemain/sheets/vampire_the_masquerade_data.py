@@ -21,6 +21,7 @@
 
 import parser
 from xml.dom import minidom
+from libsoulforge import xmlutils
 
 universe = 'Vampire: The Masquerade'
 
@@ -486,18 +487,36 @@ class vampire_the_masquerade_parser(parser.sheetparser):
 	
 	node2 = dom.createElement("virtues")
 	
-	node3 = dom.createElement(str(sheet.conscience_conviction_name.GetValue().lower()))
-	node4 = dom.createTextNode(str(sheet.conscience_conviction_level.value))
+	node3 = dom.createElement("conscience_conviction")
+	node4 = dom.createElement("conscience_conviction_name")
+	node5 = dom.createTextNode(str(sheet.conscience_conviction_name.GetValue()))
+	node4.appendChild(node5)
+	node3.appendChild(node4)
+	node4 = dom.createElement("conscience_conviction_level")
+	node5 = dom.createTextNode(str(sheet.conscience_conviction_level.value))
+	node4.appendChild(node5)
 	node3.appendChild(node4)
 	node2.appendChild(node3)
 
-	node3 = dom.createElement(str(sheet.selfcontrol_instinct_name.GetValue().lower()))
-	node4 = dom.createTextNode(str(sheet.selfcontrol_instinct_level.value))
+	node3 = dom.createElement("selfcontrol_instinct")
+	node4 = dom.createElement("selfcontrol_instinct_name")
+	node5 = dom.createTextNode(str(sheet.selfcontrol_instinct_name.GetValue()))
+	node4.appendChild(node5)
+	node3.appendChild(node4)
+	node4 = dom.createElement("selfcontrol_instinct_level")
+	node5 = dom.createTextNode(str(sheet.selfcontrol_instinct_level.value))
+	node4.appendChild(node5)
 	node3.appendChild(node4)
 	node2.appendChild(node3)
 
-	node3 = dom.createElement(str(sheet.courage_name.GetValue().lower()))
-	node4 = dom.createTextNode(str(sheet.courage_level.value))
+	node3 = dom.createElement("courage")
+	node4 = dom.createElement("courage_name")
+	node5 = dom.createTextNode(str(sheet.courage_name.GetValue()))
+	node4.appendChild(node5)
+	node3.appendChild(node4)
+	node4 = dom.createElement("courage_level")
+	node5 = dom.createTextNode(str(sheet.courage_level.value))
+	node4.appendChild(node5)
 	node3.appendChild(node4)
 	node2.appendChild(node3)
 
@@ -553,4 +572,129 @@ class vampire_the_masquerade_parser(parser.sheetparser):
 	root.appendChild(node)
 
     def xml2sheet(self,dom,sheet):
-        pass
+        sheet.name.SetValue(xmlutils.getnodetext(dom.getElementsByTagName("name")[0]))
+	sheet.player.SetValue(xmlutils.getnodetext(dom.getElementsByTagName("player")[0]))
+	sheet.chronicle.SetValue(xmlutils.getnodetext(dom.getElementsByTagName("chronicle")[0]))
+	sheet.nature.SetValue(xmlutils.getnodetext(dom.getElementsByTagName("nature")[0]))
+	sheet.demeanor.SetValue(xmlutils.getnodetext(dom.getElementsByTagName("demeanor")[0]))
+	sheet.clan.SetValue(xmlutils.getnodetext(dom.getElementsByTagName("clan")[0]))
+	sheet.generation.SetValue(int(xmlutils.getnodetext(dom.getElementsByTagName("generation")[0])))
+	sheet.haven.SetValue(xmlutils.getnodetext(dom.getElementsByTagName("haven")[0]))
+	sheet.concept.SetValue(xmlutils.getnodetext(dom.getElementsByTagName("concept")[0]))
+	
+	attnode = dom.getElementsByTagName("attributes")[0]
+	physnode = attnode.getElementsByTagName("physical")[0]
+	sheet.strength.setvalue(int(xmlutils.getnodetext(physnode.getElementsByTagName("strength")[0])))
+	sheet.dexterity.setvalue(int(xmlutils.getnodetext(physnode.getElementsByTagName("dexterity")[0])))
+	sheet.stamina.setvalue(int(xmlutils.getnodetext(physnode.getElementsByTagName("stamina")[0])))
+
+	socnode = attnode.getElementsByTagName("social")[0]
+	sheet.charisma.setvalue(int(xmlutils.getnodetext(socnode.getElementsByTagName("charisma")[0])))
+	sheet.manipulation.setvalue(int(xmlutils.getnodetext(socnode.getElementsByTagName("manipulation")[0])))
+	sheet.appearance.setvalue(int(xmlutils.getnodetext(socnode.getElementsByTagName("appearance")[0])))
+
+	mentnode = attnode.getElementsByTagName("mental")[0]
+	sheet.perception.setvalue(int(xmlutils.getnodetext(mentnode.getElementsByTagName("perception")[0])))
+	sheet.intelligence.setvalue(int(xmlutils.getnodetext(mentnode.getElementsByTagName("intelligence")[0])))
+	sheet.wits.setvalue(int(xmlutils.getnodetext(mentnode.getElementsByTagName("wits")[0])))
+
+	abinode = dom.getElementsByTagName("abilities")[0]
+	talnode = abinode.getElementsByTagName("talents")[0]
+	sheet.alertness.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("alertness")[0])))
+	sheet.athletics.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("athletics")[0])))
+	sheet.brawl.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("brawl")[0])))
+	sheet.dodge.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("dodge")[0])))
+	sheet.empathy.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("empathy")[0])))
+	sheet.expression.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("expression")[0])))
+	sheet.intimidation.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("intimidation")[0])))
+	sheet.leadership.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("leadership")[0])))
+	sheet.streetwise.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("streetwise")[0])))
+	sheet.subterfuge.setvalue(int(xmlutils.getnodetext(talnode.getElementsByTagName("subterfuge")[0])))
+
+	skilnode = abinode.getElementsByTagName("skills")[0]
+	sheet.animalken.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("animalken")[0])))
+	sheet.crafts.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("crafts")[0])))
+	sheet.drive.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("drive")[0])))
+	sheet.etiquette.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("etiquette")[0])))
+	sheet.firearms.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("firearms")[0])))
+	sheet.melee.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("melee")[0])))
+	sheet.performance.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("performance")[0])))
+	sheet.security.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("security")[0])))
+	sheet.stealth.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("stealth")[0])))
+	sheet.survival.setvalue(int(xmlutils.getnodetext(skilnode.getElementsByTagName("survival")[0])))
+
+	knownode = abinode.getElementsByTagName("knowledges")[0]
+	sheet.academics.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("academics")[0])))
+	sheet.computer.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("computer")[0])))
+	sheet.finance.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("finance")[0])))
+	sheet.investigation.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("investigation")[0])))
+	sheet.law.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("investigation")[0])))
+	sheet.linguistics.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("linguistics")[0])))
+	sheet.medicine.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("medicine")[0])))
+	sheet.occult.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("occult")[0])))
+	sheet.politics.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("politics")[0])))
+	sheet.science.setvalue(int(xmlutils.getnodetext(knownode.getElementsByTagName("science")[0])))
+
+	advnode = dom.getElementsByTagName("advantages")[0]
+	bgn = advnode.getElementsByTagName("backgrounds")[0].getElementsByTagName("background")
+	sheet.background_1_name.SetValue(xmlutils.getnodetext(bgn[0].getElementsByTagName("background_name")[0]))
+	sheet.background_1_level.setvalue(int(xmlutils.getnodetext(bgn[0].getElementsByTagName("background_level")[0])))
+	sheet.background_2_name.SetValue(xmlutils.getnodetext(bgn[1].getElementsByTagName("background_name")[0]))
+	sheet.background_2_level.setvalue(int(xmlutils.getnodetext(bgn[1].getElementsByTagName("background_level")[0])))
+	sheet.background_3_name.SetValue(xmlutils.getnodetext(bgn[2].getElementsByTagName("background_name")[0]))
+	sheet.background_3_level.setvalue(int(xmlutils.getnodetext(bgn[2].getElementsByTagName("background_level")[0])))
+	sheet.background_4_name.SetValue(xmlutils.getnodetext(bgn[3].getElementsByTagName("background_name")[0]))
+	sheet.background_4_level.setvalue(int(xmlutils.getnodetext(bgn[3].getElementsByTagName("background_level")[0])))
+	sheet.background_5_name.SetValue(xmlutils.getnodetext(bgn[4].getElementsByTagName("background_name")[0]))
+	sheet.background_5_level.setvalue(int(xmlutils.getnodetext(bgn[4].getElementsByTagName("background_level")[0])))
+	sheet.background_6_name.SetValue(xmlutils.getnodetext(bgn[5].getElementsByTagName("background_name")[0]))
+	sheet.background_6_level.setvalue(int(xmlutils.getnodetext(bgn[5].getElementsByTagName("background_level")[0])))
+	sheet.background_7_name.SetValue(xmlutils.getnodetext(bgn[6].getElementsByTagName("background_name")[0]))
+	sheet.background_7_level.setvalue(int(xmlutils.getnodetext(bgn[6].getElementsByTagName("background_level")[0])))
+	
+	dpn = advnode.getElementsByTagName("disciplines")[0].getElementsByTagName("discipline")
+	sheet.discipline_1_name.SetValue(xmlutils.getnodetext(dpn[0].getElementsByTagName("discipline_name")[0]))
+	sheet.discipline_1_level.setvalue(int(xmlutils.getnodetext(dpn[0].getElementsByTagName("discipline_level")[0])))
+	sheet.discipline_2_name.SetValue(xmlutils.getnodetext(dpn[1].getElementsByTagName("discipline_name")[0]))
+	sheet.discipline_2_level.setvalue(int(xmlutils.getnodetext(dpn[1].getElementsByTagName("discipline_level")[0])))
+	sheet.discipline_3_name.SetValue(xmlutils.getnodetext(dpn[2].getElementsByTagName("discipline_name")[0]))
+	sheet.discipline_3_level.setvalue(int(xmlutils.getnodetext(dpn[2].getElementsByTagName("discipline_level")[0])))
+	sheet.discipline_4_name.SetValue(xmlutils.getnodetext(dpn[3].getElementsByTagName("discipline_name")[0]))
+	sheet.discipline_4_level.setvalue(int(xmlutils.getnodetext(dpn[3].getElementsByTagName("discipline_level")[0])))
+	sheet.discipline_5_name.SetValue(xmlutils.getnodetext(dpn[4].getElementsByTagName("discipline_name")[0]))
+	sheet.discipline_5_level.setvalue(int(xmlutils.getnodetext(dpn[4].getElementsByTagName("discipline_level")[0])))
+	sheet.discipline_6_name.SetValue(xmlutils.getnodetext(dpn[5].getElementsByTagName("discipline_name")[0]))
+	sheet.discipline_6_level.setvalue(int(xmlutils.getnodetext(dpn[5].getElementsByTagName("discipline_level")[0])))
+	sheet.discipline_7_name.SetValue(xmlutils.getnodetext(dpn[6].getElementsByTagName("discipline_name")[0]))
+	sheet.discipline_7_level.setvalue(int(xmlutils.getnodetext(dpn[6].getElementsByTagName("discipline_level")[0])))
+
+	vnode = advnode.getElementsByTagName("virtues")[0]
+	ccn = vnode.getElementsByTagName("conscience_conviction")[0]
+	sheet.conscience_conviction_name.SetValue(xmlutils.getnodetext(ccn.getElementsByTagName("conscience_conviction_name")[0]))
+	sheet.conscience_conviction_level.setvalue(int(xmlutils.getnodetext(ccn.getElementsByTagName("conscience_conviction_level")[0])))
+	sin = vnode.getElementsByTagName("selfcontrol_instinct")[0]
+	sheet.selfcontrol_instinct_name.SetValue(xmlutils.getnodetext(sin.getElementsByTagName("selfcontrol_instinct_name")[0]))
+	sheet.selfcontrol_instinct_level.setvalue(int(xmlutils.getnodetext(sin.getElementsByTagName("selfcontrol_instinct_level")[0])))
+	cn = vnode.getElementsByTagName("courage")[0]
+	sheet.courage_name.SetValue(xmlutils.getnodetext(cn.getElementsByTagName("courage_name")[0]))
+	sheet.courage_level.setvalue(int(xmlutils.getnodetext(cn.getElementsByTagName("courage_level")[0])))
+
+	hpnode = dom.getElementsByTagName("humanity_path")[0]
+	hn = hpnode.getElementsByTagName("humanity")
+	if hn:
+	    sheet.humanity_path_name.SetValue("Humanity")
+	    sheet.humanity_path_level.setvalue(int(xmlutils.getnodetext(hn[0])))
+	else:
+	    pn = hpnode.getElementsByTagName("path")[0]
+	    sheet.humanity_path_name.SetValue(xmlutils.getnodetext(pn.getElementsByTagName("path_name")[0]))
+	    sheet.humanity_path_level.setvalue(int(xmlutils.getnodetext(pn.getElementsByTagName("path_level")[0])))
+	
+	wn = dom.getElementsByTagName("willpower")[0]
+	sheet.willpower_max.setvalue(int(xmlutils.getnodetext(wn.getElementsByTagName("willpower_max")[0])))
+	sheet.willpower_current.setvalue(int(xmlutils.getnodetext(wn.getElementsByTagName("willpower_current")[0])))
+
+	sheet.blood_pool.setvalue(int(xmlutils.getnodetext(dom.getElementsByTagName("bloodpool")[0])))
+
+	sheet.health.setvalue(int(xmlutils.getnodetext(dom.getElementsByTagName("health")[0])))
+
+	sheet.experience.SetValue(int(xmlutils.getnodetext(dom.getElementsByTagName("experience")[0])))
