@@ -39,11 +39,11 @@ try:
 except ImportError:
     pass
 
-parser = OptionParser(version=SF_VERSION)
-
-parser.add_option("-v","--verbose",action="store_true",dest="verbose",help="verbose output")
-parser.set_defaults(verbose=True)
-(options, args) = parser.parse_args()
-
-sf = Soulforge(0)
-sf.MainLoop()
+if __name__ == "__main__":
+    parser = OptionParser(version=SF_VERSION)
+    parser.add_option("-v","--verbose",action="store_true",dest="verbose",help="verbose output")
+    parser.set_defaults(verbose=True)
+    (options, args) = parser.parse_args()
+    
+    sf = Soulforge(0)
+    sf.MainLoop()
