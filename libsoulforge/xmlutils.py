@@ -19,8 +19,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import re
+import re,bz2
 from xml.dom import minidom
+
+SF_COMPRESSED_EXT = ".sfd"
 
 def getnodetext(node):
     string = ""
@@ -30,10 +32,19 @@ def getnodetext(node):
     return re.sub('[^A-Za-z\ _\-0-9]*','',string).strip()
 
 def loaddata(filename):
-    d = minidom.parse(filename)
+    d = None
+    if filename.endswith(SF_COMPRESSED_EXT):
+        bzd = bz2.BZ2File(filename,"r")
+	d = minidom.parseString(bzd.read())
+    else:
+        d = minidom.parse(filename)
     return d
 
 def savedata(dom, filename):
-    fd = open(filename,"w")
+    fd = None
+    if filename.endswith(SF_COMPRESSED_EXT):
+        fd = bz2.BZ2File(filename,"w")
+    else:
+        fd = open(filename,"w")
     dom.writexml(fd,"    ","    ","\n")
     fd.close()
