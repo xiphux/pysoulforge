@@ -103,6 +103,13 @@ class sfrootframe(wxFrame):
 	EVT_BUTTON(self,SFROOTFRAME_EDIT,self.onedit)
 
     def onquit(self,event):
+        if self.modified:
+	    err = wxMessageDialog(self,u"Character is still unsaved.  Quit anyway?",u"Are you sure?",wxOK|wxCANCEL)
+	    err.Centre(wxBOTH)
+	    ret = err.ShowModal()
+	    err.Destroy()
+	    if ret == wxID_CANCEL:
+	        return
         self.Close(true)
 
     def onabout(self,event):
