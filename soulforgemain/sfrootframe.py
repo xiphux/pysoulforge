@@ -19,10 +19,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxMenu,wxMenuItem,wxMenuBar,wxFlexGridSizer,wxALIGN_CENTER_VERTICAL,wxTE_READONLY,EVT_MENU,EVT_BUTTON,wxEXPAND,wxMessageDialog,wxFileDialog,wxStaticText,wxTextCtrl,wxPanel,wxButton,wxBOTH,wxID_OK,wxID_CANCEL,wxOPEN,wxOK,wxCANCEL,wxFILE_MUST_EXIST,wxSAVE,wxOVERWRITE_PROMPT,wxSingleChoiceDialog
+from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxMenu,wxMenuItem,wxMenuBar,wxFlexGridSizer,wxALIGN_CENTER_VERTICAL,wxTE_READONLY,EVT_MENU,EVT_BUTTON,wxEXPAND,wxMessageDialog,wxFileDialog,wxStaticText,wxTextCtrl,wxPanel,wxButton,wxBOTH,wxID_OK,wxID_CANCEL,wxOPEN,wxOK,wxCANCEL,wxFILE_MUST_EXIST,wxSAVE,wxOVERWRITE_PROMPT,wxSingleChoiceDialog,wxConfig
 import dieroller,sfcontrols,sfsheet,sfuniverses
 from xml.dom import minidom
 from libsoulforge import xmlutils,headerdata
+from os import path
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102
@@ -42,6 +43,7 @@ class sfrootframe(wxFrame):
 	self.file = None
 	self.sh = None
 	self.modified = False
+	self.config = wxConfig.Get()
 	
 	filemenu = wxMenu()
 	filemenu.Append(SFROOTFRAME_NEW, _("&New"), _("New character"))
@@ -122,7 +124,7 @@ class sfrootframe(wxFrame):
 	dr.Show(True)
 
     def onload(self,event):
-        loaddlg = wxFileDialog(self, _("Load character"),"","", headerdata.SF_FILEMASK,wxOPEN|wxFILE_MUST_EXIST)
+        loaddlg = wxFileDialog(self, _("Load character"),self.config.Read(headerdata.SF_CONFIGKEY_LOADDIR),"", headerdata.SF_FILEMASK,wxOPEN|wxFILE_MUST_EXIST)
 	if loaddlg.ShowModal() == wxID_OK:
 	    if self.dom:
 	        err = wxMessageDialog(self, _("If you load this character sheet, current character data will be cleared.  Are you sure?"), _("Are you sure?"),wxOK|wxCANCEL)
@@ -132,6 +134,8 @@ class sfrootframe(wxFrame):
 		if ret == wxID_CANCEL:
 		    return
 	    self.file = loaddlg.GetPath()
+	    self.config.Write(headerdata.SF_CONFIGKEY_LOADDIR, path.dirname(self.file))
+	    self.config.Flush(True)
 	    self.dom = xmlutils.loaddata(self.file)
 	    self.populatefields()
 	    self.updategui()
@@ -145,9 +149,11 @@ class sfrootframe(wxFrame):
 	    err.Destroy()
 	    return
         if not self.file:
-	    savedlg = wxFileDialog(self, _("Save character"),"","", headerdata.SF_FILEMASK,wxSAVE|wxOVERWRITE_PROMPT)
+	    savedlg = wxFileDialog(self, _("Save character"),self.config.Read(headerdata.SF_CONFIGKEY_SAVEDIR),"", headerdata.SF_FILEMASK,wxSAVE|wxOVERWRITE_PROMPT)
 	    if savedlg.ShowModal() == wxID_OK:
 	        self.file = savedlg.GetPath()
+		self.config.Write(headerdata.SF_CONFIGKEY_SAVEDIR, path.dirname(self.file))
+		self.config.Flush(True)
 	    savedlg.Destroy()
 	if self.file:
 	    xmlutils.savedata(self.dom, self.file)

@@ -32,10 +32,10 @@ def getnodetext(node):
 
 def loaddata(filename):
     data = None
-    if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
-        bzd = bz2.BZ2File(filename,"r")
-        data = minidom.parseString(bzd.read())
-    else:
+    try:
+        bzd = bz2.BZ2File(filename, "r")
+	data = minidom.parseString(bzd.read())
+    except:
         data = minidom.parse(filename)
     return data
 

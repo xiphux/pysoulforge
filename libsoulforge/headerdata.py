@@ -39,3 +39,6 @@ SF_DIEROLLER_TABULATE = False
 SF_DIEROLLER_RNG = _("Mersenne Twister")
 
 SF_FILEMASK = _("Soulforge Data") + " (*.sfd)|*.sfd|XML (*.xml)|*.xml|" + _("All files") + " (*.*)|*.*"
+
+SF_CONFIGKEY_LOADDIR = "/lastrun/loaddir"
+SF_CONFIGKEY_SAVEDIR = "/lastrun/savedir"
