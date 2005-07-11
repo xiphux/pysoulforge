@@ -19,12 +19,19 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-class sheetparser(object):
-    def __init__(self):
-        pass
 
-    def sheet2xml(self,sheet,dom):
-        pass
+SF_VERSION = "%prog 0.0.1"
 
-    def xml2sheet(self,dom,sheet):
-        pass
+SF_COMPRESSED_EXT = ".sfd"
+
+SF_SFSTAT_BUTTONS = 5
+
+SF_SFPOOL_ROWS = 2
+SF_SFPOOL_COLS = 10
+
+SF_DIEROLLER_FACES = 10
+SF_DIEROLLER_POOL = 1
+SF_DIEROLLER_BOTCH = True
+SF_DIEROLLER_DIFFICULTY = 6
+SF_DIEROLLER_TABULATE = False
+SF_DIEROLLER_RNG = "Mersenne Twister"

@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import *
+from wxPython.wx import wxFrame,wxBoxSizer,wxStaticText,wxSpinCtrl,wxTextCtrl,wxGauge,wxDefaultPosition,wxDefaultSize,wxHORIZONTAL,wxVERTICAL,wxALIGN_CENTER_VERTICAL,wxEXPAND,wxChoice,wxCheckBox,wxButton,wxTE_MULTILINE,wxTE_READONLY,wxALIGN_LEFT,wxALIGN_RIGHT,wxBOTH,EVT_BUTTON,EVT_SPINCTRL,EVT_CHOICE,EVT_CHECKBOX
 from libsoulforge import dicepool
 
 DIEROLLER_CLOSE = 104
@@ -180,11 +180,13 @@ class dieroller(wxFrame):
 	    else:
 	        score += "Failure!"
 	    self.finalscore.SetLabel(score)
+	self.Layout()
 	    
 
     def onpool(self,event):
         self.dicepool.pool = self.poolctl.GetValue()
 	self.freshen()
+	self.Layout()
 
     def onfaces(self,event):
         self.dicepool.faces = self.facectl.GetValue()

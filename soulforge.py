@@ -22,17 +22,16 @@
 
 from optparse import OptionParser
 from compileall import compile_dir
-from wxPython.wx import *
+from wxPython.wx import wxApp
 from soulforgemain import sfrootframe
-
-SF_VERSION = "%prog 0.0.1"
+from libsoulforge import staticdata
 
 class Soulforge(wxApp):
     def OnInit(self):
-        sframe = sfrootframe.sfrootframe(NULL, -1, u"Soulforge")
-	sframe.Show(true)
+        sframe = sfrootframe.sfrootframe(None, -1, u"Soulforge")
+	sframe.Show(True)
 	self.SetTopWindow(sframe)
-	return true
+	return True
 
 try:
     import psyco
@@ -41,7 +40,7 @@ except ImportError:
     pass
 
 if __name__ == "__main__":
-    parser = OptionParser(version=SF_VERSION)
+    parser = OptionParser(version=staticdata.SF_VERSION)
     parser.add_option("-v","--verbose",action="store_true",dest="verbose",help="verbose output")
     parser.add_option("-f","--force",action="store_true",dest="force",help="force operation")
     parser.add_option("-c","--compile",action="store_true",dest="compile",help="byte-compile")

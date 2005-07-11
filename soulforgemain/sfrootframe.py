@@ -19,8 +19,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import *
-import dieroller,sfcontrols,sfsheet,sfuniverses,sfuniversechooser
+from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxMenu,wxMenuItem,wxMenuBar,wxFlexGridSizer,wxALIGN_CENTER_VERTICAL,wxTE_READONLY,EVT_MENU,EVT_BUTTON,wxEXPAND,wxMessageDialog,wxFileDialog,wxStaticText,wxTextCtrl,wxPanel,wxButton,wxBOTH,wxID_OK,wxID_CANCEL,wxOPEN,wxOK,wxCANCEL,wxFILE_MUST_EXIST,wxSAVE,wxOVERWRITE_PROMPT,wxSingleChoiceDialog
+import dieroller,sfcontrols,sfsheet,sfuniverses
 from xml.dom import minidom
 from libsoulforge import xmlutils
 
@@ -110,7 +110,7 @@ class sfrootframe(wxFrame):
 	    err.Destroy()
 	    if ret == wxID_CANCEL:
 	        return
-        self.Close(true)
+        self.Close(True)
 
     def onabout(self,event):
         abt = wxMessageDialog(self,u"Soulforge by Christopher Han <xiphux@gmail.com>\nCopyright (C) 2005\nLicensed under the GNU GPL",u"About Soulforge",wxOK)
@@ -119,7 +119,7 @@ class sfrootframe(wxFrame):
 
     def ondieroller(self,event):
         dr = dieroller.dieroller(self,-1,u"Dieroller")
-	dr.Show(true)
+	dr.Show(True)
 
     def onload(self,event):
         loaddlg = wxFileDialog(self,u"Load character","","",u"Soulforge Data (*.sfd)|*.sfd|XML (*.xml)|*.xml|All files (*.*)|*.*",wxOPEN|wxFILE_MUST_EXIST)
@@ -169,11 +169,13 @@ class sfrootframe(wxFrame):
 		self.updategui()
 	    else:
 	        return
-	uni = sfuniversechooser.sfuniversechooser(self,-1)
+	uni = wxSingleChoiceDialog(self,u"Choose a universe:",u"Universe",sfuniverses.universes)
 	ret = uni.ShowModal()
 	if ret == wxID_OK:
-            self.sh = sfsheet.sfsheet(self,-1,uni.universe)
-	    self.sh.Show()
+	    ch = uni.GetStringSelection()
+	    if ch:
+                self.sh = sfsheet.sfsheet(self,-1,ch)
+	        self.sh.Show()
 	uni.Destroy()
 
     def onsheetok(self,event):

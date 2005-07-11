@@ -20,7 +20,7 @@
 #
 
 import sfcontrols,sfuniverses
-from wxPython.wx import *
+from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxVERTICAL,wxHORIZONTAL,wxEXPAND,wxBoxSizer,wxButton,wxBOTH,EVT_BUTTON
 
 SFSHEET_OK = 401
 SFSHEET_CANCEL = 402

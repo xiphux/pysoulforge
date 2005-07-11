@@ -19,13 +19,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import *
+from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL
+from libsoulforge import staticdata
 
 SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301
 
 class sfstat(wxPanel):
-    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = 5,alternate = False):
+    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = staticdata.SF_SFSTAT_BUTTONS,alternate = False):
         wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
 
 	self.value = 0
@@ -47,7 +48,7 @@ class sfstat(wxPanel):
 	    else:
 	        self.buttons.append(wxRadioButton(self,(SFSTAT_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
 		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize,wxRB_SINGLE))
-		self.dummy[i].Show(false)
+		self.dummy[i].Show(False)
 	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
 	    root.Add(self.buttons[i],0,wxALIGN_CENTER_VERTICAL)
 
@@ -65,18 +66,18 @@ class sfstat(wxPanel):
 
     def recalc(self):
         for i in range(self.value):
-	    self.buttons[i].SetValue(true)
+	    self.buttons[i].SetValue(True)
 	for i in range(self.value,len(self.buttons)):
-	    self.buttons[i].SetValue(false)
+	    self.buttons[i].SetValue(False)
 	    if not self.alternate:
-	        self.dummy[i].SetValue(true)
+	        self.dummy[i].SetValue(True)
 	    
     def setvalue(self,v):
         self.value = v
 	self.recalc()
 
 class sfpool(wxPanel):
-    def __init__(self,parent,ID,rows = 2,cols = 10,alternate = False):
+    def __init__(self,parent,ID,rows = staticdata.SF_SFPOOL_ROWS,cols = staticdata.SF_SFPOOL_COLS,alternate = False):
         wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
 
 	self.value = 0
@@ -95,8 +96,8 @@ class sfpool(wxPanel):
 	    if alternate:
 	        self.buttons.append(wxRadioButton(self,(SFPOOL_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
 		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize,wxRB_SINGLE))
-		self.dummy[i].Show(false)
-		self.dummy[i].SetValue(true)
+		self.dummy[i].Show(False)
+		self.dummy[i].SetValue(True)
 		self.state.append(False)
 		self.Connect((SFPOOL_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
 	    else:
@@ -110,7 +111,7 @@ class sfpool(wxPanel):
         n = event.GetId() - SFPOOL_BUTTON
         if self.alternate:
 	    if self.state[n]:
-	        self.dummy[n].SetValue(true)
+	        self.dummy[n].SetValue(True)
 	    self.state[n] = self.buttons[n].GetValue()
         self.recalc()
 
@@ -126,8 +127,8 @@ class sfpool(wxPanel):
     def setvalue(self,v):
         self.value = v
 	for i in range(self.value):
-	    self.buttons[i].SetValue(true)
+	    self.buttons[i].SetValue(True)
 	for i in range(self.value,len(self.buttons)):
-	    self.buttons[i].SetValue(false)
+	    self.buttons[i].SetValue(False)
 	    if self.alternate:
-	        self.dummy[i].SetValue(true)
+	        self.dummy[i].SetValue(True)

@@ -20,21 +20,21 @@
 #
 
 import random
+import staticdata
 
 class dicepool(object):
     def __init__(self):
-        self.faces = 10
-	self.pool = 1
-	self.botch = True
-	self.difficulty = 6
-	self.tabulate = False
-	self.rng = random.Random()
-	self.rngfunc = self.rng.randint
+        self.faces = staticdata.SF_DIEROLLER_FACES
+	self.pool = staticdata.SF_DIEROLLER_POOL
+	self.botch = staticdata.SF_DIEROLLER_BOTCH
+	self.difficulty = staticdata.SF_DIEROLLER_DIFFICULTY
+	self.tabulate = staticdata.SF_DIEROLLER_TABULATE
 	self.successes = 0
 	self.failures = 0
 	self.botches = 0
 	self.final = 0
 	self.dice = []
+	self.setrng(staticdata.SF_DIEROLLER_RNG)
 	
     def setrng(self,rngname):
         if rngname == "Mersenne Twister":

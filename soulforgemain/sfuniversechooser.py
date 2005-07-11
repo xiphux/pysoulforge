@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import *
+from wxPython.wx import wxDialog,wxBoxSizer,wxVERTICAL,wxChoice,wxDefaultPosition,wxDefaultSize,wxHORIZONTAL,wxButton,wxEXPAND,wxBOTH,wxID_OK,wxID_CANCEL,EVT_BUTTON
 import sfuniverses
 
 SFUNIVERSECHOOSER_OK = 601
@@ -33,6 +33,7 @@ class sfuniversechooser(wxDialog):
 	
 	root = wxBoxSizer(wxVERTICAL)
 	self.uchooser = wxChoice(self,-1,wxDefaultPosition,wxDefaultSize,sfuniverses.universes)
+	self.uchooser.SetSelection(0)
 	root.Add(self.uchooser,1,wxEXPAND)
 
 	bbox = wxBoxSizer(wxHORIZONTAL)
