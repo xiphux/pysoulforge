@@ -19,9 +19,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from libsoulforge import headerdata
 from sheets import vampire_the_masquerade,vampire_the_masquerade_data
 
-universes = ['Vampire: The Masquerade']
+def _(message): return message
+
+universes = [ _('Vampire: The Masquerade') ]
 
 universe_sheets = {
 	'Vampire: The Masquerade': vampire_the_masquerade.vampire_the_masquerade
@@ -34,3 +37,5 @@ universe_sheet2xml = {
 universe_xml2sheet = {
 	'Vampire: The Masquerade': vampire_the_masquerade_data.xml2sheet
 }
+
+del _

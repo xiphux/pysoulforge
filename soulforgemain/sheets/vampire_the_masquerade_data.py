@@ -21,25 +21,23 @@
 
 import parser
 from xml.dom import minidom
-from libsoulforge import xmlutils
+from libsoulforge import xmlutils, headerdata
 
-universe = 'Vampire: The Masquerade'
+archetypes = ['', _('Architect'), _('Autocrat'), _('Bon Vivant'), _('Bravo'), _('Caregiver'), _('Celebrant'), _('Child'), _('Competitor'), _('Conformist'), _('Conniver'), _('Curmudgeon'), _('Deviant'), _('Director'), _('Fanatic'), _('Gallant'), _('Judge'), _('Loner'), _('Martyr'), _('Masochist'), _('Monster'), _('Pedagogue'), _('Penitent'), _('Perfectionist'), _('Rebel'), _('Rogue'), _('Survivor'), _('Thrill-Seeker'), _('Traditionalist'), _('Trickster'), _('Visionary')]
 
-archetypes = ['','Architect','Autocrat','Bon Vivant','Bravo','Caregiver','Celebrant','Child','Competitor','Conformist','Conniver','Curmudgeon','Deviant','Director','Fanatic','Gallant','Judge','Loner','Martyr','Masochist','Monster','Pedagogue','Penitent','Perfectionist','Rebel','Rogue','Survivor','Thrill-Seeker','Traditionalist','Trickster','Visionary']
+clans = ['', _('Brujah'), _('Gangrel'), _('Malkavian'), _('Nosferatu'), _('Toreador'), _('Tremere'), _('Ventrue'), _('Lasombra'), _('Tzimisce'), _('Assamite'), _('Followers of Set'), _('Giovanni'), _('Ravnos')]
 
-clans = ['','Brujah','Gangrel','Malkavian','Nosferatu','Toreador','Tremere','Ventrue','Lasombra','Tzimisce','Assamite','Followers of Set','Giovanni','Ravnos']
+backgrounds = ['', _('Allies'), _('Contacts'), _('Fame'), _('Generation'), _('Herd'), _('Influence'), _('Mentor'), _('Resources'), _('Retainers'), _('Status')]
 
-backgrounds = ['','Allies','Contacts','Fame','Generation','Herd','Influence','Mentor','Resources','Retainers','Status']
+disciplines = ['', _('Animalism'), _('Auspex'), _('Celerity'), _('Chimerstry'), _('Dementation'), _('Dominate'), _('Fortitude'), _('Necromancy'), _('Obfuscate'), _('Obtenebration'), _('Potence'), _('Presence'), _('Protean'), _('Quietus'), _('Serpentis'), _('Thaumaturgy'), _('Vicissitude')]
 
-disciplines = ['','Animalism','Auspex','Celerity','Chimerstry','Dementation','Dominate','Fortitude','Necromancy','Obfuscate','Obtenebration','Potence','Presence','Protean','Quietus','Serpentis','Thaumaturgy','Vicissitude']
+conscience_conviction = ['', _('Conscience'), _('Conviction')]
 
-conscience_conviction = ['','Conscience','Conviction']
+selfcontrol_instinct = ['', _('Self-Control'), _('Instinct')]
 
-selfcontrol_instinct = ['','Self-Control','Instinct']
+courage = ['', _('Courage')]
 
-courage = ['','Courage']
-
-humanity_path = ['','Humanity','Path of Blood','Path of Bones','Path of Night','Path of Metamorphosis','Path of Paradox','Path of Typhon']
+humanity_path = ['', _('Humanity'), _('Path of Blood'), _('Path of Bones'), _('Path of Night'), _('Path of Metamorphosis'), _('Path of Paradox'), _('Path of Typhon')]
 
 def sheet2xml(sheet,dom):
     root = dom.documentElement

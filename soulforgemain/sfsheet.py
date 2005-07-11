@@ -21,6 +21,7 @@
 
 import sfcontrols,sfuniverses
 from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxVERTICAL,wxHORIZONTAL,wxEXPAND,wxBoxSizer,wxButton,wxBOTH,EVT_BUTTON
+from libsoulforge import headerdata
 
 SFSHEET_OK = 401
 SFSHEET_CANCEL = 402
@@ -39,10 +40,10 @@ class sfsheet(wxFrame):
 	root.Add(self.sheet,0,wxEXPAND)
 
 	controls = wxBoxSizer(wxHORIZONTAL)
-	self.okbutton = wxButton(self,SFSHEET_OK,u"Ok")
+	self.okbutton = wxButton(self,SFSHEET_OK, _("Ok"))
 	controls.Add(self.okbutton,1,wxEXPAND)
 
-	controls.Add(wxButton(self,SFSHEET_CANCEL,u"Cancel"),1,wxEXPAND)
+	controls.Add(wxButton(self,SFSHEET_CANCEL, _("Cancel")),1,wxEXPAND)
 
 	root.Add(controls,0,wxEXPAND)
 

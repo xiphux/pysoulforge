@@ -22,7 +22,7 @@
 from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxMenu,wxMenuItem,wxMenuBar,wxFlexGridSizer,wxALIGN_CENTER_VERTICAL,wxTE_READONLY,EVT_MENU,EVT_BUTTON,wxEXPAND,wxMessageDialog,wxFileDialog,wxStaticText,wxTextCtrl,wxPanel,wxButton,wxBOTH,wxID_OK,wxID_CANCEL,wxOPEN,wxOK,wxCANCEL,wxFILE_MUST_EXIST,wxSAVE,wxOVERWRITE_PROMPT,wxSingleChoiceDialog
 import dieroller,sfcontrols,sfsheet,sfuniverses
 from xml.dom import minidom
-from libsoulforge import xmlutils
+from libsoulforge import xmlutils,headerdata
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102
@@ -44,47 +44,47 @@ class sfrootframe(wxFrame):
 	self.modified = False
 	
 	filemenu = wxMenu()
-	filemenu.Append(SFROOTFRAME_NEW, u"&New", u"New character")
-	filemenu.Append(SFROOTFRAME_LOAD, u"&Load", u"Load character")
-	self.save = wxMenuItem(filemenu,SFROOTFRAME_SAVE,u"&Save",u"Save character")
+	filemenu.Append(SFROOTFRAME_NEW, _("&New"), _("New character"))
+	filemenu.Append(SFROOTFRAME_LOAD, _("&Load"), _("Load character"))
+	self.save = wxMenuItem(filemenu,SFROOTFRAME_SAVE, _("&Save"), _("Save character"))
 	filemenu.AppendItem(self.save)
-	self.close = wxMenuItem(filemenu,SFROOTFRAME_CLOSE,u"&Close",u"Close character")
+	self.close = wxMenuItem(filemenu,SFROOTFRAME_CLOSE, _("&Close"), _("Close character"))
 	filemenu.AppendItem(self.close)
 	filemenu.AppendSeparator()
-	filemenu.Append(SFROOTFRAME_QUIT, u"E&xit", u"Quit Soulforge")
+	filemenu.Append(SFROOTFRAME_QUIT, _("E&xit"), _("Quit Soulforge"))
 
 	toolsmenu = wxMenu()
-	toolsmenu.Append(SFROOTFRAME_DIEROLLER, u"&Dieroller", u"Dieroller")
+	toolsmenu.Append(SFROOTFRAME_DIEROLLER, _("&Dieroller"), _("Dieroller"))
 
 	helpmenu = wxMenu()
-	helpmenu.Append(SFROOTFRAME_ABOUT, u"&About", u"About Soulforge")
+	helpmenu.Append(SFROOTFRAME_ABOUT, _("&About"), _("About Soulforge"))
 
 	menubar = wxMenuBar()
-	menubar.Append(filemenu, u"&File")
-	menubar.Append(toolsmenu, u"&Tools")
-	menubar.Append(helpmenu, u"&Help")
+	menubar.Append(filemenu, _("&File"))
+	menubar.Append(toolsmenu, _("&Tools"))
+	menubar.Append(helpmenu, _("&Help"))
 	
 	self.SetMenuBar(menubar)
 
 	root = wxFlexGridSizer(6,2,0,0)
 	root.AddGrowableCol(1,1)
-	root.Add(wxStaticText(self,-1,u"Name:"),0,wxALIGN_CENTER_VERTICAL)
+	root.Add(wxStaticText(self,-1, _("Name:")),0,wxALIGN_CENTER_VERTICAL)
 	self.name = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
 	root.Add(self.name,1,wxEXPAND)
-	root.Add(wxStaticText(self,-1,u"Player:"),0,wxALIGN_CENTER_VERTICAL)
+	root.Add(wxStaticText(self,-1, _("Player:")),0,wxALIGN_CENTER_VERTICAL)
 	self.player = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
 	root.Add(self.player,1,wxEXPAND)
-	root.Add(wxStaticText(self,-1,u"Clan:"),0,wxALIGN_CENTER_VERTICAL)
+	root.Add(wxStaticText(self,-1, _("Clan:")),0,wxALIGN_CENTER_VERTICAL)
 	self.clan = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
 	root.Add(self.clan,1,wxEXPAND)
-	root.Add(wxStaticText(self,-1,u"Universe:"),0,wxALIGN_CENTER_VERTICAL)
+	root.Add(wxStaticText(self,-1, _("Universe:")),0,wxALIGN_CENTER_VERTICAL)
 	self.universe = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
 	root.Add(self.universe,1,wxEXPAND)
-	root.Add(wxStaticText(self,-1,u"Filename:"),0,wxALIGN_CENTER_VERTICAL)
+	root.Add(wxStaticText(self,-1, _("Filename:")),0,wxALIGN_CENTER_VERTICAL)
 	self.filename = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
 	root.Add(self.filename,1,wxEXPAND)
 	root.Add(wxPanel(self,-1))
-	self.edit = wxButton(self,SFROOTFRAME_EDIT,u"Edit")
+	self.edit = wxButton(self,SFROOTFRAME_EDIT, _("Edit"))
 	root.Add(self.edit,1,wxEXPAND)
 
 	self.SetSizer(root)
@@ -104,7 +104,7 @@ class sfrootframe(wxFrame):
 
     def onquit(self,event):
         if self.modified:
-	    err = wxMessageDialog(self,u"Character is still unsaved.  Quit anyway?",u"Are you sure?",wxOK|wxCANCEL)
+	    err = wxMessageDialog(self, _("Character is still unsaved.  Quit anyway?"), _("Are you sure?"),wxOK|wxCANCEL)
 	    err.Centre(wxBOTH)
 	    ret = err.ShowModal()
 	    err.Destroy()
@@ -113,19 +113,19 @@ class sfrootframe(wxFrame):
         self.Close(True)
 
     def onabout(self,event):
-        abt = wxMessageDialog(self,u"Soulforge by Christopher Han <xiphux@gmail.com>\nCopyright (C) 2005\nLicensed under the GNU GPL",u"About Soulforge",wxOK)
+        abt = wxMessageDialog(self, _("Soulforge by Christopher Han <xiphux@gmail.com>\nCopyright (C) 2005\nLicensed under the GNU GPL"), _("About Soulforge"),wxOK)
 	abt.ShowModal()
 	abt.Destroy()
 
     def ondieroller(self,event):
-        dr = dieroller.dieroller(self,-1,u"Dieroller")
+        dr = dieroller.dieroller(self,-1, _("Dieroller"))
 	dr.Show(True)
 
     def onload(self,event):
-        loaddlg = wxFileDialog(self,u"Load character","","",u"Soulforge Data (*.sfd)|*.sfd|XML (*.xml)|*.xml|All files (*.*)|*.*",wxOPEN|wxFILE_MUST_EXIST)
+        loaddlg = wxFileDialog(self, _("Load character"),"","", headerdata.SF_FILEMASK,wxOPEN|wxFILE_MUST_EXIST)
 	if loaddlg.ShowModal() == wxID_OK:
 	    if self.dom:
-	        err = wxMessageDialog(self,u"If you load this character sheet, current character data will be cleared.  Are you sure?",u"Are you sure?",wxOK|wxCANCEL)
+	        err = wxMessageDialog(self, _("If you load this character sheet, current character data will be cleared.  Are you sure?"), _("Are you sure?"),wxOK|wxCANCEL)
 		err.Centre(wxBOTH)
 		ret = err.ShowModal()
 		err.Destroy()
@@ -139,13 +139,13 @@ class sfrootframe(wxFrame):
 
     def onsave(self,event):
         if not self.dom:
-	    err = wxMessageDialog(self,u"Error: No character data to save",u"Error!",wxOK)
+	    err = wxMessageDialog(self, _("Error: No character data to save"), _("Error!"),wxOK)
 	    err.Centre(wxBOTH)
 	    err.ShowModal()
 	    err.Destroy()
 	    return
         if not self.file:
-	    savedlg = wxFileDialog(self,u"Save character","","",u"Soulforge Data (*.sfd)|*.sfd|XML (*.xml)|*.xml|All files (*.*)|*.*",wxSAVE|wxOVERWRITE_PROMPT)
+	    savedlg = wxFileDialog(self, _("Save character"),"","", headerdata.SF_FILEMASK,wxSAVE|wxOVERWRITE_PROMPT)
 	    if savedlg.ShowModal() == wxID_OK:
 	        self.file = savedlg.GetPath()
 	    savedlg.Destroy()
@@ -157,7 +157,7 @@ class sfrootframe(wxFrame):
 
     def onnew(self,event):
         if self.dom:
-	    err = wxMessageDialog(self,u"If you start a new sheet, previous character data will be cleared.  Are you sure?","Are you sure?",wxOK|wxCANCEL)
+	    err = wxMessageDialog(self, _("If you start a new sheet, previous character data will be cleared.  Are you sure?"), _("Are you sure?"),wxOK|wxCANCEL)
 	    err.Centre(wxBOTH)
 	    ret = err.ShowModal()
 	    err.Destroy()
@@ -169,7 +169,10 @@ class sfrootframe(wxFrame):
 		self.updategui()
 	    else:
 	        return
-	uni = wxSingleChoiceDialog(self,u"Choose a universe:",u"Universe",sfuniverses.universes)
+        un = []
+	for i in sfuniverses.universes:
+	    un.append(_(i))
+	uni = wxSingleChoiceDialog(self, _("Choose a universe:"), _("Universe"),un)
 	ret = uni.ShowModal()
 	if ret == wxID_OK:
 	    ch = uni.GetStringSelection()
@@ -228,7 +231,7 @@ class sfrootframe(wxFrame):
 
     def onclose(self,event):
         if self.modified:
-	    err = wxMessageDialog(self,u"Character is still unsaved.  Close anyway?",u"Are you sure?",wxOK|wxCANCEL)
+	    err = wxMessageDialog(self, _("Character is still unsaved.  Close anyway?"), _("Are you sure?"),wxOK|wxCANCEL)
 	    err.Centre(wxBOTH)
 	    ret = err.ShowModal()
 	    err.Destroy()

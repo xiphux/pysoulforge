@@ -20,7 +20,7 @@
 #
 
 from wxPython.wx import wxFrame,wxBoxSizer,wxStaticText,wxSpinCtrl,wxTextCtrl,wxGauge,wxDefaultPosition,wxDefaultSize,wxHORIZONTAL,wxVERTICAL,wxALIGN_CENTER_VERTICAL,wxEXPAND,wxChoice,wxCheckBox,wxButton,wxTE_MULTILINE,wxTE_READONLY,wxALIGN_LEFT,wxALIGN_RIGHT,wxBOTH,EVT_BUTTON,EVT_SPINCTRL,EVT_CHOICE,EVT_CHECKBOX
-from libsoulforge import dicepool
+from libsoulforge import dicepool, headerdata
 
 DIEROLLER_CLOSE = 104
 DIEROLLER_ROLL = 105
@@ -42,34 +42,34 @@ class dieroller(wxFrame):
 	controls = wxBoxSizer(wxVERTICAL)
 
 	poolbox = wxBoxSizer(wxHORIZONTAL)
-	poolbox.Add(wxStaticText(self,-1,u"Dice pool:"),0,wxALIGN_CENTER_VERTICAL)
+	poolbox.Add(wxStaticText(self,-1,_("Dice pool:")),0,wxALIGN_CENTER_VERTICAL)
 	self.poolctl = wxSpinCtrl(self,DIEROLLER_POOL,u"",wxDefaultPosition,wxDefaultSize,0,1,99,self.dicepool.pool)
 	poolbox.Add(self.poolctl,1,wxALIGN_CENTER_VERTICAL)
 	controls.Add(poolbox,1,wxEXPAND)
 
 	facebox = wxBoxSizer(wxHORIZONTAL)
-	facebox.Add(wxStaticText(self,-1,u"Die faces:"),0,wxALIGN_CENTER_VERTICAL)
+	facebox.Add(wxStaticText(self,-1,_("Die faces:")),0,wxALIGN_CENTER_VERTICAL)
 	self.facectl = wxSpinCtrl(self,DIEROLLER_FACES,u"",wxDefaultPosition,wxDefaultSize,0,2,99,self.dicepool.faces)
 	facebox.Add(self.facectl,1,wxALIGN_CENTER_VERTICAL)
 	controls.Add(facebox,1,wxEXPAND)
 
 	rngbox = wxBoxSizer(wxVERTICAL)
-	rngbox.Add(wxStaticText(self,-1,u"Pseudo-random number generator:"),0)
-	rngstrings = [ u"Mersenne Twister", u"Wichmann-Hill", u"urandom()" ]
+	rngbox.Add(wxStaticText(self,-1,_("Pseudo-random number generator:")),0)
+	rngstrings = [ _("Mersenne Twister"), _("Wichmann-Hill"), _("urandom()") ]
 	self.rngctl = wxChoice(self,DIEROLLER_RNG,wxDefaultPosition,wxDefaultSize,rngstrings)
 	rngbox.Add(self.rngctl,1,wxEXPAND)
 	controls.Add(rngbox,0,wxEXPAND)
 	
-	self.botchctl = wxCheckBox(self,DIEROLLER_BOTCH,u"Botches")
+	self.botchctl = wxCheckBox(self,DIEROLLER_BOTCH, _("Botches"))
 	self.botchctl.SetValue(self.dicepool.botch)
 	controls.Add(self.botchctl,0,wxEXPAND)
 
-	self.tabctl = wxCheckBox(self,DIEROLLER_TAB,u"Tabulate")
+	self.tabctl = wxCheckBox(self,DIEROLLER_TAB, _("Tabulate"))
 	self.tabctl.SetValue(self.dicepool.tabulate)
 	controls.Add(self.tabctl,0,wxEXPAND)
 
 	diffbox = wxBoxSizer(wxHORIZONTAL)
-	self.difflabel = wxStaticText(self,-1,u"Difficulty:")
+	self.difflabel = wxStaticText(self,-1, _("Difficulty:"))
 	diffbox.Add(self.difflabel,0,wxALIGN_CENTER_VERTICAL)
 	self.diffctl = wxSpinCtrl(self,DIEROLLER_DIFF,u"",wxDefaultPosition,wxDefaultSize,0,1,self.dicepool.faces,6)
 	diffbox.Add(self.diffctl,1,wxALIGN_CENTER_VERTICAL)
@@ -77,7 +77,7 @@ class dieroller(wxFrame):
 	self.difflabel.Enable(self.dicepool.tabulate)
 	self.diffctl.Enable(self.dicepool.tabulate)
 
-	roll = wxButton(self,DIEROLLER_ROLL,u"Roll")
+	roll = wxButton(self,DIEROLLER_ROLL, _("Roll"))
 	controls.Add(roll,0,wxEXPAND)
 
 	root.Add(controls,1,wxEXPAND)
@@ -88,7 +88,7 @@ class dieroller(wxFrame):
 	results.Add(self.resultbox,2,wxEXPAND)
 
 	finalbox = wxBoxSizer(wxHORIZONTAL)
-	self.finallabel = wxStaticText(self,-1,u"Final score:")
+	self.finallabel = wxStaticText(self,-1, _("Final score:"))
 	finalbox.Add(self.finallabel,1,wxALIGN_CENTER_VERTICAL)
 	self.finalscore = wxStaticText(self,-1,u"")
 	finalbox.Add(self.finalscore,1)
@@ -98,7 +98,7 @@ class dieroller(wxFrame):
 
 	successbox = wxBoxSizer(wxVERTICAL)
 	successlabelbox = wxBoxSizer(wxHORIZONTAL)
-	self.successtag = wxStaticText(self,-1,u"Successes:")
+	self.successtag = wxStaticText(self,-1, _("Successes:"))
 	successlabelbox.Add(self.successtag,1,wxALIGN_LEFT)
 	self.successlabel = wxStaticText(self,-1, "0/" + str(self.dicepool.pool))
 	successlabelbox.Add(self.successlabel,0,wxALIGN_RIGHT)
@@ -112,7 +112,7 @@ class dieroller(wxFrame):
 
 	failurebox = wxBoxSizer(wxVERTICAL)
 	failurelabelbox = wxBoxSizer(wxHORIZONTAL)
-	self.failuretag = wxStaticText(self,-1,u"Failures:")
+	self.failuretag = wxStaticText(self,-1, _("Failures:"))
 	failurelabelbox.Add(self.failuretag,1,wxALIGN_LEFT)
 	self.failurelabel = wxStaticText(self,-1,"0/" + str(self.dicepool.pool))
 	failurelabelbox.Add(self.failurelabel,0,wxALIGN_RIGHT)
@@ -126,7 +126,7 @@ class dieroller(wxFrame):
 
 	botchbox = wxBoxSizer(wxVERTICAL)
 	botchlabelbox = wxBoxSizer(wxHORIZONTAL)
-	self.botchtag = wxStaticText(self,-1,u"Botches:")
+	self.botchtag = wxStaticText(self,-1, _("Botches:"))
 	botchlabelbox.Add(self.botchtag,1,wxALIGN_LEFT)
 	self.botchlabel = wxStaticText(self,-1,"0/" + str(self.dicepool.pool))
 	botchlabelbox.Add(self.botchlabel,0,wxALIGN_RIGHT)
@@ -174,11 +174,11 @@ class dieroller(wxFrame):
 	    scr = self.dicepool.final
 	    score = str(scr) + " : "
 	    if scr > 0:
-	    	score += "Success!"
+	    	score += _("Success!")
 	    elif scr < 0:
-	        score += "Botch!"
+	        score += _("Botch!")
 	    else:
-	        score += "Failure!"
+	        score += _("Failure!")
 	    self.finalscore.SetLabel(score)
 	self.Layout()
 	    

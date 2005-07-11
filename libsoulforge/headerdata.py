@@ -19,6 +19,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+import gettext
+gettext.install('soulforge',unicode=1)
 
 SF_VERSION = "%prog 0.0.1"
 
@@ -34,4 +36,6 @@ SF_DIEROLLER_POOL = 1
 SF_DIEROLLER_BOTCH = True
 SF_DIEROLLER_DIFFICULTY = 6
 SF_DIEROLLER_TABULATE = False
-SF_DIEROLLER_RNG = "Mersenne Twister"
+SF_DIEROLLER_RNG = _("Mersenne Twister")
+
+SF_FILEMASK = _("Soulforge Data") + " (*.sfd)|*.sfd|XML (*.xml)|*.xml|" + _("All files") + " (*.*)|*.*"
