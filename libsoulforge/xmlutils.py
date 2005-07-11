@@ -21,7 +21,7 @@
 
 import re, bz2
 from xml.dom import minidom
-import staticdata
+import headerdata
 
 def getnodetext(node):
     string = ""
@@ -32,7 +32,7 @@ def getnodetext(node):
 
 def loaddata(filename):
     data = None
-    if filename.lower().endswith(staticdata.SF_COMPRESSED_EXT):
+    if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
         bzd = bz2.BZ2File(filename,"r")
         data = minidom.parseString(bzd.read())
     else:
@@ -41,7 +41,7 @@ def loaddata(filename):
 
 def savedata(dom, filename):
     filedescriptor = None
-    if filename.lower().endswith(staticdata.SF_COMPRESSED_EXT):
+    if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
         filedescriptor = bz2.BZ2File(filename, "w")
     else:
         filedescriptor = open(filename, "w")

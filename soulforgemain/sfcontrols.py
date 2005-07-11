@@ -20,13 +20,13 @@
 #
 
 from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL
-from libsoulforge import staticdata
+from libsoulforge import headerdata
 
 SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301
 
 class sfstat(wxPanel):
-    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = staticdata.SF_SFSTAT_BUTTONS,alternate = False):
+    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
         wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
 
 	self.value = 0
@@ -77,7 +77,7 @@ class sfstat(wxPanel):
 	self.recalc()
 
 class sfpool(wxPanel):
-    def __init__(self,parent,ID,rows = staticdata.SF_SFPOOL_ROWS,cols = staticdata.SF_SFPOOL_COLS,alternate = False):
+    def __init__(self,parent,ID,rows = headerdata.SF_SFPOOL_ROWS,cols = headerdata.SF_SFPOOL_COLS,alternate = False):
         wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
 
 	self.value = 0
