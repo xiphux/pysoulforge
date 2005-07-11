@@ -19,31 +19,31 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import re,bz2
+import re, bz2
 from xml.dom import minidom
 import staticdata
 
 def getnodetext(node):
     string = ""
-    for n in node.childNodes:
-        if n.nodeType == n.TEXT_NODE:
-	    string = string + n.data
-    return re.sub('[^A-Za-z\ _\-0-9]*','',string).strip()
+    for nod in node.childNodes:
+        if nod.nodeType == nod.TEXT_NODE:
+            string = string + nod.data
+    return re.sub('[^A-Za-z\ _\-0-9]*', '', string).strip()
 
 def loaddata(filename):
-    d = None
+    data = None
     if filename.lower().endswith(staticdata.SF_COMPRESSED_EXT):
         bzd = bz2.BZ2File(filename,"r")
-	d = minidom.parseString(bzd.read())
+        data = minidom.parseString(bzd.read())
     else:
-        d = minidom.parse(filename)
-    return d
+        data = minidom.parse(filename)
+    return data
 
 def savedata(dom, filename):
-    fd = None
+    filedescriptor = None
     if filename.lower().endswith(staticdata.SF_COMPRESSED_EXT):
-        fd = bz2.BZ2File(filename,"w")
+        filedescriptor = bz2.BZ2File(filename, "w")
     else:
-        fd = open(filename,"w")
-    dom.writexml(fd,"    ","    ","\n")
-    fd.close()
+        filedescriptor = open(filename, "w")
+    dom.writexml(filedescriptor, "    ", "    ", "\n")
+    filedescriptor.close()

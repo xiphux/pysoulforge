@@ -22,47 +22,47 @@
 import random
 import staticdata
 
-class dicepool(object):
+class dicepool:
     def __init__(self):
         self.faces = staticdata.SF_DIEROLLER_FACES
-	self.pool = staticdata.SF_DIEROLLER_POOL
-	self.botch = staticdata.SF_DIEROLLER_BOTCH
-	self.difficulty = staticdata.SF_DIEROLLER_DIFFICULTY
-	self.tabulate = staticdata.SF_DIEROLLER_TABULATE
-	self.successes = 0
-	self.failures = 0
-	self.botches = 0
-	self.final = 0
-	self.dice = []
-	self.setrng(staticdata.SF_DIEROLLER_RNG)
-	
-    def setrng(self,rngname):
+        self.pool = staticdata.SF_DIEROLLER_POOL
+        self.botch = staticdata.SF_DIEROLLER_BOTCH
+        self.difficulty = staticdata.SF_DIEROLLER_DIFFICULTY
+        self.tabulate = staticdata.SF_DIEROLLER_TABULATE
+        self.successes = 0
+        self.failures = 0
+        self.botches = 0
+        self.final = 0
+        self.dice = []
+        self.setrng(staticdata.SF_DIEROLLER_RNG)
+
+    def setrng(self, rngname):
         if rngname == "Mersenne Twister":
-	    self.rng = random.Random()
-	    self.rngfunc = self.rng.randint
-	elif rngname == "Wichmann-Hill":
-	    self.rng = random.WichmannHill()
-	    self.rngfunc = self.rng.randint
-	elif rngname == "urandom()":
-	    self.rng = random.SystemRandom()
-	    self.rngfunc = self.rng.randint
+            self.rng = random.Random()
+            self.rngfunc = self.rng.randint
+        elif rngname == "Wichmann-Hill":
+            self.rng = random.WichmannHill()
+            self.rngfunc = self.rng.randint
+        elif rngname == "urandom()":
+            self.rng = random.SystemRandom()
+            self.rngfunc = self.rng.randint
 
     def roll(self):
         self.successes = 0
-	self.failures = 0
-	self.botches = 0
-	self.final = 0
-	del self.dice
-	self.dice = []
+        self.failures = 0
+        self.botches = 0
+        self.final = 0
+        del self.dice
+        self.dice = []
         for i in range(self.pool):
-	    v = self.rngfunc(1,self.faces)
-	    if self.tabulate:
-	        if v >= self.difficulty:
-		    self.successes += 1
-		elif self.botch and v == 1:
-		    self.botches += 1
-		else:
-		    self.failures += 1
-            self.dice.append(v)
-	if self.tabulate:
-	    self.final = self.successes - self.botches
+            val = self.rngfunc(1, self.faces)
+            if self.tabulate:
+                if val >= self.difficulty:
+                    self.successes += 1
+                elif self.botch and val == 1:
+                    self.botches += 1
+                else:
+                    self.failures += 1
+            self.dice.append(val)
+        if self.tabulate:
+            self.final = self.successes - self.botches

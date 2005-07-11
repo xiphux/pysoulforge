@@ -29,21 +29,18 @@ from libsoulforge import staticdata
 class Soulforge(wxApp):
     def OnInit(self):
         sframe = sfrootframe.sfrootframe(None, -1, u"Soulforge")
-	sframe.Show(True)
-	self.SetTopWindow(sframe)
-	return True
-
-try:
-    import psyco
-    psyco.full()
-except ImportError:
-    pass
+        sframe.Show(True)
+        self.SetTopWindow(sframe)
+        return True
 
 if __name__ == "__main__":
     parser = OptionParser(version=staticdata.SF_VERSION)
-    parser.add_option("-v","--verbose",action="store_true",dest="verbose",help="verbose output")
-    parser.add_option("-f","--force",action="store_true",dest="force",help="force operation")
-    parser.add_option("-c","--compile",action="store_true",dest="compile",help="byte-compile")
+    parser.add_option("-v", "--verbose", action="store_true",
+      dest="verbose", help="verbose output")
+    parser.add_option("-f", "--force", action="store_true",
+      dest="force", help="force operation")
+    parser.add_option("-c", "--compile", action="store_true",
+      dest="compile", help="byte-compile")
     parser.set_defaults(verbose=False)
     parser.set_defaults(force=False)
     parser.set_defaults(compile=False)
@@ -51,10 +48,17 @@ if __name__ == "__main__":
 
     if options.compile:
         if not options.verbose:
-	    q = True
-	else:
-	    q = False
-        compile_dir(".",force=options.force,quiet=q)
+            q = True
+        else:
+            q = False
+        compile_dir(".", force=options.force, quiet=q)
     
+try:
+    import psyco
+    psyco.full()
+except ImportError:
+    if options.verbose:
+        print "Could not import psyco, ignoring..."
+
     sf = Soulforge(0)
     sf.MainLoop()
