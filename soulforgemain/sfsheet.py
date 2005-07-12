@@ -32,8 +32,6 @@ class sfsheet(wxFrame):
 
 	self.universe = univ
 
-	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
-
 	root = wxBoxSizer(wxVERTICAL)
 
 	sh = sfuniverses.universe_sheets[univ]
@@ -48,6 +46,8 @@ class sfsheet(wxFrame):
 	controls.Add(wxButton(self,SFSHEET_CANCEL, _("Cancel")),1,wxEXPAND)
 
 	root.Add(controls,0,wxEXPAND)
+
+	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
 
 	self.SetSizerAndFit(root)
 	self.Centre(wxBOTH)
