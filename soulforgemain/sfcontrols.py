@@ -66,7 +66,6 @@ class sfstat(wxPanel):
 	else:
 	    self.value = n
 	print "setting sfstat value to " + str(self.value)
-	event.Skip()
 	self.recalc()
 
     def recalc(self):
