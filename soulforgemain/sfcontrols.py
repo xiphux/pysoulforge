@@ -74,6 +74,7 @@ class sfstat(wxPanel):
 	    self.buttons[i].SetValue(0)
 	    if not self.alternate:
 	        self.dummy[i].SetValue(1)
+	self.Update()
 	    
     def setvalue(self,v):
         self.value = v
