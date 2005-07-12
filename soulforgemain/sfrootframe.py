@@ -80,7 +80,7 @@ class sfrootframe(wxFrame):
 	
 	self.SetMenuBar(menubar)
 
-	pan = wxPanel(self,-1,wxDefaultPosition,wxDefaultSize)
+	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
 
 	root = wxFlexGridSizer(6,2,0,0)
 	root.AddGrowableCol(1,1)
