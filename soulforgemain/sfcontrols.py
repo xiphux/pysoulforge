@@ -44,18 +44,13 @@ class sfstat(wxPanel):
 	for i in range(butt):
 	    if alternate:
 	        self.buttons.append(wxCheckBox(self,(SFSTAT_BUTTON + i),""))
-#	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_CHECKBOX_CLICKED,self.onclick)
+	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_CHECKBOX_CLICKED,self.onclick)
 	    else:
 	        self.buttons.append(wxRadioButton(self,(SFSTAT_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
 		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize,wxRB_SINGLE))
 		self.dummy[i].Show(False)
-#	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
+	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
 	    root.Add(self.buttons[i],0,wxALIGN_CENTER_VERTICAL)
-
-	if alternate:
-	    EVT_CHECKBOX_RANGE(self,SFSTAT_BUTTON,(SFSTAT_BUTTON+butt-1),self.onclick)
-	else:
-	    EVT_RADIOBUTTON_RANGE(self,SFSTAT_BUTTON,(SFSTAT_BUTTON+butt-1),self.onclick)
 
 	self.recalc()
 
