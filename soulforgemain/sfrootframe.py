@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxMenu,wxMenuItem,wxMenuBar,wxFlexGridSizer,wxALIGN_CENTER_VERTICAL,wxTE_READONLY,EVT_MENU,EVT_BUTTON,wxEXPAND,wxMessageDialog,wxFileDialog,wxStaticText,wxTextCtrl,wxPanel,wxButton,wxBOTH,wxID_OK,wxID_CANCEL,wxOPEN,wxOK,wxCANCEL,wxFILE_MUST_EXIST,wxSAVE,wxOVERWRITE_PROMPT,wxSingleChoiceDialog,wxConfig
+from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxMenu,wxMenuItem,wxMenuBar,wxFlexGridSizer,wxALIGN_CENTER_VERTICAL,wxTE_READONLY,EVT_MENU,EVT_MENU_RANGE,EVT_BUTTON,wxEXPAND,wxMessageDialog,wxFileDialog,wxStaticText,wxTextCtrl,wxPanel,wxButton,wxBOTH,wxID_OK,wxID_CANCEL,wxOPEN,wxOK,wxCANCEL,wxFILE_MUST_EXIST,wxSAVE,wxOVERWRITE_PROMPT,wxSingleChoiceDialog,wxConfig,wxFileHistory,wxID_FILE1,wxID_FILE2,wxID_FILE3,wxID_FILE4,wxID_FILE5,wxID_FILE6,wxID_FILE7,wxID_FILE8,wxID_FILE9
 import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
 from xml.dom import minidom
 from libsoulforge import xmlutils,headerdata
@@ -45,6 +45,10 @@ class sfrootframe(wxFrame):
 	self.sh = None
 	self.modified = False
 	self.config = wxConfig.Get()
+	self.history = wxFileHistory()
+	self.config.SetPath("/lastrun")
+	self.history.Load(self.config)
+	self.config.SetPath("/")
 	
 	filemenu = wxMenu()
 	filemenu.Append(SFROOTFRAME_NEW, _("&New"), _("New character"))
@@ -53,6 +57,11 @@ class sfrootframe(wxFrame):
 	filemenu.AppendItem(self.save)
 	self.close = wxMenuItem(filemenu,SFROOTFRAME_CLOSE, _("&Close"), _("Close character"))
 	filemenu.AppendItem(self.close)
+	filemenu.AppendSeparator()
+	self.recent = wxMenu()
+	self.history.UseMenu(self.recent)
+	self.history.AddFilesToMenu()
+	filemenu.AppendMenu(-1, _("&Recent files"), self.recent, _("Recently opened files"))
 	filemenu.AppendSeparator()
 	filemenu.Append(SFROOTFRAME_QUIT, _("E&xit"), _("Quit Soulforge"))
 
@@ -102,6 +111,7 @@ class sfrootframe(wxFrame):
 	EVT_MENU(self,SFROOTFRAME_CLOSE,self.onclose)
 	EVT_MENU(self,SFROOTFRAME_NEW,self.onnew)
 	EVT_MENU(self,SFROOTFRAME_OPTIONS,self.onoptions)
+	EVT_MENU_RANGE(self,wxID_FILE1,wxID_FILE9,self.onrecent)
 	EVT_BUTTON(self,SFSHEET_OK,self.onsheetok)
 	EVT_BUTTON(self,SFROOTFRAME_EDIT,self.onedit)
 
@@ -113,6 +123,9 @@ class sfrootframe(wxFrame):
 	    err.Destroy()
 	    if ret == wxID_CANCEL:
 	        return
+        self.config.SetPath("/lastrun")
+	self.history.Save(self.config)
+	self.config.SetPath("/")
         self.Close(True)
 
     def onabout(self,event):
@@ -123,6 +136,11 @@ class sfrootframe(wxFrame):
     def ondieroller(self,event):
         dr = dieroller.dieroller(self,-1, _("Dieroller"))
 	dr.Show(True)
+
+    def parsefile(self):
+	self.dom = xmlutils.loaddata(self.file)
+	self.populatefields()
+	self.updategui()
 
     def onload(self,event):
         loaddlg = wxFileDialog(self, _("Load character"),self.config.Read(headerdata.SF_CONFIGKEY_LOADDIR),"", headerdata.SF_FILEMASK,wxOPEN|wxFILE_MUST_EXIST)
@@ -135,12 +153,24 @@ class sfrootframe(wxFrame):
 		if ret == wxID_CANCEL:
 		    return
 	    self.file = loaddlg.GetPath()
+	    self.history.AddFileToHistory(self.file)
 	    self.config.Write(headerdata.SF_CONFIGKEY_LOADDIR, path.dirname(self.file))
 	    self.config.Flush(True)
-	    self.dom = xmlutils.loaddata(self.file)
-	    self.populatefields()
-	    self.updategui()
+	    self.parsefile()
 	loaddlg.Destroy()
+    
+    def onrecent(self,event):
+        recentfile = self.history.GetHistoryFile(event.GetId() - wxID_FILE1)
+	if recentfile:
+	    if not path.exists(recentfile):
+	        err = wxMessageDialog(self, _("Error: Selected file no longer exists"), _("Error!"),wxOK)
+		err.Centre(wxBOTH)
+		err.ShowModal()
+		err.Destroy()
+		return
+	    self.file = recentfile
+	    self.history.AddFileToHistory(recentfile)
+	    self.parsefile()
 
     def onsave(self,event):
         if not self.dom:
@@ -159,6 +189,7 @@ class sfrootframe(wxFrame):
 	if self.file:
 	    xmlutils.savedata(self.dom, self.file, self.config.ReadInt(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
 	    self.modified = False
+	    self.history.AddFileToHistory(self.file)
 	self.populatefields()
 	self.updategui()
 
