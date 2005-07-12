@@ -19,16 +19,17 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL,EVT_CHECKBOX_RANGE,EVT_RADIOBUTTON_RANGE
+from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL,EVT_CHECKBOX,EVT_RADIOBUTTON
 from libsoulforge import headerdata
 
 SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301
 
 class sfstat(wxPanel):
-    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,butt = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
+    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
         wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
 
+	self.btns = buttons
 	self.value = 0
 	self.alternate = alternate
 
@@ -41,15 +42,17 @@ class sfstat(wxPanel):
 	self.buttons = []
 	self.dummy = []
 
-	for i in range(butt):
+	for i in range(self.btns):
 	    if alternate:
 	        self.buttons.append(wxCheckBox(self,(SFSTAT_BUTTON + i),""))
-	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_CHECKBOX_CLICKED,self.onclick)
+#	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_CHECKBOX_CLICKED,self.onclick)
+		EVT_CHECKBOX(self,(SFSTAT_BUTTON+i),self.onclick)
 	    else:
 	        self.buttons.append(wxRadioButton(self,(SFSTAT_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
 		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize,wxRB_SINGLE))
 		self.dummy[i].Show(False)
-	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
+#	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
+                EVT_RADIOBUTTON(self,(SFSTAT_BUTTON+i),self.onclick)
 	    root.Add(self.buttons[i],0,wxALIGN_CENTER_VERTICAL)
 
 	self.recalc()
