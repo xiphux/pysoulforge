@@ -39,9 +39,9 @@ def loaddata(filename):
         data = minidom.parse(filename)
     return data
 
-def savedata(dom, filename):
+def savedata(dom, filename, compress):
     filedescriptor = None
-    if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
+    if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT) and compress:
         filedescriptor = bz2.BZ2File(filename, "w")
     else:
         filedescriptor = open(filename, "w")

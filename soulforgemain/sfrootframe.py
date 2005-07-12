@@ -20,7 +20,7 @@
 #
 
 from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxMenu,wxMenuItem,wxMenuBar,wxFlexGridSizer,wxALIGN_CENTER_VERTICAL,wxTE_READONLY,EVT_MENU,EVT_BUTTON,wxEXPAND,wxMessageDialog,wxFileDialog,wxStaticText,wxTextCtrl,wxPanel,wxButton,wxBOTH,wxID_OK,wxID_CANCEL,wxOPEN,wxOK,wxCANCEL,wxFILE_MUST_EXIST,wxSAVE,wxOVERWRITE_PROMPT,wxSingleChoiceDialog,wxConfig
-import dieroller,sfcontrols,sfsheet,sfuniverses
+import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
 from xml.dom import minidom
 from libsoulforge import xmlutils,headerdata
 from os import path
@@ -33,6 +33,7 @@ SFROOTFRAME_SAVE = 105
 SFROOTFRAME_NEW = 106
 SFROOTFRAME_EDIT = 107
 SFROOTFRAME_CLOSE = 108
+SFROOTFRAME_OPTIONS = 109
 SFSHEET_OK = 401
 
 class sfrootframe(wxFrame):
@@ -57,6 +58,8 @@ class sfrootframe(wxFrame):
 
 	toolsmenu = wxMenu()
 	toolsmenu.Append(SFROOTFRAME_DIEROLLER, _("&Dieroller"), _("Dieroller"))
+	toolsmenu.AppendSeparator()
+	toolsmenu.Append(SFROOTFRAME_OPTIONS, _("&Options"), _("Options"))
 
 	helpmenu = wxMenu()
 	helpmenu.Append(SFROOTFRAME_ABOUT, _("&About"), _("About Soulforge"))
@@ -76,9 +79,6 @@ class sfrootframe(wxFrame):
 	root.Add(wxStaticText(self,-1, _("Player:")),0,wxALIGN_CENTER_VERTICAL)
 	self.player = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
 	root.Add(self.player,1,wxEXPAND)
-	root.Add(wxStaticText(self,-1, _("Clan:")),0,wxALIGN_CENTER_VERTICAL)
-	self.clan = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
-	root.Add(self.clan,1,wxEXPAND)
 	root.Add(wxStaticText(self,-1, _("Universe:")),0,wxALIGN_CENTER_VERTICAL)
 	self.universe = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
 	root.Add(self.universe,1,wxEXPAND)
@@ -101,6 +101,7 @@ class sfrootframe(wxFrame):
 	EVT_MENU(self,SFROOTFRAME_SAVE,self.onsave)
 	EVT_MENU(self,SFROOTFRAME_CLOSE,self.onclose)
 	EVT_MENU(self,SFROOTFRAME_NEW,self.onnew)
+	EVT_MENU(self,SFROOTFRAME_OPTIONS,self.onoptions)
 	EVT_BUTTON(self,SFSHEET_OK,self.onsheetok)
 	EVT_BUTTON(self,SFROOTFRAME_EDIT,self.onedit)
 
@@ -156,7 +157,7 @@ class sfrootframe(wxFrame):
 		self.config.Flush(True)
 	    savedlg.Destroy()
 	if self.file:
-	    xmlutils.savedata(self.dom, self.file)
+	    xmlutils.savedata(self.dom, self.file, self.config.ReadInt(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
 	    self.modified = False
 	self.populatefields()
 	self.updategui()
@@ -203,21 +204,22 @@ class sfrootframe(wxFrame):
 	sfuniverses.universe_xml2sheet[uni](self.dom,self.sh.sheet)
 	self.sh.Show()
 
+    def onoptions(self,event):
+        conf = sfconfig.sfconfig(self,-1)
+	conf.ShowModal()
+
     def populatefields(self):
         if self.sh:
 	    self.name.SetValue(self.sh.sheet.name.GetValue())
 	    self.player.SetValue(self.sh.sheet.player.GetValue())
 	    self.universe.SetValue(self.sh.universe)
-	    self.clan.SetValue(self.sh.sheet.clan.GetValue())
 	elif self.dom:
 	    self.name.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("name")[0]))
 	    self.player.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("player")[0]))
-	    self.clan.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("clan")[0]))
 	    self.universe.SetValue(self.dom.documentElement.getAttribute("universe"))
 	else:
 	    self.name.SetValue(u"")
 	    self.player.SetValue(u"")
-	    self.clan.SetValue(u"")
 	    self.universe.SetValue(u"")
 	if self.file:
 	    self.filename.SetValue(self.file)

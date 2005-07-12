@@ -42,3 +42,6 @@ SF_FILEMASK = _("Soulforge Data") + " (*.sfd)|*.sfd|XML (*.xml)|*.xml|" + _("All
 
 SF_CONFIGKEY_LOADDIR = "/lastrun/loaddir"
 SF_CONFIGKEY_SAVEDIR = "/lastrun/savedir"
+
+SF_CONFIGKEY_COMPRESS = "/settings/compress"
+SF_CONFIGDEFAULT_COMPRESS = 1

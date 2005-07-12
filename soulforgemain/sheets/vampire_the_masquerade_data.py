@@ -23,6 +23,8 @@ import parser
 from xml.dom import minidom
 from libsoulforge import xmlutils, headerdata
 
+universe = 'Vampire: The Masquerade'
+
 archetypes = ['', _('Architect'), _('Autocrat'), _('Bon Vivant'), _('Bravo'), _('Caregiver'), _('Celebrant'), _('Child'), _('Competitor'), _('Conformist'), _('Conniver'), _('Curmudgeon'), _('Deviant'), _('Director'), _('Fanatic'), _('Gallant'), _('Judge'), _('Loner'), _('Martyr'), _('Masochist'), _('Monster'), _('Pedagogue'), _('Penitent'), _('Perfectionist'), _('Rebel'), _('Rogue'), _('Survivor'), _('Thrill-Seeker'), _('Traditionalist'), _('Trickster'), _('Visionary')]
 
 clans = ['', _('Brujah'), _('Gangrel'), _('Malkavian'), _('Nosferatu'), _('Toreador'), _('Tremere'), _('Ventrue'), _('Lasombra'), _('Tzimisce'), _('Assamite'), _('Followers of Set'), _('Giovanni'), _('Ravnos')]
