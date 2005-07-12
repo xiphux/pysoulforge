@@ -118,6 +118,7 @@ class sfpool(wxPanel):
 	    if self.state[n]:
 	        self.dummy[n].SetValue(True)
 	    self.state[n] = self.buttons[n].GetValue()
+	event.Skip()
         self.recalc()
 
     def recalc(self):

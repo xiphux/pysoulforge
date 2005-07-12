@@ -47,8 +47,6 @@ class sfsheet(wxFrame):
 
 	root.Add(controls,0,wxEXPAND)
 
-	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
-
 	self.SetSizerAndFit(root)
 	self.Centre(wxBOTH)
 

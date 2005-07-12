@@ -98,8 +98,6 @@ class sfrootframe(wxFrame):
 	self.edit = wxButton(self,SFROOTFRAME_EDIT, _("Edit"))
 	root.Add(self.edit,1,wxEXPAND)
 
-	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
-
 	self.SetSizer(root)
 	self.Centre(wxBOTH)
 

@@ -143,8 +143,6 @@ class dieroller(wxFrame):
 
 	root.Add(results,1,wxEXPAND)
 
-	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
-
 	self.SetSizerAndFit(root)
 	self.Centre(wxBOTH)
 
