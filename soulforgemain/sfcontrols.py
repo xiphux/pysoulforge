@@ -59,7 +59,7 @@ class sfstat(wxPanel):
     def onclick(self,event):
         n = event.GetId() - SFSTAT_BUTTON
 	if (n+1) == self.value:
-	    self.value -= 1
+	    self.value = self.value - 1
 	else:
 	    self.value = n+1
 	self.recalc()
