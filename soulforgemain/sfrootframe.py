@@ -80,6 +80,8 @@ class sfrootframe(wxFrame):
 	
 	self.SetMenuBar(menubar)
 
+	pan = wxPanel(self,-1)
+
 	root = wxFlexGridSizer(6,2,0,0)
 	root.AddGrowableCol(1,1)
 	root.Add(wxStaticText(self,-1, _("Name:")),0,wxALIGN_CENTER_VERTICAL)
