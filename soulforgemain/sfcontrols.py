@@ -19,14 +19,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL
+from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL,EVT_CHECKBOX_RANGE,EVT_RADIOBUTTON_RANGE
 from libsoulforge import headerdata
 
 SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301
 
 class sfstat(wxPanel):
-    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
+    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,butt = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
         wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
 
 	self.value = 0
@@ -41,7 +41,7 @@ class sfstat(wxPanel):
 	self.buttons = []
 	self.dummy = []
 
-	for i in range(buttons):
+	for i in range(butt):
 	    if alternate:
 	        self.buttons.append(wxCheckBox(self,(SFSTAT_BUTTON + i),""))
 	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_CHECKBOX_CLICKED,self.onclick)
@@ -51,6 +51,11 @@ class sfstat(wxPanel):
 		self.dummy[i].Show(False)
 	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
 	    root.Add(self.buttons[i],0,wxALIGN_CENTER_VERTICAL)
+
+	if alternate:
+	    EVT_CHECKBOX_RANGE(self,SFSTAT_BUTTON,(SFSTAT_BUTTON+butt-1),self.onclick)
+	else:
+	    EVT_RADIOBUTTON_RANGE(self,SFSTAT_BUTTON,(SFSTAT_BUTTON+butt-1),self.onclick)
 
 	self.recalc()
 
@@ -66,11 +71,11 @@ class sfstat(wxPanel):
 
     def recalc(self):
         for i in range(self.value):
-	    self.buttons[i].SetValue(True)
+	    self.buttons[i].SetValue(1)
 	for i in range(self.value,len(self.buttons)):
-	    self.buttons[i].SetValue(False)
+	    self.buttons[i].SetValue(0)
 	    if not self.alternate:
-	        self.dummy[i].SetValue(True)
+	        self.dummy[i].SetValue(1)
 	    
     def setvalue(self,v):
         self.value = v
