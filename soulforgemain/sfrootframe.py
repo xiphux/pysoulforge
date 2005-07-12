@@ -80,8 +80,6 @@ class sfrootframe(wxFrame):
 	
 	self.SetMenuBar(menubar)
 
-	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
-
 	root = wxFlexGridSizer(6,2,0,0)
 	root.AddGrowableCol(1,1)
 	root.Add(wxStaticText(self,-1, _("Name:")),0,wxALIGN_CENTER_VERTICAL)
@@ -99,6 +97,8 @@ class sfrootframe(wxFrame):
 	root.Add(wxPanel(self,-1))
 	self.edit = wxButton(self,SFROOTFRAME_EDIT, _("Edit"))
 	root.Add(self.edit,1,wxEXPAND)
+
+	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
 
 	self.SetSizer(root)
 	self.Centre(wxBOTH)
