@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxFrame,wxBoxSizer,wxStaticText,wxSpinCtrl,wxTextCtrl,wxGauge,wxDefaultPosition,wxDefaultSize,wxHORIZONTAL,wxVERTICAL,wxALIGN_CENTER_VERTICAL,wxEXPAND,wxChoice,wxCheckBox,wxButton,wxTE_MULTILINE,wxTE_READONLY,wxALIGN_LEFT,wxALIGN_RIGHT,wxBOTH,EVT_BUTTON,EVT_SPINCTRL,EVT_CHOICE,EVT_CHECKBOX
+from wxPython.wx import wxFrame,wxBoxSizer,wxStaticText,wxSpinCtrl,wxTextCtrl,wxGauge,wxDefaultPosition,wxDefaultSize,wxHORIZONTAL,wxVERTICAL,wxALIGN_CENTER_VERTICAL,wxEXPAND,wxChoice,wxCheckBox,wxButton,wxTE_MULTILINE,wxTE_READONLY,wxALIGN_LEFT,wxALIGN_RIGHT,wxBOTH,EVT_BUTTON,EVT_SPINCTRL,EVT_CHOICE,EVT_CHECKBOX,wxPanel
 from libsoulforge import dicepool, headerdata
 
 DIEROLLER_CLOSE = 104
@@ -142,6 +142,8 @@ class dieroller(wxFrame):
 	results.Add(close,0,wxEXPAND)
 
 	root.Add(results,1,wxEXPAND)
+
+	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
 
 	self.SetSizerAndFit(root)
 	self.Centre(wxBOTH)
