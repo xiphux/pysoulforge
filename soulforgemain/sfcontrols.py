@@ -49,7 +49,7 @@ class sfstat(wxPanel):
 		EVT_CHECKBOX(self,(SFSTAT_BUTTON+i),self.onclick)
 	    else:
 	        self.buttons.append(wxRadioButton(self,(SFSTAT_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
-		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize,wxRB_SINGLE))
+		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize))
 		self.dummy[i].Show(False)
 #	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
                 EVT_RADIOBUTTON(self,(SFSTAT_BUTTON+i),self.onclick)
@@ -60,11 +60,11 @@ class sfstat(wxPanel):
 	self.SetSizer(root)
 
     def onclick(self,event):
-        n = event.GetId() - SFSTAT_BUTTON
-	if (n+1) == self.value:
+        n = event.GetId() - SFSTAT_BUTTON + 1
+	if n == self.value:
 	    self.value = self.value - 1
 	else:
-	    self.value = n+1
+	    self.value = n
 	self.recalc()
 
     def recalc(self):
