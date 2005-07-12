@@ -20,7 +20,7 @@
 #
 
 import sfcontrols,sfuniverses
-from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxVERTICAL,wxHORIZONTAL,wxEXPAND,wxBoxSizer,wxButton,wxBOTH,EVT_BUTTON
+from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxVERTICAL,wxHORIZONTAL,wxEXPAND,wxBoxSizer,wxButton,wxBOTH,EVT_BUTTON,wxPanel
 from libsoulforge import headerdata
 
 SFSHEET_OK = 401
@@ -31,6 +31,8 @@ class sfsheet(wxFrame):
         wxFrame.__init__(self, parent, ID, univ, wxDefaultPosition, wxDefaultSize)
 
 	self.universe = univ
+
+	pan = wxPanel(self,-1,wxDefaultPosition,self.GetSize())
 
 	root = wxBoxSizer(wxVERTICAL)
 
