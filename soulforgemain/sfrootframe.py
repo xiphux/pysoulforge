@@ -34,6 +34,7 @@ SFROOTFRAME_NEW = 106
 SFROOTFRAME_EDIT = 107
 SFROOTFRAME_CLOSE = 108
 SFROOTFRAME_OPTIONS = 109
+SFROOTFRAME_SAVEAS = 110
 SFSHEET_OK = 401
 
 class sfrootframe(wx.Frame):
@@ -55,6 +56,8 @@ class sfrootframe(wx.Frame):
 	filemenu.Append(SFROOTFRAME_LOAD, _("&Load"), _("Load character"))
 	self.save = wx.MenuItem(filemenu,SFROOTFRAME_SAVE, _("&Save"), _("Save character"))
 	filemenu.AppendItem(self.save)
+	self.saveas = wx.MenuItem(filemenu,SFROOTFRAME_SAVEAS, _("Save &As..."), _("Save character as..."))
+	filemenu.AppendItem(self.saveas)
 	self.close = wx.MenuItem(filemenu,SFROOTFRAME_CLOSE, _("&Close"), _("Close character"))
 	filemenu.AppendItem(self.close)
 	filemenu.AppendSeparator()
@@ -111,6 +114,7 @@ class sfrootframe(wx.Frame):
 	wx.EVT_MENU(self,SFROOTFRAME_CLOSE,self.onclose)
 	wx.EVT_MENU(self,SFROOTFRAME_NEW,self.onnew)
 	wx.EVT_MENU(self,SFROOTFRAME_OPTIONS,self.onoptions)
+	wx.EVT_MENU(self,SFROOTFRAME_SAVEAS,self.onsaveas)
 	wx.EVT_MENU_RANGE(self,wx.ID_FILE1,wx.ID_FILE9,self.onrecent)
 	wx.EVT_BUTTON(self,SFSHEET_OK,self.onsheetok)
 	wx.EVT_BUTTON(self,SFROOTFRAME_EDIT,self.onedit)
@@ -172,26 +176,36 @@ class sfrootframe(wx.Frame):
 	    self.history.AddFileToHistory(recentfile)
 	    self.parsefile()
 
-    def onsave(self,event):
-        if not self.dom:
-	    err = wx.MessageDialog(self, _("Error: No character data to save"), _("Error!"),wx.OK)
-	    err.Centre(wx.BOTH)
-	    err.ShowModal()
-	    err.Destroy()
-	    return
-        if not self.file:
-	    savedlg = wx.FileDialog(self, _("Save character"),self.config.Read(headerdata.SF_CONFIGKEY_SAVEDIR),"", headerdata.SF_FILEMASK,wx.SAVE|wx.OVERWRITE_PROMPT)
-	    if savedlg.ShowModal() == wx.ID_OK:
-	        self.file = savedlg.GetPath()
-		self.config.Write(headerdata.SF_CONFIGKEY_SAVEDIR, path.dirname(self.file))
-		self.config.Flush(True)
-	    savedlg.Destroy()
+    def writefile(self):
 	if self.file:
 	    xmlutils.savedata(self.dom, self.file, self.config.ReadInt(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
 	    self.modified = False
 	    self.history.AddFileToHistory(self.file)
 	self.populatefields()
 	self.updategui()
+
+    def onsaveas(self,event):
+        if not self.dom:
+	    err = wx.MessageDialog(self, _("Error: No character data to save"), _("Error!"),wx.OK)
+	    err.Centre(wx.BOTH)
+	    err.ShowModal()
+	    err.Destroy()
+	    return False
+	savedlg = wx.FileDialog(self, _("Save character"),self.config.Read(headerdata.SF_CONFIGKEY_SAVEDIR),"", headerdata.SF_FILEMASK,wx.SAVE|wx.OVERWRITE_PROMPT)
+	if savedlg.ShowModal() == wx.ID_OK:
+	    self.file = savedlg.GetPath()
+	    self.config.Write(headerdata.SF_CONFIGKEY_SAVEDIR, path.dirname(self.file))
+	    self.config.Flush(True)
+	savedlg.Destroy()
+	self.writefile()
+	return True
+
+    def onsave(self,event):
+        if not self.file:
+	    ret = self.onsaveas(event)
+	    if not ret:
+	        return
+	self.writefile()
 
     def onnew(self,event):
         if self.dom:
@@ -261,8 +275,10 @@ class sfrootframe(wx.Frame):
         self.save.Enable(self.modified)
 	if self.dom:
 	    self.edit.Enable(True)
+	    self.saveas.Enable(True)
 	else:
 	    self.edit.Enable(False)
+	    self.saveas.Enable(False)
 	if self.file or self.modified:
 	    self.close.Enable(True)
 	else:
