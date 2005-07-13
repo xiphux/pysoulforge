@@ -48,9 +48,9 @@ class sfstat(wxPanel):
 #	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_CHECKBOX_CLICKED,self.onclick)
 		EVT_CHECKBOX(self,(SFSTAT_BUTTON+i),self.onclick)
 	    else:
-	        self.buttons.append(wxRadioButton(self,(SFSTAT_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
-		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize))
+		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
 		self.dummy[i].Show(False)
+	        self.buttons.append(wxRadioButton(self,(SFSTAT_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_SINGLE))
 #	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
                 EVT_RADIOBUTTON(self,(SFSTAT_BUTTON+i),self.onclick)
 	    root.Add(self.buttons[i],0,wxALIGN_CENTER_VERTICAL)
@@ -75,7 +75,7 @@ class sfstat(wxPanel):
 	    self.buttons[i].SetValue(0)
 	    if not self.alternate:
 	        self.dummy[i].SetValue(1)
-	self.Update()
+#	self.Update()
 	    
     def setvalue(self,v):
         self.value = v
