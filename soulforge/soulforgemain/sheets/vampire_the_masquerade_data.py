@@ -619,7 +619,7 @@ def sheet2xml(sheet,dom):
     v = sheet.merit_1.GetSelection()
     dat = None
     if v == wx.NOT_FOUND or v == 0:
-        node4 = mktext(sheet.merit_1.GetStringSelection())
+        node4 = mktext(sheet.merit_1.GetValue())
     else:
         dat = sheet.merit_1.GetClientData(v)
 	if dat:
@@ -637,7 +637,7 @@ def sheet2xml(sheet,dom):
     v = sheet.merit_2.GetSelection()
     dat = None
     if v == wx.NOT_FOUND or v == 0:
-        node4 = mktext(sheet.merit_2.GetStringSelection())
+        node4 = mktext(sheet.merit_2.GetValue())
     else:
         dat = sheet.merit_2.GetClientData(v)
 	if dat:
@@ -655,7 +655,7 @@ def sheet2xml(sheet,dom):
     v = sheet.merit_3.GetSelection()
     dat = None
     if v == wx.NOT_FOUND or v == 0:
-        node4 = mktext(sheet.merit_3.GetStringSelection())
+        node4 = mktext(sheet.merit_3.GetValue())
     else:
         dat = sheet.merit_3.GetClientData(v)
 	if dat:
@@ -674,7 +674,7 @@ def sheet2xml(sheet,dom):
     v = sheet.flaw_1.GetSelection()
     dat = None
     if v == wx.NOT_FOUND or v == 0:
-        node4 = mktext(sheet.flaw_1.GetStringSelection())
+        node4 = mktext(sheet.flaw_1.GetValue())
     else:
         dat = sheet.flaw_1.GetClientData(v)
 	if dat:
@@ -692,7 +692,7 @@ def sheet2xml(sheet,dom):
     v = sheet.flaw_2.GetSelection()
     dat = None
     if v == wx.NOT_FOUND or v == 0:
-        node4 = mktext(sheet.flaw_2.GetStringSelection())
+        node4 = mktext(sheet.flaw_2.GetValue())
     else:
         dat = sheet.flaw_2.GetClientData(v)
 	if dat:
@@ -710,7 +710,7 @@ def sheet2xml(sheet,dom):
     v = sheet.flaw_3.GetSelection()
     dat = None
     if v == wx.NOT_FOUND or v == 0:
-        node4 = mktext(sheet.flaw_3.GetStringSelection())
+        node4 = mktext(sheet.flaw_3.GetValue())
     else:
         dat = sheet.flaw_3.GetClientData(v)
 	if dat:
@@ -764,7 +764,13 @@ def sheet2xml(sheet,dom):
     root.appendChild(node)
 
     node = mkelement("health")
-    node2 = mktext(str(sheet.health.value))
+    node2 = mkelement("aggravated")
+    node3 = mktext(str(sheet.health.aggravated))
+    node2.appendChild(node3)
+    node.appendChild(node2)
+    node2 = mkelement("normal")
+    node3 = mktext(str(sheet.health.normal))
+    node2.appendChild(node3)
     node.appendChild(node2)
     root.appendChild(node)
  
@@ -892,7 +898,7 @@ def xml2sheet(dom,sheet):
 	        st = gettxt(mn) + " (" + gettxt(mv[0]) + "-pt. Merit)"
 	        sheet.merit_1.SetStringSelection(st)
 	    else:
-	        sheet.merit_1.SetStringSelection(gettxt(mn))
+	        sheet.merit_1.SetValue(gettxt(mn))
         if mtn[1]:
             mn = mtn[1].getElementsByTagName("merit_name")[0]
             mv = mtn[1].getElementsByTagName("merit_value")
@@ -900,7 +906,7 @@ def xml2sheet(dom,sheet):
 	        st = gettxt(mn) + " (" + gettxt(mv[0]) + "-pt. Merit)"
 	        sheet.merit_2.SetStringSelection(st)
 	    else:
-	        sheet.merit_2.SetStringSelection(gettxt(mn))
+	        sheet.merit_2.SetValue(gettxt(mn))
         if mtn[2]:
             mn = mtn[2].getElementsByTagName("merit_name")[0]
             mv = mtn[2].getElementsByTagName("merit_value")
@@ -908,7 +914,7 @@ def xml2sheet(dom,sheet):
 	        st = gettxt(mn) + " (" + gettxt(mv[0]) + "-pt. Merit)"
 	        sheet.merit_3.SetStringSelection(st)
 	    else:
-	        sheet.merit_3.SetStringSelection(gettxt(mn))
+	        sheet.merit_3.SetValue(gettxt(mn))
         fln = mfnode[0].getElementsByTagName("flaw")
         if fln[0]:
             fn = fln[0].getElementsByTagName("flaw_name")[0]
@@ -917,7 +923,7 @@ def xml2sheet(dom,sheet):
 	        st = gettxt(fn) + " (" + gettxt(fv[0]) + "-pt. Flaw)"
 	        sheet.flaw_1.SetStringSelection(st)
             else:
-	        sheet.flaw_1.SetStringSelection(gettxt(fn))
+	        sheet.flaw_1.SetValue(gettxt(fn))
         if fln[1]:
             fn = fln[1].getElementsByTagName("flaw_name")[0]
 	    fv = fln[1].getElementsByTagName("flaw_value")
@@ -925,7 +931,7 @@ def xml2sheet(dom,sheet):
 	        st = gettxt(fn) + " (" + gettxt(fv[0]) + "-pt. Flaw)"
 	        sheet.flaw_2.SetStringSelection(st)
             else:
-	        sheet.flaw_2.SetStringSelection(gettxt(fn))
+	        sheet.flaw_2.SetValue(gettxt(fn))
         if fln[2]:
             fn = fln[2].getElementsByTagName("flaw_name")[0]
 	    fv = fln[2].getElementsByTagName("flaw_value")
@@ -933,7 +939,7 @@ def xml2sheet(dom,sheet):
 	        st = gettxt(fn) + " (" + gettxt(fv[0]) + "-pt. Flaw)"
 	        sheet.flaw_3.SetStringSelection(st)
             else:
-	        sheet.flaw_3.SetStringSelection(gettxt(fn))
+	        sheet.flaw_3.SetValue(gettxt(fn))
 
     
     hpnode = dom.getElementsByTagName("humanity_path")[0]
@@ -951,6 +957,12 @@ def xml2sheet(dom,sheet):
     sheet.willpower_current.setvalue(int(gettxt(wn.getElementsByTagName("willpower_current")[0])))
     sheet.blood_pool.setvalue(int(gettxt(dom.getElementsByTagName("bloodpool")[0])))
 
-    sheet.health.setvalue(int(gettxt(dom.getElementsByTagName("health")[0])))
+    heln = dom.getElementsByTagName("health")[0]
+    n = heln.getElementsByTagName("aggravated")
+    if n:
+        sheet.health.setaggravated(int(gettxt(n[0])))
+    n = heln.getElementsByTagName("normal")
+    if n:
+        sheet.health.setnormal(int(gettxt(n[0])))
 
     sheet.experience.SetValue(int(gettxt(dom.getElementsByTagName("experience")[0])))

@@ -20,7 +20,7 @@
 #
 
 import wx
-from soulforge.soulforgemain.sfcontrols import sfstat, sfpool
+from soulforge.soulforgemain.sfcontrols import sfstat, sfpool, sfhealth
 from soulforge.soulforgemain.sheets import vampire_the_masquerade_data
 
 class vampire_the_masquerade(wx.ScrolledWindow):
@@ -185,7 +185,7 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         self.label_39 = wx.StaticText(self, -1, _("-5"))
         self.label_34 = wx.StaticText(self, -1, _("Incapacitated"))
         self.panel_6 = wx.Panel(self, -1)
-        self.health = sfpool(self, -1, rows=7, cols=1)
+        self.health = sfhealth(self, -1, buttons=7)
         self.static_line_16 = wx.StaticLine(self, -1)
         self.label_26 = wx.StaticText(self, -1, _("Experience"))
         self.static_line_17 = wx.StaticLine(self, -1)

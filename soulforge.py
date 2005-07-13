@@ -47,9 +47,12 @@ if __name__ == "__main__":
       dest="force", help="force operation")
     parser.add_option("-c", "--compile", action="store_true",
       dest="compile", help="byte-compile")
+    parser.add_option("-d", "--debug", action="store_true",
+      dest="debug", help="print debugging info")
     parser.set_defaults(verbose=False)
     parser.set_defaults(force=False)
     parser.set_defaults(compile=False)
+    parser.set_defaults(debug=False)
     (options, args) = parser.parse_args()
 
     headerdata.options = options

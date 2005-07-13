@@ -25,12 +25,13 @@ from soulforge.libsoulforge import headerdata
 
 SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301
+SFHEALTH_BUTTON = 801
 
 class sfdot(buttons.GenToggleButton):
     def __init__(self, parent, ID, label,
                  pos = wx.DefaultPosition, size = wx.DefaultSize,
                  style = 0, validator = wx.DefaultValidator,
-                 name = "genbutton"):
+                 name = "sfdot"):
         cstyle = style
         if cstyle == 0:
             cstyle = wx.NO_BORDER
@@ -88,12 +89,15 @@ class sfdot(buttons.GenToggleButton):
         self.CaptureMouse()
         self.SetFocus()
 
+    def OnMotion(self, event):
+        pass
+
 
 class sfbox(buttons.GenToggleButton):
     def __init__(self, parent, ID, label,
                  pos = wx.DefaultPosition, size = wx.DefaultSize,
                  style = 0, validator = wx.DefaultValidator,
-                 name = "genbutton"):
+                 name = "sfbox"):
         cstyle = style
         if cstyle == 0:
             cstyle = wx.NO_BORDER
@@ -154,6 +158,91 @@ class sfbox(buttons.GenToggleButton):
         self.CaptureMouse()
         self.SetFocus()
 
+    def OnMotion(self, event):
+        pass
+
+class sftristate(buttons.GenToggleButton):
+    def __init__(self, parent, ID, label,
+                 pos = wx.DefaultPosition, size = wx.DefaultSize,
+                 style = 0, validator = wx.DefaultValidator,
+                 name = "sftristate"):
+        cstyle = style
+        if cstyle == 0:
+            cstyle = wx.NO_BORDER
+        wx.PyControl.__init__(self, parent, ID, pos, size, cstyle, validator, name)
+
+        self.state = 0
+	self.up = True
+	self.saveUp = False
+        self.hasFocus = False
+        self.useFocusInd = False
+
+        self.InheritAttributes()
+        self.SetBestFittingSize(size)
+        self.InitColours()
+
+        self.Bind(wx.EVT_LEFT_DOWN,        self.OnLeftDown)
+        self.Bind(wx.EVT_LEFT_UP,          self.OnLeftUp)
+        if wx.Platform == '__WXMSW__':
+            self.Bind(wx.EVT_LEFT_DCLICK,  self.OnLeftDown)
+        self.Bind(wx.EVT_MOTION,           self.OnMotion)
+        self.Bind(wx.EVT_SET_FOCUS,        self.OnGainFocus)
+        self.Bind(wx.EVT_KILL_FOCUS,       self.OnLoseFocus)
+        self.Bind(wx.EVT_KEY_DOWN,         self.OnKeyDown)
+        self.Bind(wx.EVT_KEY_UP,           self.OnKeyUp)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
+        self.Bind(wx.EVT_PAINT,            self.OnPaint)
+
+    def setvalue(self, value):
+        if value > 2 or value < 0:
+	    return
+        self.state = value
+	self.SetFocus()
+
+    def OnPaint(self, event):
+        (width, height) = self.GetClientSizeTuple()
+	x = width - 1
+	y = height - 1
+	dc = wx.BufferedPaintDC(self)
+	dc.Clear()
+	self.DrawBezel(dc, 0, 0, x, y)
+	self.DrawMarker(dc, 0, 0, x, y)
+
+    def DrawMarker(self, dc, x1, y1, x2, y2):
+        dc.SetPen(wx.BLACK_PEN)
+	if self.state > 0:
+	    dc.DrawLine(x2-2, 2, 2, y2-3)
+	    if self.state > 1:
+	        dc.DrawLine(2, 2, x2-1, y2-2)
+
+    def DrawBezel(self, dc, x1, y1, x2, y2):
+	dc.SetPen(wx.BLACK_PEN)
+	dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
+	dc.DrawRectangle(2,2,y2-4,y2-4)
+
+    def DoGetBestSize(self):
+        width = 15
+	height = 15
+	return (width, height)
+
+    def DrawFocusIndicator(self, dc, w, h):
+        pass
+
+    def OnLeftDown(self, event):
+        if not self.IsEnabled():
+            return
+        self.state += 1
+	if self.state > 2:
+	    self.state = 0
+        self.CaptureMouse()
+        self.SetFocus()
+
+    def OnMotion(self, event):
+        pass
+
+    def GetValue(self):
+        return self.state
+
 
 class sfstat(wx.Panel):
     def __init__(self,parent,ID,label="",orient = wx.HORIZONTAL,buttons = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
@@ -189,6 +278,8 @@ class sfstat(wx.Panel):
 	    self.value = self.value - 1
 	else:
 	    self.value = n
+	if headerdata.options.debug:
+	    print self.value
 	self.recalc()
 
     def recalc(self):
@@ -200,6 +291,73 @@ class sfstat(wx.Panel):
     def setvalue(self,v):
         self.value = v
 	self.recalc()
+
+class sfhealth(wx.Panel):
+    def __init__(self,parent,ID,label="",orient = wx.VERTICAL,buttons = headerdata.SF_SFHEALTH_LEVELS):
+        wx.Panel.__init__(self,parent,ID,wx.DefaultPosition,wx.DefaultSize)
+
+	self.btns = buttons
+	self.normal = 0
+	self.aggravated = 0
+
+	root = wx.BoxSizer(orient)
+
+	if label != "":
+	    self.label = wx.StaticText(self,-1,label)
+	    root.Add(self.label,self.btns,wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL)
+
+	self.buttons = []
+
+	for i in range(self.btns):
+	    self.buttons.append(sftristate(self,(SFHEALTH_BUTTON + i),""))
+	    wx.EVT_BUTTON(self,(SFHEALTH_BUTTON+i),self.onclick)
+	    root.Add(self.buttons[i],1,wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL)
+
+	self.SetSizer(root)
+
+    def onclick(self,event):
+        self.recalc()
+
+    def recalc(self):
+        n = 0
+	a = 0
+	for i in range(self.btns):
+	    s = self.buttons[i].GetValue()
+	    if headerdata.options.debug:
+	        print s
+	    if s == 2:
+	        a += 1
+	    elif s == 1:
+	        n += 1
+	self.normal = n
+	self.aggravated = a
+	if headerdata.options.debug:
+	    print "N: " + str(self.normal)
+	    print "A: " + str(self.aggravated)
+
+    def setnormal(self,norm):
+        self.normal = norm
+	self.fillboxes()
+
+    def setaggravated(self,agg):
+        self.aggravated = agg
+	self.fillboxes()
+
+    def fillboxes(self):
+        for i in range(self.aggravated):
+	    if i >= self.btns:
+	        return
+	    self.buttons[i].setvalue(2)
+	sum = self.aggravated + self.normal
+	for i in range(self.aggravated,sum):
+	    if i >= self.btns:
+	        return
+	    self.buttons[i].setvalue(1)
+	if sum < self.btns:
+	    for i in range(sum,self.btns):
+	        if i >= self.btns:
+		    return
+	        self.buttons[i].setvalue(0)
 
 class sfpool(wx.Panel):
     def __init__(self,parent,ID,rows = headerdata.SF_SFPOOL_ROWS,cols = headerdata.SF_SFPOOL_COLS,alternate = False):
@@ -226,7 +384,6 @@ class sfpool(wx.Panel):
 	self.SetSizer(root)
 
     def onclick(self,event):
-        n = event.GetId() - SFPOOL_BUTTON
         self.recalc()
 
     def recalc(self):
@@ -235,6 +392,8 @@ class sfpool(wx.Panel):
 	    if self.buttons[i].GetValue():
 	        n += 1
         self.value = n
+	if headerdata.options.debug:
+	    print self.value
 
     def setvalue(self,v):
         self.value = v
