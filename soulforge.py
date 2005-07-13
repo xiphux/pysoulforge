@@ -52,6 +52,8 @@ if __name__ == "__main__":
     parser.set_defaults(compile=False)
     (options, args) = parser.parse_args()
 
+    headerdata.options = options
+
     if options.compile:
         if not options.verbose:
             q = True

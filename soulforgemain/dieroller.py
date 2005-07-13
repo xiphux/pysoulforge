@@ -36,6 +36,7 @@ class dieroller(wx.Frame):
         wx.Frame.__init__(self,parent,ID,title,wx.DefaultPosition,wx.DefaultSize)
 
 	self.dicepool = dicepool.dicepool()
+	self.config = wx.Config.Get()
 
 	root = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -55,8 +56,10 @@ class dieroller(wx.Frame):
 
 	rngbox = wx.BoxSizer(wx.VERTICAL)
 	rngbox.Add(wx.StaticText(self,-1,_("Pseudo-random number generator:")),0)
-	rngstrings = [ _("Mersenne Twister"), _("Wichmann-Hill"), _("urandom()") ]
-	self.rngctl = wx.Choice(self,DIEROLLER_RNG,wx.DefaultPosition,wx.DefaultSize,rngstrings)
+	self.rngctl = wx.Choice(self,DIEROLLER_RNG,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_DIEROLLER_RNGSTRINGS)
+	rngstring = self.config.Read(headerdata.SF_CONFIGKEY_RNG,headerdata.SF_CONFIGDEFAULT_RNG)
+	self.dicepool.setrng(rngstring)
+	self.rngctl.SetStringSelection(rngstring)
 	rngbox.Add(self.rngctl,1,wx.EXPAND)
 	controls.Add(rngbox,0,wx.EXPAND)
 	

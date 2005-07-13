@@ -36,7 +36,7 @@ SF_DIEROLLER_POOL = 1
 SF_DIEROLLER_BOTCH = True
 SF_DIEROLLER_DIFFICULTY = 6
 SF_DIEROLLER_TABULATE = False
-SF_DIEROLLER_RNG = _("Mersenne Twister")
+SF_DIEROLLER_RNGSTRINGS = [ "Mersenne Twister", "Wichmann-Hill", "urandom()" ]
 
 SF_FILEMASK = _("Soulforge Data") + " (*.sfd)|*.sfd|XML (*.xml)|*.xml|" + _("All files") + " (*.*)|*.*"
 
@@ -45,3 +45,9 @@ SF_CONFIGKEY_SAVEDIR = "/lastrun/savedir"
 
 SF_CONFIGKEY_COMPRESS = "/settings/compress"
 SF_CONFIGDEFAULT_COMPRESS = 1
+
+SF_CONFIGKEY_RNG = "/settings/rng"
+SF_CONFIGDEFAULT_RNG = "Mersenne Twister"
+
+
+options = None

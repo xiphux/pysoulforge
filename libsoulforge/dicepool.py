@@ -34,18 +34,21 @@ class dicepool:
         self.botches = 0
         self.final = 0
         self.dice = []
-        self.setrng(headerdata.SF_DIEROLLER_RNG)
 
     def setrng(self, rngname):
-        if rngname == "Mersenne Twister":
+        if rngname == headerdata.SF_DIEROLLER_RNGSTRINGS[0]:
             self.rng = random.Random()
             self.rngfunc = self.rng.randint
-        elif rngname == "Wichmann-Hill":
+        elif rngname == headerdata.SF_DIEROLLER_RNGSTRINGS[1]:
             self.rng = random.WichmannHill()
             self.rngfunc = self.rng.randint
-        elif rngname == "urandom()":
+        elif rngname == headerdata.SF_DIEROLLER_RNGSTRINGS[2]:
             self.rng = random.SystemRandom()
             self.rngfunc = self.rng.randint
+	else:
+	    return false
+	if headerdata.options.verbose:
+	    print "Using RNG: " + rngname
 
     def roll(self):
         self.successes = 0

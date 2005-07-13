@@ -40,6 +40,14 @@ class sfconfig(wx.Dialog):
 	self.compress.SetValue(self.config.ReadInt(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
 	root.Add(self.compress,0,wx.EXPAND)
 
+	rngbox = wx.BoxSizer(wx.VERTICAL)
+	rngl = wx.StaticText(self,-1,"Preferred pseudo-random number generator:")
+	rngbox.Add(rngl,0,wx.ALIGN_LEFT)
+	self.rng = wx.Choice(self,-1,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_DIEROLLER_RNGSTRINGS)
+	self.rng.SetStringSelection(self.config.Read(headerdata.SF_CONFIGKEY_RNG,headerdata.SF_CONFIGDEFAULT_RNG))
+	rngbox.Add(self.rng,1,wx.EXPAND)
+	root.Add(rngbox,0,wx.EXPAND)
+
 	bbox = wx.BoxSizer(wx.HORIZONTAL)
 	self.apply = wx.Button(self,SFCONFIG_APPLY,_("Apply"))
 	bbox.Add(self.apply,1,wx.EXPAND)
@@ -67,6 +75,7 @@ class sfconfig(wx.Dialog):
 	    self.config.WriteInt(headerdata.SF_CONFIGKEY_COMPRESS,1)
 	else:
 	    self.config.WriteInt(headerdata.SF_CONFIGKEY_COMPRESS,0)
+	self.config.Write(headerdata.SF_CONFIGKEY_RNG,self.rng.GetStringSelection())
 	self.config.Flush(True)
 
     def onok(self,event):
