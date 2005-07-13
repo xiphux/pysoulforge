@@ -26,6 +26,7 @@ SFCONFIG_OK = 701
 SFCONFIG_CANCEL = 702
 SFCONFIG_APPLY = 703
 SFCONFIG_COMPRESS = 704
+SFCONFIG_RNG = 705
 
 class sfconfig(wx.Dialog):
     def __init__(self,parent,ID,title=_("Soulforge config")):
@@ -43,7 +44,7 @@ class sfconfig(wx.Dialog):
 	rngbox = wx.BoxSizer(wx.VERTICAL)
 	rngl = wx.StaticText(self,-1,"Preferred pseudo-random number generator:")
 	rngbox.Add(rngl,0,wx.ALIGN_LEFT)
-	self.rng = wx.Choice(self,-1,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_DIEROLLER_RNGSTRINGS)
+	self.rng = wx.Choice(self,SFCONFIG_RNG,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_DIEROLLER_RNGSTRINGS)
 	self.rng.SetStringSelection(self.config.Read(headerdata.SF_CONFIGKEY_RNG,headerdata.SF_CONFIGDEFAULT_RNG))
 	rngbox.Add(self.rng,1,wx.EXPAND)
 	root.Add(rngbox,0,wx.EXPAND)
@@ -65,6 +66,7 @@ class sfconfig(wx.Dialog):
 	wx.EVT_BUTTON(self,SFCONFIG_CANCEL,self.oncancel)
 	wx.EVT_BUTTON(self,SFCONFIG_APPLY,self.onapply)
 	wx.EVT_CHECKBOX(self,SFCONFIG_COMPRESS,self.onchange)
+	wx.EVT_CHOICE(self,SFCONFIG_RNG,self.onchange)
 
     def onchange(self,event):
         self.modified = True
