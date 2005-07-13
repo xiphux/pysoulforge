@@ -71,7 +71,7 @@ class sfdot(buttons.GenToggleButton):
 	    dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
 	else:
 	    dc.SetBrush(wx.Brush(wx.BLACK, wx.SOLID))
-	dc.DrawEllipseRect(wx.Rect(self.bezelWidth+2,self.bezelWidth+2,x2-self.bezelWidth*2-4,y2-self.bezelWidth*2-4))
+	dc.DrawEllipseRect(wx.Rect(self.bezelWidth+2,self.bezelWidth+2,y2-self.bezelWidth*2-4,y2-self.bezelWidth*2-4))
 
     def DoGetBestSize(self):
         width = 15
@@ -102,7 +102,7 @@ class sfstat(wx.Panel):
 
 	if label != "":
 	    self.label = wx.StaticText(self,-1,label)
-	    root.Add(self.label,1,wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL)
+	    root.Add(self.label,self.btns,wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL)
 
 	self.buttons = []
 
@@ -112,7 +112,7 @@ class sfstat(wx.Panel):
 	    else:
 	        self.buttons.append(sfdot(self,(SFSTAT_BUTTON + i),""))
 		wx.EVT_BUTTON(self,(SFSTAT_BUTTON+i),self.onclick)
-	    root.Add(self.buttons[i],0,wx.ALIGN_CENTER_VERTICAL)
+	    root.Add(self.buttons[i],1,wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL)
 
 	self.recalc()
 

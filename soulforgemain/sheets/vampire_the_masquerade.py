@@ -143,15 +143,17 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         self.courage_level = sfstat(self, -1)
         self.static_line_7 = wx.StaticLine(self, -1)
         self.static_line_8 = wx.StaticLine(self, -1)
-        self.label_22 = wx.StaticText(self, -1, _("Merits/Flaws"))
+        self.label_22 = wx.StaticText(self, -1, _("Merits"))
         self.static_line_9 = wx.StaticLine(self, -1)
-        self.merit_flaw_1 = wx.TextCtrl(self, -1, "")
-        self.merit_flaw_2 = wx.TextCtrl(self, -1, "")
-        self.merit_flaw_3 = wx.TextCtrl(self, -1, "")
-        self.merit_flaw_4 = wx.TextCtrl(self, -1, "")
-        self.merit_flaw_5 = wx.TextCtrl(self, -1, "")
-        self.merit_flaw_6 = wx.TextCtrl(self, -1, "")
-        self.merit_flaw_7 = wx.TextCtrl(self, -1, "")
+        self.merit_1 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+        self.merit_2 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+        self.merit_3 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+        self.static_line_8a = wx.StaticLine(self, -1)
+        self.label_22a = wx.StaticText(self, -1, _("Flaws"))
+        self.static_line_9a = wx.StaticLine(self, -1)
+        self.flaw_1 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+        self.flaw_2 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+        self.flaw_3 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
         self.static_line_10 = wx.StaticLine(self, -1)
         self.label_23 = wx.StaticText(self, -1, _("Humanity/Path"))
         self.static_line_11 = wx.StaticLine(self, -1)
@@ -192,6 +194,9 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         self.__set_properties()
         self.__do_layout()
         # end wxGlade
+	self.initfields()
+
+    def initfields(self):
 	for i in vampire_the_masquerade_data.archetypes:
 	    self.nature.Append(i,None)
 	    self.demeanor.Append(i,None)
@@ -221,6 +226,24 @@ class vampire_the_masquerade(wx.ScrolledWindow):
 	    self.courage_name.Append(i,None)
 	for i in vampire_the_masquerade_data.humanity_path:
 	    self.humanity_path_name.Append(i,None)
+	self.merit_1.Append('',None)
+	self.merit_2.Append('',None)
+	self.merit_3.Append('',None)
+	self.flaw_1.Append('',None)
+	self.flaw_2.Append('',None)
+	self.flaw_3.Append('',None)
+	for i,j in vampire_the_masquerade_data.merits.iteritems():
+	    for k in j:
+	        st = i + " (" + str(k) + "-pt. Merit)"
+		self.merit_1.Append(st,(i,k,))
+		self.merit_2.Append(st,(i,k,))
+		self.merit_3.Append(st,(i,k,))
+        for i,j in vampire_the_masquerade_data.flaws.iteritems():
+	    for k in j:
+	        st = i + " (" + str(k) + "-pt. Flaw)"
+		self.flaw_1.Append(st,(i,k,))
+		self.flaw_2.Append(st,(i,k,))
+		self.flaw_3.Append(st,(i,k,))
 
     def __set_properties(self):
         # begin wxGlade: vampire_the_masquerade.__set_properties
@@ -245,6 +268,12 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         self.background_7_name.SetSelection(-1)
         self.discipline_7_name.SetSelection(-1)
         self.courage_name.SetSelection(-1)
+        self.merit_1.SetSelection(-1)
+        self.merit_2.SetSelection(-1)
+        self.merit_3.SetSelection(-1)
+        self.flaw_1.SetSelection(-1)
+        self.flaw_2.SetSelection(-1)
+        self.flaw_3.SetSelection(-1)
         self.humanity_path_name.SetSelection(-1)
         # end wxGlade
 
@@ -267,6 +296,7 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         sizer_32 = wx.BoxSizer(wx.VERTICAL)
         sizer_33 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_29 = wx.BoxSizer(wx.VERTICAL)
+        sizer_30a = wx.BoxSizer(wx.HORIZONTAL)
         sizer_30 = wx.BoxSizer(wx.HORIZONTAL)
         grid_sizer_4 = wx.GridSizer(9, 3, 0, 0)
         sizer_27 = wx.BoxSizer(wx.HORIZONTAL)
@@ -446,13 +476,16 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         sizer_30.Add(self.label_22, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)
         sizer_30.Add(self.static_line_9, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
         sizer_29.Add(sizer_30, 0, wx.EXPAND|wx.ADJUST_MINSIZE, 0)
-        sizer_29.Add(self.merit_flaw_1, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
-        sizer_29.Add(self.merit_flaw_2, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
-        sizer_29.Add(self.merit_flaw_3, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
-        sizer_29.Add(self.merit_flaw_4, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
-        sizer_29.Add(self.merit_flaw_5, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
-        sizer_29.Add(self.merit_flaw_6, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
-        sizer_29.Add(self.merit_flaw_7, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
+        sizer_29.Add(self.merit_1, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
+        sizer_29.Add(self.merit_2, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
+        sizer_29.Add(self.merit_3, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
+        sizer_30a.Add(self.static_line_8a, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+        sizer_30a.Add(self.label_22a, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)
+        sizer_30a.Add(self.static_line_9a, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+        sizer_29.Add(sizer_30a, 0, wx.EXPAND|wx.ADJUST_MINSIZE, 0)
+        sizer_29.Add(self.flaw_1, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
+        sizer_29.Add(self.flaw_2, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
+        sizer_29.Add(self.flaw_3, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
         sizer_28.Add(sizer_29, 1, 0, 0)
         sizer_33.Add(self.static_line_10, 1, wx.EXPAND, 0)
         sizer_33.Add(self.label_23, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)

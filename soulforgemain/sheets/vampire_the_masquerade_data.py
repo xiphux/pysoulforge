@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import parser
+import wx
 from xml.dom import minidom
 from libsoulforge import xmlutils, headerdata
 
@@ -40,6 +40,95 @@ selfcontrol_instinct = ['', _('Self-Control'), _('Instinct')]
 courage = ['', _('Courage')]
 
 humanity_path = ['', _('Humanity'), _('Path of Blood'), _('Path of Bones'), _('Path of Night'), _('Path of Metamorphosis'), _('Path of Paradox'), _('Path of Typhon')]
+
+merits = {
+	'Acute Sense': (1,),
+	'Ambidextrous': (1,),
+	'Eat Food': (1,),
+	'Catlike Balance': (1,),
+	'Blush of Health': (2,),
+	'Enchanting Voice': (2,),
+	'Daredevil': (3,),
+	'Efficient Digestion': (3,),
+	'Huge Size': (4,),
+	'Common Sense': (1,),
+	'Concentration': (1,),
+	'Time Sense': (1,),
+	'Code of Honor': (2,),
+	'Eidetic Memory': (2,),
+	'Light Sleeper': (2,),
+	'Natural Linguist': (2,),
+	'Calm Heart': (3,),
+	'Iron Will': (3,),
+	'Prestigious Sire': (1,),
+	'Natural Leader': (1,),
+	'Debt of Gratitude': (1,2,3,),
+	'Medium': (2,),
+	'Magic Resistance': (2,),
+	'Oracular Ability': (3,),
+	'Spirit Mentor': (3,),
+	'Unbondable': (3,),
+	'Lucky': (3,),
+	'True Love': (4,),
+	'Nine Lives': (6,),
+	'True Faith': (7,),
+}
+
+flaws = {
+	'Smell of the Grave': (1,),
+	'Short': (1,),
+	'Hard of Hearing': (1,),
+	'14th Generation': (2,),
+	'Infectious Bite': (2,),
+	'Bad Sight': (1, 3,),
+	'One Eye': (2,),
+	'Disfigured': (2,),
+	'Child': (3,),
+	'Deformity': (3,),
+	'Lame': (3,),
+	'Monstrous': (3,),
+	'Permanent Wound': (3,),
+	'Slow Healing': (3,),
+	'Addiction': (3,),
+	'Mute': (4,),
+	'Thin Blood': (4,),
+	'Disease Carrier': (4,),
+	'Deaf': (4,),
+	'Flesh of the Corpse': (5,),
+	'Blind': (6,),
+	'Deep Sleeper': (1,),
+	'Nightmares': (1,),
+	'Phobia': (2,),
+	'Prey Exclusion': (1,),
+	'Shy': (1,),
+	'Soft-Hearted': (1,),
+	'Speech Impediment': (1,),
+	'Short Fuse': (2,),
+	'Territorial': (2,),
+	'Vengeful': (2,),
+	'Amnesia': (2,),
+	'Lunacy': (2,),
+	'Weak-Willed': (3,),
+	'Conspicuous Consumption': (4,),
+	'Dark Secret': (1,),
+	'Infamous Sire': (1,),
+	'Mistaken Identity': (1,),
+	'Sire\'s Resentment': (1,),
+	'Enemy': (1,2,3,4,5,),
+	'Hunted': (4,),
+	'Probationary Sect Member': (4,),
+	'Touch of Frost': (1,),
+	'Repulsed by Garlic': (1,),
+	'Cursed': (1,2,3,4,5,),
+	'Cast No Reflection': (1,),
+	'Eerie Presence': (2,),
+	'Repelled by Crosses': (3,),
+	'Can\'t Cross Running Water': (3,),
+	'Haunted': (3,),
+	'Grip of the Damned': (4,),
+	'Dark Fate': (5,),
+	'Light-Sensitive': (5,),
+}
 
 def sheet2xml(sheet,dom):
     root = dom.documentElement
@@ -523,6 +612,120 @@ def sheet2xml(sheet,dom):
 
     root.appendChild(node)
 
+    node = mkelement("merits_flaws")
+
+    node2 = mkelement("merit")
+    node3 = mkelement("merit_name")
+    v = sheet.merit_1.GetSelection()
+    dat = None
+    if v == wx.NOT_FOUND or v == 0:
+        node4 = mktext(sheet.merit_1.GetStringSelection())
+    else:
+        dat = sheet.merit_1.GetClientData(v)
+	if dat:
+	    node4 = mktext(dat[0])
+    node3.appendChild(node4)
+    node2.appendChild(node3)
+    if dat:
+        node3 = mkelement("merit_value")
+	node4 = mktext(str(dat[1]))
+	node3.appendChild(node4)
+	node2.appendChild(node3)
+    node.appendChild(node2)
+    node2 = mkelement("merit")
+    node3 = mkelement("merit_name")
+    v = sheet.merit_2.GetSelection()
+    dat = None
+    if v == wx.NOT_FOUND or v == 0:
+        node4 = mktext(sheet.merit_2.GetStringSelection())
+    else:
+        dat = sheet.merit_2.GetClientData(v)
+	if dat:
+	    node4 = mktext(dat[0])
+    node3.appendChild(node4)
+    node2.appendChild(node3)
+    if dat:
+        node3 = mkelement("merit_value")
+	node4 = mktext(str(dat[1]))
+	node3.appendChild(node4)
+	node2.appendChild(node3)
+    node.appendChild(node2)
+    node2 = mkelement("merit")
+    node3 = mkelement("merit_name")
+    v = sheet.merit_3.GetSelection()
+    dat = None
+    if v == wx.NOT_FOUND or v == 0:
+        node4 = mktext(sheet.merit_3.GetStringSelection())
+    else:
+        dat = sheet.merit_3.GetClientData(v)
+	if dat:
+	    node4 = mktext(dat[0])
+    node3.appendChild(node4)
+    node2.appendChild(node3)
+    if dat:
+        node3 = mkelement("merit_value")
+	node4 = mktext(str(dat[1]))
+	node3.appendChild(node4)
+	node2.appendChild(node3)
+    node.appendChild(node2)
+	
+    node2 = mkelement("flaw")
+    node3 = mkelement("flaw_name")
+    v = sheet.flaw_1.GetSelection()
+    dat = None
+    if v == wx.NOT_FOUND or v == 0:
+        node4 = mktext(sheet.flaw_1.GetStringSelection())
+    else:
+        dat = sheet.flaw_1.GetClientData(v)
+	if dat:
+	    node4 = mktext(dat[0])
+    node3.appendChild(node4)
+    node2.appendChild(node3)
+    if dat:
+        node3 = mkelement("flaw_value")
+	node4 = mktext(str(dat[1]))
+	node3.appendChild(node4)
+	node2.appendChild(node3)
+    node.appendChild(node2)
+    node2 = mkelement("flaw")
+    node3 = mkelement("flaw_name")
+    v = sheet.flaw_2.GetSelection()
+    dat = None
+    if v == wx.NOT_FOUND or v == 0:
+        node4 = mktext(sheet.flaw_2.GetStringSelection())
+    else:
+        dat = sheet.flaw_2.GetClientData(v)
+	if dat:
+	    node4 = mktext(dat[0])
+    node3.appendChild(node4)
+    node2.appendChild(node3)
+    if dat:
+        node3 = mkelement("flaw_value")
+	node4 = mktext(str(dat[1]))
+	node3.appendChild(node4)
+	node2.appendChild(node3)
+    node.appendChild(node2)
+    node2 = mkelement("flaw")
+    node3 = mkelement("flaw_name")
+    v = sheet.flaw_3.GetSelection()
+    dat = None
+    if v == wx.NOT_FOUND or v == 0:
+        node4 = mktext(sheet.flaw_3.GetStringSelection())
+    else:
+        dat = sheet.flaw_3.GetClientData(v)
+	if dat:
+	    node4 = mktext(dat[0])
+    node3.appendChild(node4)
+    node2.appendChild(node3)
+    if dat:
+        node3 = mkelement("flaw_value")
+	node4 = mktext(str(dat[1]))
+	node3.appendChild(node4)
+	node2.appendChild(node3)
+    node.appendChild(node2)
+    
+    root.appendChild(node)
+
     node = mkelement("humanity_path")
     tmp = sheet.humanity_path_name.GetValue()
     if tmp.lower() == "humanity":
@@ -678,6 +881,60 @@ def xml2sheet(dom,sheet):
     cn = vnode.getElementsByTagName("courage")[0]
     sheet.courage_name.SetValue(gettxt(cn.getElementsByTagName("courage_name")[0]))
     sheet.courage_level.setvalue(int(gettxt(cn.getElementsByTagName("courage_level")[0])))
+
+    mfnode = dom.getElementsByTagName("merits_flaws")
+    if mfnode:
+        mtn = mfnode[0].getElementsByTagName("merit")
+        if mtn[0]:
+            mn = mtn[0].getElementsByTagName("merit_name")[0]
+            mv = mtn[0].getElementsByTagName("merit_value")
+	    if mv:
+	        st = gettxt(mn) + " (" + gettxt(mv[0]) + "-pt. Merit)"
+	        sheet.merit_1.SetStringSelection(st)
+	    else:
+	        sheet.merit_1.SetStringSelection(gettxt(mn))
+        if mtn[1]:
+            mn = mtn[1].getElementsByTagName("merit_name")[0]
+            mv = mtn[1].getElementsByTagName("merit_value")
+	    if mv:
+	        st = gettxt(mn) + " (" + gettxt(mv[0]) + "-pt. Merit)"
+	        sheet.merit_2.SetStringSelection(st)
+	    else:
+	        sheet.merit_2.SetStringSelection(gettxt(mn))
+        if mtn[2]:
+            mn = mtn[2].getElementsByTagName("merit_name")[0]
+            mv = mtn[2].getElementsByTagName("merit_value")
+	    if mv:
+	        st = gettxt(mn) + " (" + gettxt(mv[0]) + "-pt. Merit)"
+	        sheet.merit_3.SetStringSelection(st)
+	    else:
+	        sheet.merit_3.SetStringSelection(gettxt(mn))
+        fln = mfnode[0].getElementsByTagName("flaw")
+        if fln[0]:
+            fn = fln[0].getElementsByTagName("flaw_name")[0]
+	    fv = fln[0].getElementsByTagName("flaw_value")
+	    if fv:
+	        st = gettxt(fn) + " (" + gettxt(fv[0]) + "-pt. Flaw)"
+	        sheet.flaw_1.SetStringSelection(st)
+            else:
+	        sheet.flaw_1.SetStringSelection(gettxt(fn))
+        if fln[1]:
+            fn = fln[1].getElementsByTagName("flaw_name")[0]
+	    fv = fln[1].getElementsByTagName("flaw_value")
+	    if fv:
+	        st = gettxt(fn) + " (" + gettxt(fv[0]) + "-pt. Flaw)"
+	        sheet.flaw_2.SetStringSelection(st)
+            else:
+	        sheet.flaw_2.SetStringSelection(gettxt(fn))
+        if fln[2]:
+            fn = fln[2].getElementsByTagName("flaw_name")[0]
+	    fv = fln[2].getElementsByTagName("flaw_value")
+	    if fv:
+	        st = gettxt(fn) + " (" + gettxt(fv[0]) + "-pt. Flaw)"
+	        sheet.flaw_3.SetStringSelection(st)
+            else:
+	        sheet.flaw_3.SetStringSelection(gettxt(fn))
+
     
     hpnode = dom.getElementsByTagName("humanity_path")[0]
     hn = hpnode.getElementsByTagName("humanity")
