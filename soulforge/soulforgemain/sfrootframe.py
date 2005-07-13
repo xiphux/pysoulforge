@@ -19,11 +19,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import wx
-import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
-from xml.dom import minidom
-from libsoulforge import xmlutils,headerdata
 from os import path
+from xml.dom import minidom
+import wx
+from soulforge.libsoulforge import xmlutils,headerdata
+from soulforge.soulforgemain import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102

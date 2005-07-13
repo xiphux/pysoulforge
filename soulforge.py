@@ -23,8 +23,8 @@
 from optparse import OptionParser
 from compileall import compile_dir
 import wx
-from soulforgemain import sfrootframe
-from libsoulforge import headerdata
+from soulforge.libsoulforge import headerdata
+from soulforge.soulforgemain import sfrootframe
 
 class Soulforge(wx.App):
     def OnInit(self):

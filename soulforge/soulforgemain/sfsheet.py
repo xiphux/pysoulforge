@@ -19,9 +19,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import sfcontrols,sfuniverses
 import wx
-from libsoulforge import headerdata
+from soulforge.libsoulforge import headerdata
+from soulforge.soulforgemain import sfcontrols,sfuniverses
 
 SFSHEET_OK = 401
 SFSHEET_CANCEL = 402

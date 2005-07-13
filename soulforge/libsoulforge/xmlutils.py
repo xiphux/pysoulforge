@@ -19,9 +19,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import re, bz2
+import re
+import bz2
 from xml.dom import minidom
-import headerdata
+from soulforge.libsoulforge import headerdata
 
 def getnodetext(node):
     string = ""

@@ -21,7 +21,7 @@
 
 import wx
 from wx.lib import buttons
-from libsoulforge import headerdata
+from soulforge.libsoulforge import headerdata
 
 SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301

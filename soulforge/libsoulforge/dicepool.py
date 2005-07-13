@@ -20,7 +20,7 @@
 #
 
 import random
-import headerdata
+from soulforge.libsoulforge import headerdata
 
 class dicepool:
     def __init__(self):

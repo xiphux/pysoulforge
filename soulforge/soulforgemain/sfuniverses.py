@@ -19,8 +19,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from libsoulforge import headerdata
-from sheets import vampire_the_masquerade,vampire_the_masquerade_data
+from soulforge.libsoulforge import headerdata
+from soulforge.soulforgemain.sheets import vampire_the_masquerade,vampire_the_masquerade_data
 
 def _(message): return message
 

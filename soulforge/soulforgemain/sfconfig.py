@@ -20,7 +20,7 @@
 #
 
 import wx
-from libsoulforge import headerdata
+from soulforge.libsoulforge import headerdata
 
 SFCONFIG_OK = 701
 SFCONFIG_CANCEL = 702

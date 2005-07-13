@@ -19,9 +19,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import wx
 from xml.dom import minidom
-from libsoulforge import xmlutils, headerdata
+import wx
+from soulforge.libsoulforge import xmlutils, headerdata
 
 universe = 'Vampire: The Masquerade'
 

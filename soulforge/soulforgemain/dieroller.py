@@ -20,7 +20,7 @@
 #
 
 import wx
-from libsoulforge import dicepool, headerdata
+from soulforge.libsoulforge import dicepool, headerdata
 
 DIEROLLER_CLOSE = 104
 DIEROLLER_ROLL = 105
