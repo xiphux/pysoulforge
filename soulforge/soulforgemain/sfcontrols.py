@@ -62,16 +62,24 @@ class sfdot(buttons.GenToggleButton):
 	x = width - 1
 	y = height - 1
 	dc = wx.BufferedPaintDC(self)
+	dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
 	dc.Clear()
 	self.DrawBezel(dc, 0, 0, x, y)
 
     def DrawBezel(self, dc, x1, y1, x2, y2):
-	dc.SetPen(wx.BLACK_PEN)
-	if self.up:
+	dc.SetPen(self.shadowPen)
+        if self.up:
 	    dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
+	    dc.DrawEllipseRect(wx.Rect(3,3,y2-4,y2-4))
+	    dc.SetPen(wx.BLACK_PEN)
+	    dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.TRANSPARENT))
+	    dc.DrawEllipseRect(wx.Rect(2,2,y2-4,y2-4))
 	else:
+	    dc.SetBrush(wx.Brush(self.shadowPen.GetColour(), wx.SOLID))
+	    dc.DrawEllipseRect(wx.Rect(2,2,y2-4,y2-4))
+	    dc.SetPen(wx.BLACK_PEN)
 	    dc.SetBrush(wx.Brush(wx.BLACK, wx.SOLID))
-	dc.DrawEllipseRect(wx.Rect(2,2,y2-4,y2-4))
+	    dc.DrawEllipseRect(wx.Rect(3,3,y2-4,y2-4))
 
     def DoGetBestSize(self):
         width = 15
@@ -128,19 +136,27 @@ class sfbox(buttons.GenToggleButton):
 	x = width - 1
 	y = height - 1
 	dc = wx.BufferedPaintDC(self)
+	dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
 	dc.Clear()
 	self.DrawBezel(dc, 0, 0, x, y)
 	self.DrawMarker(dc, 0, 0, x, y)
 
     def DrawMarker(self, dc, x1, y1, x2, y2):
-        dc.SetPen(wx.BLACK_PEN)
 	if not self.up:
-	    dc.DrawLine(x2-3, 2, 2, y2-3)
+            dc.SetPen(wx.BLACK_PEN)
+	    dc.DrawLine(x2-2, 3, 3, y2-2)
 
     def DrawBezel(self, dc, x1, y1, x2, y2):
-	dc.SetPen(wx.BLACK_PEN)
-	dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
-	dc.DrawRectangle(2,2,y2-4,y2-4)
+	dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.TRANSPARENT))
+	dc.SetPen(self.shadowPen)
+	if self.up:
+	    dc.DrawRectangle(3,3,y2-4,y2-4)
+	    dc.SetPen(wx.BLACK_PEN)
+	    dc.DrawRectangle(2,2,y2-4,y2-4)
+	else:
+	    dc.DrawRectangle(2,2,y2-4,y2-4)
+	    dc.SetPen(wx.BLACK_PEN)
+	    dc.DrawRectangle(3,3,y2-4,y2-4)
 
     def DoGetBestSize(self):
         width = 15
@@ -204,21 +220,29 @@ class sftristate(buttons.GenToggleButton):
 	x = width - 1
 	y = height - 1
 	dc = wx.BufferedPaintDC(self)
+	dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
 	dc.Clear()
 	self.DrawBezel(dc, 0, 0, x, y)
 	self.DrawMarker(dc, 0, 0, x, y)
 
     def DrawMarker(self, dc, x1, y1, x2, y2):
-        dc.SetPen(wx.BLACK_PEN)
 	if self.state > 0:
-	    dc.DrawLine(x2-2, 2, 2, y2-3)
+            dc.SetPen(wx.BLACK_PEN)
+	    dc.DrawLine(x2-1, 3, 3, y2-2)
 	    if self.state > 1:
-	        dc.DrawLine(2, 2, x2-1, y2-2)
+	        dc.DrawLine(3, 3, x2, y2-1)
 
     def DrawBezel(self, dc, x1, y1, x2, y2):
-	dc.SetPen(wx.BLACK_PEN)
-	dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
-	dc.DrawRectangle(2,2,y2-4,y2-4)
+	dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.TRANSPARENT))
+	dc.SetPen(self.shadowPen)
+	if self.state > 0:
+	    dc.DrawRectangle(2,2,y2-4,y2-4)
+	    dc.SetPen(wx.BLACK_PEN)
+	    dc.DrawRectangle(3,3,y2-4,y2-4)
+	else:
+	    dc.DrawRectangle(3,3,y2-4,y2-4)
+	    dc.SetPen(wx.BLACK_PEN)
+	    dc.DrawRectangle(2,2,y2-4,y2-4)
 
     def DoGetBestSize(self):
         width = 15
