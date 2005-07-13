@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxDialog,wxBoxSizer,wxVERTICAL,wxHORIZONTAL,wxButton,wxCheckBox,wxConfig,EVT_BUTTON,EVT_CHECKBOX,wxEXPAND,wxBOTH,wxID_OK,wxID_CANCEL
+import wx
 from libsoulforge import headerdata
 
 SFCONFIG_OK = 701
@@ -27,36 +27,36 @@ SFCONFIG_CANCEL = 702
 SFCONFIG_APPLY = 703
 SFCONFIG_COMPRESS = 704
 
-class sfconfig(wxDialog):
+class sfconfig(wx.Dialog):
     def __init__(self,parent,ID,title=_("Soulforge config")):
-        wxDialog.__init__(self, parent, ID, title)
+        wx.Dialog.__init__(self, parent, ID, title)
 
 	self.modified = False
-	self.config = wxConfig.Get()
+	self.config = wx.Config.Get()
 
-        root = wxBoxSizer(wxVERTICAL)
+        root = wx.BoxSizer(wx.VERTICAL)
 	str = _("Transparently compress") + " *" + headerdata.SF_COMPRESSED_EXT + " " + _("files")
-	self.compress = wxCheckBox(self,SFCONFIG_COMPRESS,str)
+	self.compress = wx.CheckBox(self,SFCONFIG_COMPRESS,str)
 	self.compress.SetValue(self.config.ReadInt(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
-	root.Add(self.compress,0,wxEXPAND)
+	root.Add(self.compress,0,wx.EXPAND)
 
-	bbox = wxBoxSizer(wxHORIZONTAL)
-	self.apply = wxButton(self,SFCONFIG_APPLY,_("Apply"))
-	bbox.Add(self.apply,1,wxEXPAND)
-	bbox.Add(wxButton(self,SFCONFIG_CANCEL,_("Cancel")),1,wxEXPAND)
-	self.ok = wxButton(self,SFCONFIG_OK,_("Ok"))
-	bbox.Add(self.ok,1,wxEXPAND)
-	root.Add(bbox,0,wxEXPAND)
+	bbox = wx.BoxSizer(wx.HORIZONTAL)
+	self.apply = wx.Button(self,SFCONFIG_APPLY,_("Apply"))
+	bbox.Add(self.apply,1,wx.EXPAND)
+	bbox.Add(wx.Button(self,SFCONFIG_CANCEL,_("Cancel")),1,wx.EXPAND)
+	self.ok = wx.Button(self,SFCONFIG_OK,_("Ok"))
+	bbox.Add(self.ok,1,wx.EXPAND)
+	root.Add(bbox,0,wx.EXPAND)
 
 	self.SetSizerAndFit(root)
-	self.Centre(wxBOTH)
+	self.Centre(wx.BOTH)
 
 	self.updategui()
 
-	EVT_BUTTON(self,SFCONFIG_OK,self.onok)
-	EVT_BUTTON(self,SFCONFIG_CANCEL,self.oncancel)
-	EVT_BUTTON(self,SFCONFIG_APPLY,self.onapply)
-	EVT_CHECKBOX(self,SFCONFIG_COMPRESS,self.onchange)
+	wx.EVT_BUTTON(self,SFCONFIG_OK,self.onok)
+	wx.EVT_BUTTON(self,SFCONFIG_CANCEL,self.oncancel)
+	wx.EVT_BUTTON(self,SFCONFIG_APPLY,self.onapply)
+	wx.EVT_CHECKBOX(self,SFCONFIG_COMPRESS,self.onchange)
 
     def onchange(self,event):
         self.modified = True
@@ -71,10 +71,10 @@ class sfconfig(wxDialog):
 
     def onok(self,event):
         self.writesettings()
-	self.EndModal(wxID_OK)
+	self.EndModal(wx.ID_OK)
 
     def oncancel(self,event):
-        self.EndModal(wxID_CANCEL)
+        self.EndModal(wx.ID_CANCEL)
 
     def onapply(self,event):
         self.writesettings()

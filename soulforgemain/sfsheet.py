@@ -20,38 +20,38 @@
 #
 
 import sfcontrols,sfuniverses
-from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxVERTICAL,wxHORIZONTAL,wxEXPAND,wxBoxSizer,wxButton,wxBOTH,EVT_BUTTON,wxPanel
+import wx
 from libsoulforge import headerdata
 
 SFSHEET_OK = 401
 SFSHEET_CANCEL = 402
 
-class sfsheet(wxFrame):
+class sfsheet(wx.Frame):
     def __init__(self,parent,ID,univ):
-        wxFrame.__init__(self, parent, ID, univ, wxDefaultPosition, wxDefaultSize)
+        wx.Frame.__init__(self, parent, ID, univ, wx.DefaultPosition, wx.DefaultSize)
 
 	self.universe = univ
 
-	root = wxBoxSizer(wxVERTICAL)
+	root = wx.BoxSizer(wx.VERTICAL)
 
 	sh = sfuniverses.universe_sheets[univ]
 	self.sheet = sh(self,-1)
 
-	root.Add(self.sheet,0,wxEXPAND)
+	root.Add(self.sheet,0,wx.EXPAND)
 
-	controls = wxBoxSizer(wxHORIZONTAL)
-	self.okbutton = wxButton(self,SFSHEET_OK, _("Ok"))
-	controls.Add(self.okbutton,1,wxEXPAND)
+	controls = wx.BoxSizer(wx.HORIZONTAL)
+	self.okbutton = wx.Button(self,SFSHEET_OK, _("Ok"))
+	controls.Add(self.okbutton,1,wx.EXPAND)
 
-	controls.Add(wxButton(self,SFSHEET_CANCEL, _("Cancel")),1,wxEXPAND)
+	controls.Add(wx.Button(self,SFSHEET_CANCEL, _("Cancel")),1,wx.EXPAND)
 
-	root.Add(controls,0,wxEXPAND)
+	root.Add(controls,0,wx.EXPAND)
 
 	self.SetSizerAndFit(root)
-	self.Centre(wxBOTH)
+	self.Centre(wx.BOTH)
 
-	EVT_BUTTON(self,SFSHEET_OK,self.onok)
-	EVT_BUTTON(self,SFSHEET_CANCEL,self.oncancel)
+	wx.EVT_BUTTON(self,SFSHEET_OK,self.onok)
+	wx.EVT_BUTTON(self,SFSHEET_CANCEL,self.oncancel)
 
     def oncancel(self,event):
         self.Destroy()

@@ -22,21 +22,21 @@
 
 from optparse import OptionParser
 from compileall import compile_dir
-from wxPython.wx import wxApp, wxConfig
+import wx
 from soulforgemain import sfrootframe
 from libsoulforge import headerdata
 
-class Soulforge(wxApp):
+class Soulforge(wx.App):
     def OnInit(self):
         self.SetAppName("soulforge")
-        config = wxConfig.Get()
+        config = wx.Config.Get()
         sframe = sfrootframe.sfrootframe(None, -1, u"Soulforge")
         sframe.Show(True)
         self.SetTopWindow(sframe)
         return True
 
     def OnExit(self):
-        config = wxConfig.Get()
+        config = wx.Config.Get()
 	del config
 
 if __name__ == "__main__":

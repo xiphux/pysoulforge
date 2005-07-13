@@ -19,15 +19,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL,EVT_CHECKBOX,EVT_RADIOBUTTON,EVT_BUTTON,wxBLACK_PEN,wxBLACK,wxRect,wxBrush,wxSOLID
-from wx.lib.buttons import GenToggleButton
 import wx
+from wx.lib import buttons
 from libsoulforge import headerdata
 
 SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301
 
-class sfdot(GenToggleButton):
+class sfdot(buttons.GenToggleButton):
     def __init__(self, parent, ID, label,
                  pos = wx.DefaultPosition, size = wx.DefaultSize,
                  style = 0, validator = wx.DefaultValidator,
@@ -67,12 +66,12 @@ class sfdot(GenToggleButton):
 	self.DrawBezel(dc, 0, 0, x, y)
 
     def DrawBezel(self, dc, x1, y1, x2, y2):
-	dc.SetPen(wxBLACK_PEN)
+	dc.SetPen(wx.BLACK_PEN)
 	if self.up:
-	    dc.SetBrush(wxBrush(self.GetBackgroundColour(), wxSOLID))
+	    dc.SetBrush(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
 	else:
-	    dc.SetBrush(wxBrush(wxBLACK, wxSOLID))
-	dc.DrawEllipseRect(wxRect(self.bezelWidth+2,self.bezelWidth+2,x2-self.bezelWidth*2-4,y2-self.bezelWidth*2-4))
+	    dc.SetBrush(wx.Brush(wx.BLACK, wx.SOLID))
+	dc.DrawEllipseRect(wx.Rect(self.bezelWidth+2,self.bezelWidth+2,x2-self.bezelWidth*2-4,y2-self.bezelWidth*2-4))
 
     def DoGetBestSize(self):
         width = 15
@@ -91,19 +90,19 @@ class sfdot(GenToggleButton):
         self.SetFocus()
 
 
-class sfstat(wxPanel):
-    def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
-        wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
+class sfstat(wx.Panel):
+    def __init__(self,parent,ID,label="",orient = wx.HORIZONTAL,buttons = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
+        wx.Panel.__init__(self,parent,ID,wx.DefaultPosition,wx.DefaultSize)
 
 	self.btns = buttons
 	self.value = 0
 	self.alternate = alternate
 
-	root = wxBoxSizer(orient)
+	root = wx.BoxSizer(orient)
 
 	if label != "":
-	    self.label = wxStaticText(self,-1,label)
-	    root.Add(self.label,1,wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL)
+	    self.label = wx.StaticText(self,-1,label)
+	    root.Add(self.label,1,wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL)
 
 	self.buttons = []
 
@@ -112,8 +111,8 @@ class sfstat(wxPanel):
 	        pass
 	    else:
 	        self.buttons.append(sfdot(self,(SFSTAT_BUTTON + i),""))
-		EVT_BUTTON(self,(SFSTAT_BUTTON+i),self.onclick)
-	    root.Add(self.buttons[i],0,wxALIGN_CENTER_VERTICAL)
+		wx.EVT_BUTTON(self,(SFSTAT_BUTTON+i),self.onclick)
+	    root.Add(self.buttons[i],0,wx.ALIGN_CENTER_VERTICAL)
 
 	self.recalc()
 
@@ -137,9 +136,9 @@ class sfstat(wxPanel):
         self.value = v
 	self.recalc()
 
-class sfpool(wxPanel):
+class sfpool(wx.Panel):
     def __init__(self,parent,ID,rows = headerdata.SF_SFPOOL_ROWS,cols = headerdata.SF_SFPOOL_COLS,alternate = False):
-        wxPanel.__init__(self,parent,ID,wxDefaultPosition,wxDefaultSize)
+        wx.Panel.__init__(self,parent,ID,wx.DefaultPosition,wx.DefaultSize)
 
 	self.value = 0
 	self.alternate = alternate
@@ -147,7 +146,7 @@ class sfpool(wxPanel):
 	self.cols = cols
 	self.total = rows*cols
 
-	root = wxGridSizer(rows,cols,1,1)
+	root = wx.GridSizer(rows,cols,1,1)
 
 	self.buttons = []
 	self.dummy = []
@@ -155,16 +154,16 @@ class sfpool(wxPanel):
 
 	for i in range(self.total):
 	    if alternate:
-	        self.buttons.append(wxRadioButton(self,(SFPOOL_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
-		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize,wxRB_SINGLE))
+	        self.buttons.append(wx.RadioButton(self,(SFPOOL_BUTTON + i),"",wx.DefaultPosition,wx.DefaultSize,wx.RB_GROUP))
+		self.dummy.append(wx.RadioButton(self,-1,"",wx.DefaultPosition,wx.DefaultSize,wx.RB_SINGLE))
 		self.dummy[i].Show(False)
 		self.dummy[i].SetValue(True)
 		self.state.append(False)
-		self.Connect((SFPOOL_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
+		wx.EVT_RADIOBUTTON(self,(SFPOOL_BUTTON + i),self.onclick)
 	    else:
-	        self.buttons.append(wxCheckBox(self,(SFPOOL_BUTTON + i),""))
-		self.Connect((SFPOOL_BUTTON + i),-1,wxEVT_COMMAND_CHECKBOX_CLICKED,self.onclick)
-	    root.Add(self.buttons[i],0,wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL)
+	        self.buttons.append(wx.CheckBox(self,(SFPOOL_BUTTON + i),""))
+		wx.EVT_CHECKBOX(self,(SFPOOL_BUTTON + i),self.onclick)
+	    root.Add(self.buttons[i],0,wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL)
 	
 	self.SetSizer(root)
 

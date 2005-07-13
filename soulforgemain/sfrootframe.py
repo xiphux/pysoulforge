@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxFrame,wxDefaultPosition,wxDefaultSize,wxMenu,wxMenuItem,wxMenuBar,wxFlexGridSizer,wxALIGN_CENTER_VERTICAL,wxTE_READONLY,EVT_MENU,EVT_MENU_RANGE,EVT_BUTTON,wxEXPAND,wxMessageDialog,wxFileDialog,wxStaticText,wxTextCtrl,wxPanel,wxButton,wxBOTH,wxID_OK,wxID_CANCEL,wxOPEN,wxOK,wxCANCEL,wxFILE_MUST_EXIST,wxSAVE,wxOVERWRITE_PROMPT,wxSingleChoiceDialog,wxConfig,wxFileHistory,wxID_FILE1,wxID_FILE2,wxID_FILE3,wxID_FILE4,wxID_FILE5,wxID_FILE6,wxID_FILE7,wxID_FILE8,wxID_FILE9
+import wx
 import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
 from xml.dom import minidom
 from libsoulforge import xmlutils,headerdata
@@ -36,92 +36,92 @@ SFROOTFRAME_CLOSE = 108
 SFROOTFRAME_OPTIONS = 109
 SFSHEET_OK = 401
 
-class sfrootframe(wxFrame):
+class sfrootframe(wx.Frame):
     def __init__(self, parent, ID, title):
-        wxFrame.__init__(self, parent, ID, title, wxDefaultPosition, wxDefaultSize)
+        wx.Frame.__init__(self, parent, ID, title, wx.DefaultPosition, wx.DefaultSize)
 
 	self.dom = None
 	self.file = None
 	self.sh = None
 	self.modified = False
-	self.config = wxConfig.Get()
-	self.history = wxFileHistory()
+	self.config = wx.Config.Get()
+	self.history = wx.FileHistory()
 	self.config.SetPath("/lastrun")
 	self.history.Load(self.config)
 	self.config.SetPath("/")
 	
-	filemenu = wxMenu()
+	filemenu = wx.Menu()
 	filemenu.Append(SFROOTFRAME_NEW, _("&New"), _("New character"))
 	filemenu.Append(SFROOTFRAME_LOAD, _("&Load"), _("Load character"))
-	self.save = wxMenuItem(filemenu,SFROOTFRAME_SAVE, _("&Save"), _("Save character"))
+	self.save = wx.MenuItem(filemenu,SFROOTFRAME_SAVE, _("&Save"), _("Save character"))
 	filemenu.AppendItem(self.save)
-	self.close = wxMenuItem(filemenu,SFROOTFRAME_CLOSE, _("&Close"), _("Close character"))
+	self.close = wx.MenuItem(filemenu,SFROOTFRAME_CLOSE, _("&Close"), _("Close character"))
 	filemenu.AppendItem(self.close)
 	filemenu.AppendSeparator()
-	self.recent = wxMenu()
+	self.recent = wx.Menu()
 	self.history.UseMenu(self.recent)
 	self.history.AddFilesToMenu()
 	filemenu.AppendMenu(-1, _("&Recent files"), self.recent, _("Recently opened files"))
 	filemenu.AppendSeparator()
 	filemenu.Append(SFROOTFRAME_QUIT, _("E&xit"), _("Quit Soulforge"))
 
-	toolsmenu = wxMenu()
+	toolsmenu = wx.Menu()
 	toolsmenu.Append(SFROOTFRAME_DIEROLLER, _("&Dieroller"), _("Dieroller"))
 	toolsmenu.AppendSeparator()
 	toolsmenu.Append(SFROOTFRAME_OPTIONS, _("&Options"), _("Options"))
 
-	helpmenu = wxMenu()
+	helpmenu = wx.Menu()
 	helpmenu.Append(SFROOTFRAME_ABOUT, _("&About"), _("About Soulforge"))
 
-	menubar = wxMenuBar()
+	menubar = wx.MenuBar()
 	menubar.Append(filemenu, _("&File"))
 	menubar.Append(toolsmenu, _("&Tools"))
 	menubar.Append(helpmenu, _("&Help"))
 	
 	self.SetMenuBar(menubar)
 
-	root = wxFlexGridSizer(6,2,0,0)
+	root = wx.FlexGridSizer(6,2,0,0)
 	root.AddGrowableCol(1,1)
-	root.Add(wxStaticText(self,-1, _("Name:")),0,wxALIGN_CENTER_VERTICAL)
-	self.name = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
-	root.Add(self.name,1,wxEXPAND)
-	root.Add(wxStaticText(self,-1, _("Player:")),0,wxALIGN_CENTER_VERTICAL)
-	self.player = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
-	root.Add(self.player,1,wxEXPAND)
-	root.Add(wxStaticText(self,-1, _("Universe:")),0,wxALIGN_CENTER_VERTICAL)
-	self.universe = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
-	root.Add(self.universe,1,wxEXPAND)
-	root.Add(wxStaticText(self,-1, _("Filename:")),0,wxALIGN_CENTER_VERTICAL)
-	self.filename = wxTextCtrl(self,-1,u"",wxDefaultPosition,wxDefaultSize,wxTE_READONLY)
-	root.Add(self.filename,1,wxEXPAND)
-	root.Add(wxPanel(self,-1))
-	self.edit = wxButton(self,SFROOTFRAME_EDIT, _("Edit"))
-	root.Add(self.edit,1,wxEXPAND)
+	root.Add(wx.StaticText(self,-1, _("Name:")),0,wx.ALIGN_CENTER_VERTICAL)
+	self.name = wx.TextCtrl(self,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
+	root.Add(self.name,1,wx.EXPAND)
+	root.Add(wx.StaticText(self,-1, _("Player:")),0,wx.ALIGN_CENTER_VERTICAL)
+	self.player = wx.TextCtrl(self,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
+	root.Add(self.player,1,wx.EXPAND)
+	root.Add(wx.StaticText(self,-1, _("Universe:")),0,wx.ALIGN_CENTER_VERTICAL)
+	self.universe = wx.TextCtrl(self,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
+	root.Add(self.universe,1,wx.EXPAND)
+	root.Add(wx.StaticText(self,-1, _("Filename:")),0,wx.ALIGN_CENTER_VERTICAL)
+	self.filename = wx.TextCtrl(self,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
+	root.Add(self.filename,1,wx.EXPAND)
+	root.Add(wx.Panel(self,-1))
+	self.edit = wx.Button(self,SFROOTFRAME_EDIT, _("Edit"))
+	root.Add(self.edit,1,wx.EXPAND)
 
 	self.SetSizer(root)
-	self.Centre(wxBOTH)
+	self.Centre(wx.BOTH)
 
 	self.updategui()
 
-	EVT_MENU(self,SFROOTFRAME_QUIT,self.onquit)
-	EVT_MENU(self,SFROOTFRAME_ABOUT,self.onabout)
-	EVT_MENU(self,SFROOTFRAME_DIEROLLER,self.ondieroller)
-	EVT_MENU(self,SFROOTFRAME_LOAD,self.onload)
-	EVT_MENU(self,SFROOTFRAME_SAVE,self.onsave)
-	EVT_MENU(self,SFROOTFRAME_CLOSE,self.onclose)
-	EVT_MENU(self,SFROOTFRAME_NEW,self.onnew)
-	EVT_MENU(self,SFROOTFRAME_OPTIONS,self.onoptions)
-	EVT_MENU_RANGE(self,wxID_FILE1,wxID_FILE9,self.onrecent)
-	EVT_BUTTON(self,SFSHEET_OK,self.onsheetok)
-	EVT_BUTTON(self,SFROOTFRAME_EDIT,self.onedit)
+	wx.EVT_MENU(self,SFROOTFRAME_QUIT,self.onquit)
+	wx.EVT_MENU(self,SFROOTFRAME_ABOUT,self.onabout)
+	wx.EVT_MENU(self,SFROOTFRAME_DIEROLLER,self.ondieroller)
+	wx.EVT_MENU(self,SFROOTFRAME_LOAD,self.onload)
+	wx.EVT_MENU(self,SFROOTFRAME_SAVE,self.onsave)
+	wx.EVT_MENU(self,SFROOTFRAME_CLOSE,self.onclose)
+	wx.EVT_MENU(self,SFROOTFRAME_NEW,self.onnew)
+	wx.EVT_MENU(self,SFROOTFRAME_OPTIONS,self.onoptions)
+	wx.EVT_MENU_RANGE(self,wx.ID_FILE1,wx.ID_FILE9,self.onrecent)
+	wx.EVT_BUTTON(self,SFSHEET_OK,self.onsheetok)
+	wx.EVT_BUTTON(self,SFROOTFRAME_EDIT,self.onedit)
 
     def onquit(self,event):
         if self.modified:
-	    err = wxMessageDialog(self, _("Character is still unsaved.  Quit anyway?"), _("Are you sure?"),wxOK|wxCANCEL)
-	    err.Centre(wxBOTH)
+	    err = wx.MessageDialog(self, _("Character is still unsaved.  Quit anyway?"), _("Are you sure?"),wx.OK|wx.CANCEL)
+	    err.Centre(wx.BOTH)
 	    ret = err.ShowModal()
 	    err.Destroy()
-	    if ret == wxID_CANCEL:
+	    if ret == wx.ID_CANCEL:
 	        return
         self.config.SetPath("/lastrun")
 	self.history.Save(self.config)
@@ -129,7 +129,7 @@ class sfrootframe(wxFrame):
         self.Close(True)
 
     def onabout(self,event):
-        abt = wxMessageDialog(self, _("Soulforge by Christopher Han <xiphux@gmail.com>\nCopyright (C) 2005\nLicensed under the GNU GPL"), _("About Soulforge"),wxOK)
+        abt = wx.MessageDialog(self, _("Soulforge by Christopher Han <xiphux@gmail.com>\nCopyright (C) 2005\nLicensed under the GNU GPL"), _("About Soulforge"),wx.OK)
 	abt.ShowModal()
 	abt.Destroy()
 
@@ -143,14 +143,14 @@ class sfrootframe(wxFrame):
 	self.updategui()
 
     def onload(self,event):
-        loaddlg = wxFileDialog(self, _("Load character"),self.config.Read(headerdata.SF_CONFIGKEY_LOADDIR),"", headerdata.SF_FILEMASK,wxOPEN|wxFILE_MUST_EXIST)
-	if loaddlg.ShowModal() == wxID_OK:
+        loaddlg = wx.FileDialog(self, _("Load character"),self.config.Read(headerdata.SF_CONFIGKEY_LOADDIR),"", headerdata.SF_FILEMASK,wx.OPEN|wx.FILE_MUST_EXIST)
+	if loaddlg.ShowModal() == wx.ID_OK:
 	    if self.dom:
-	        err = wxMessageDialog(self, _("If you load this character sheet, current character data will be cleared.  Are you sure?"), _("Are you sure?"),wxOK|wxCANCEL)
-		err.Centre(wxBOTH)
+	        err = wx.MessageDialog(self, _("If you load this character sheet, current character data will be cleared.  Are you sure?"), _("Are you sure?"),wx.OK|wx.CANCEL)
+		err.Centre(wx.BOTH)
 		ret = err.ShowModal()
 		err.Destroy()
-		if ret == wxID_CANCEL:
+		if ret == wx.ID_CANCEL:
 		    return
 	    self.file = loaddlg.GetPath()
 	    self.history.AddFileToHistory(self.file)
@@ -160,11 +160,11 @@ class sfrootframe(wxFrame):
 	loaddlg.Destroy()
     
     def onrecent(self,event):
-        recentfile = self.history.GetHistoryFile(event.GetId() - wxID_FILE1)
+        recentfile = self.history.GetHistoryFile(event.GetId() - wx.ID_FILE1)
 	if recentfile:
 	    if not path.exists(recentfile):
-	        err = wxMessageDialog(self, _("Error: Selected file no longer exists"), _("Error!"),wxOK)
-		err.Centre(wxBOTH)
+	        err = wx.MessageDialog(self, _("Error: Selected file no longer exists"), _("Error!"),wx.OK)
+		err.Centre(wx.BOTH)
 		err.ShowModal()
 		err.Destroy()
 		return
@@ -174,14 +174,14 @@ class sfrootframe(wxFrame):
 
     def onsave(self,event):
         if not self.dom:
-	    err = wxMessageDialog(self, _("Error: No character data to save"), _("Error!"),wxOK)
-	    err.Centre(wxBOTH)
+	    err = wx.MessageDialog(self, _("Error: No character data to save"), _("Error!"),wx.OK)
+	    err.Centre(wx.BOTH)
 	    err.ShowModal()
 	    err.Destroy()
 	    return
         if not self.file:
-	    savedlg = wxFileDialog(self, _("Save character"),self.config.Read(headerdata.SF_CONFIGKEY_SAVEDIR),"", headerdata.SF_FILEMASK,wxSAVE|wxOVERWRITE_PROMPT)
-	    if savedlg.ShowModal() == wxID_OK:
+	    savedlg = wx.FileDialog(self, _("Save character"),self.config.Read(headerdata.SF_CONFIGKEY_SAVEDIR),"", headerdata.SF_FILEMASK,wx.SAVE|wx.OVERWRITE_PROMPT)
+	    if savedlg.ShowModal() == wx.ID_OK:
 	        self.file = savedlg.GetPath()
 		self.config.Write(headerdata.SF_CONFIGKEY_SAVEDIR, path.dirname(self.file))
 		self.config.Flush(True)
@@ -195,11 +195,11 @@ class sfrootframe(wxFrame):
 
     def onnew(self,event):
         if self.dom:
-	    err = wxMessageDialog(self, _("If you start a new sheet, previous character data will be cleared.  Are you sure?"), _("Are you sure?"),wxOK|wxCANCEL)
-	    err.Centre(wxBOTH)
+	    err = wx.MessageDialog(self, _("If you start a new sheet, previous character data will be cleared.  Are you sure?"), _("Are you sure?"),wx.OK|wx.CANCEL)
+	    err.Centre(wx.BOTH)
 	    ret = err.ShowModal()
 	    err.Destroy()
-	    if ret == wxID_OK:
+	    if ret == wx.ID_OK:
 	        self.dom.unlink()
 		self.dom = None
 		self.file = None
@@ -210,9 +210,9 @@ class sfrootframe(wxFrame):
         un = []
 	for i in sfuniverses.universes:
 	    un.append(_(i))
-	uni = wxSingleChoiceDialog(self, _("Choose a universe:"), _("Universe"),un)
+	uni = wx.SingleChoiceDialog(self, _("Choose a universe:"), _("Universe"),un)
 	ret = uni.ShowModal()
-	if ret == wxID_OK:
+	if ret == wx.ID_OK:
 	    ch = uni.GetStringSelection()
 	    if ch:
                 self.sh = sfsheet.sfsheet(self,-1,ch)
@@ -270,11 +270,11 @@ class sfrootframe(wxFrame):
 
     def onclose(self,event):
         if self.modified:
-	    err = wxMessageDialog(self, _("Character is still unsaved.  Close anyway?"), _("Are you sure?"),wxOK|wxCANCEL)
-	    err.Centre(wxBOTH)
+	    err = wx.MessageDialog(self, _("Character is still unsaved.  Close anyway?"), _("Are you sure?"),wx.OK|wx.CANCEL)
+	    err.Centre(wx.BOTH)
 	    ret = err.ShowModal()
 	    err.Destroy()
-	    if ret == wxID_CANCEL:
+	    if ret == wx.ID_CANCEL:
 	        return
 	self.file = None
 	if self.dom:
