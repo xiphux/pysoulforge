@@ -19,11 +19,77 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL,EVT_CHECKBOX,EVT_RADIOBUTTON
+from wxPython.wx import wxPanel,wxHORIZONTAL,wxDefaultPosition,wxDefaultSize,wxBoxSizer,wxALIGN_LEFT,wxALIGN_CENTER_VERTICAL,wxCheckBox,wxEVT_COMMAND_CHECKBOX_CLICKED,wxRadioButton,wxRB_GROUP,wxRB_SINGLE,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxStaticText,wxGridSizer,wxALIGN_CENTER_HORIZONTAL,EVT_CHECKBOX,EVT_RADIOBUTTON,EVT_BUTTON,wxBLACK_PEN,wxBLACK,wxRect,wxBrush,wxSOLID
+from wx.lib.buttons import GenToggleButton
+import wx
 from libsoulforge import headerdata
 
 SFSTAT_BUTTON = 201
 SFPOOL_BUTTON = 301
+
+class sfdot(GenToggleButton):
+    def __init__(self, parent, ID, label,
+                 pos = wx.DefaultPosition, size = wx.DefaultSize,
+                 style = 0, validator = wx.DefaultValidator,
+                 name = "genbutton"):
+        cstyle = style
+        if cstyle == 0:
+            cstyle = wx.NO_BORDER
+        wx.PyControl.__init__(self, parent, ID, pos, size, cstyle, validator, name)
+
+        self.up = True
+        self.hasFocus = False
+        self.bezelWidth = 0
+        self.useFocusInd = False
+
+        self.InheritAttributes()
+        self.SetBestFittingSize(size)
+        self.InitColours()
+
+        self.Bind(wx.EVT_LEFT_DOWN,        self.OnLeftDown)
+        self.Bind(wx.EVT_LEFT_UP,          self.OnLeftUp)
+        if wx.Platform == '__WXMSW__':
+            self.Bind(wx.EVT_LEFT_DCLICK,  self.OnLeftDown)
+        self.Bind(wx.EVT_MOTION,           self.OnMotion)
+        self.Bind(wx.EVT_SET_FOCUS,        self.OnGainFocus)
+        self.Bind(wx.EVT_KILL_FOCUS,       self.OnLoseFocus)
+        self.Bind(wx.EVT_KEY_DOWN,         self.OnKeyDown)
+        self.Bind(wx.EVT_KEY_UP,           self.OnKeyUp)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
+        self.Bind(wx.EVT_PAINT,            self.OnPaint)
+
+    def OnPoint(self, event):
+        (width, height) = self.GetClientSizeTuple()
+	x = width - 1
+	y = height - 1
+	df = wx.BufferedPaintDC(self)
+	dc.Clear()
+	self.DrawBezel(dc, 0, 0, x, y)
+
+    def DrawBezel(self, dc, x1, y1, x2, y2):
+	dc.SetPen(wxBLACK_PEN)
+	if self.up:
+	    dc.SetBrush(wxBrush(self.GetBackgroundColour(), wxSOLID))
+	else:
+	    dc.SetBrush(wxBrush(wxBLACK, wxSOLID))
+	dc.DrawEllipseRect(wxRect(self.bezelWidth+2,self.bezelWidth+2,x2-self.bezelWidth*2-4,y2-self.bezelWidth*2-4))
+
+    def DoGetBestSize(self):
+        width = 15
+	height = 15
+	return (width, height)
+
+    def DrawFocusIndicator(self, dc, w, h):
+        pass
+
+    def OnLeftDown(self, event):
+        if not self.IsEnabled():
+            return
+        self.saveUp = self.up
+        self.up = not self.up
+        self.CaptureMouse()
+        self.SetFocus()
+
 
 class sfstat(wxPanel):
     def __init__(self,parent,ID,label="",orient = wxHORIZONTAL,buttons = headerdata.SF_SFSTAT_BUTTONS,alternate = False):
@@ -40,19 +106,13 @@ class sfstat(wxPanel):
 	    root.Add(self.label,1,wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL)
 
 	self.buttons = []
-	self.dummy = []
 
 	for i in range(self.btns):
 	    if alternate:
-	        self.buttons.append(wxCheckBox(self,(SFSTAT_BUTTON + i),""))
-#	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_CHECKBOX_CLICKED,self.onclick)
-		EVT_CHECKBOX(self,(SFSTAT_BUTTON+i),self.onclick)
+	        pass
 	    else:
-		self.dummy.append(wxRadioButton(self,-1,"",wxDefaultPosition,wxDefaultSize,wxRB_GROUP))
-		self.dummy[i].Show(False)
-	        self.buttons.append(wxRadioButton(self,(SFSTAT_BUTTON + i),"",wxDefaultPosition,wxDefaultSize,wxRB_SINGLE))
-#	        self.Connect((SFSTAT_BUTTON + i),-1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,self.onclick)
-                EVT_RADIOBUTTON(self,(SFSTAT_BUTTON+i),self.onclick)
+	        self.buttons.append(sfdot(self,(SFSTAT_BUTTON + i),""))
+		EVT_BUTTON(self,(SFSTAT_BUTTON+i),self.onclick)
 	    root.Add(self.buttons[i],0,wxALIGN_CENTER_VERTICAL)
 
 	self.recalc()
@@ -72,9 +132,6 @@ class sfstat(wxPanel):
 	    self.buttons[i].SetValue(1)
 	for i in range(self.value,len(self.buttons)):
 	    self.buttons[i].SetValue(0)
-	    if not self.alternate:
-	        self.dummy[i].SetValue(1)
-#	self.Update()
 	    
     def setvalue(self,v):
         self.value = v

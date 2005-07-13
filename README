@@ -56,6 +56,14 @@ that displays the editable character sheet.  There is too much to go into detail
 about here - I recommend using wxGlade to create the interface.  You can
 look at the file "wxg/vampire_the_masquerade.wxg" to see the wxglade template
 used to create the "Vampire: The Masquerade" sheet.
+There are two custom controls that you can use in the character sheets - the
+"sfstat" and "sfpool" controls.  The "sfstat" control is the traditional
+five-dot stat levels that you're used to.  Clicking at a certain dot will fill
+all the previous dots in the chain, since they are prerequisites.  The "sfpool"
+control represents a loose pool of something, a prime example being a blood pool.
+In the pool, which boxes are selected does not matter at all - the only thing
+that matters is how _many_ boxes are filled, e.g. how many blood points the
+character has in his/her pool.
 
 
 soulforgemain/sheets/<your_universe>_data.py:
