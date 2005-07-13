@@ -65,16 +65,15 @@ class sfstat(wxPanel):
 	    self.value = self.value - 1
 	else:
 	    self.value = n
-	print "setting sfstat value to " + str(self.value)
 	self.recalc()
 
     def recalc(self):
         for i in range(self.value):
 	    self.buttons[i].SetValue(1)
 	for i in range(self.value,len(self.buttons)):
+	    self.buttons[i].SetValue(0)
 	    if not self.alternate:
 	        self.dummy[i].SetValue(1)
-#	    self.buttons[i].SetValue(0)
 #	self.Update()
 	    
     def setvalue(self,v):
