@@ -178,7 +178,7 @@ class sfrootframe(wx.Frame):
 
     def writefile(self):
 	if self.file:
-	    xmlutils.savedata(self.dom, self.file, self.config.ReadInt(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
+	    xmlutils.savedata(self.dom, self.file, self.config.Read(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
 	    self.modified = False
 	    self.history.AddFileToHistory(self.file)
 	self.populatefields()

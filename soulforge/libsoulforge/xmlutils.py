@@ -21,6 +21,7 @@
 
 import re
 import bz2
+import gzip
 from xml.dom import minidom
 from soulforge.libsoulforge import headerdata
 
@@ -37,13 +38,22 @@ def loaddata(filename):
         bzd = bz2.BZ2File(filename, "r")
 	data = minidom.parseString(bzd.read())
     except:
-        data = minidom.parse(filename)
+        try:
+	    gzd = gzip.GzipFile(filename, "r")
+	    data = minidom.parseString(gzd.read())
+	except:
+            data = minidom.parse(filename)
     return data
 
 def savedata(dom, filename, compress):
     filedescriptor = None
-    if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT) and compress:
-        filedescriptor = bz2.BZ2File(filename, "w")
+    if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
+        if compress == "bzip2":
+            filedescriptor = bz2.BZ2File(filename, "w")
+	elif compress == "gzip":
+	    filedescriptor = gzip.GzipFile(filename, "w")
+	else:
+	    filedescriptor = open(filename, "w")
     else:
         filedescriptor = open(filename, "w")
     dom.writexml(filedescriptor, "    ", "    ", "\n")

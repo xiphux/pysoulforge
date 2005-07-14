@@ -42,11 +42,13 @@ SF_DIEROLLER_RNGSTRINGS = [ "Mersenne Twister", "Wichmann-Hill", "urandom()" ]
 
 SF_FILEMASK = _("Soulforge Data") + " (*.sfd)|*.sfd|XML (*.xml)|*.xml|" + _("All files") + " (*.*)|*.*"
 
+SF_COMPRESSION_STRINGS = [ "bzip2", "gzip", "None" ]
+
 SF_CONFIGKEY_LOADDIR = "/lastrun/loaddir"
 SF_CONFIGKEY_SAVEDIR = "/lastrun/savedir"
 
 SF_CONFIGKEY_COMPRESS = "/settings/compress"
-SF_CONFIGDEFAULT_COMPRESS = 1
+SF_CONFIGDEFAULT_COMPRESS = "bzip2"
 
 SF_CONFIGKEY_RNG = "/settings/rng"
 SF_CONFIGDEFAULT_RNG = "Mersenne Twister"

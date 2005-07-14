@@ -36,10 +36,14 @@ class sfconfig(wx.Dialog):
 	self.config = wx.Config.Get()
 
         root = wx.BoxSizer(wx.VERTICAL)
-	str = _("Transparently compress") + " *" + headerdata.SF_COMPRESSED_EXT + " " + _("files")
-	self.compress = wx.CheckBox(self,SFCONFIG_COMPRESS,str)
-	self.compress.SetValue(self.config.ReadInt(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
-	root.Add(self.compress,0,wx.EXPAND)
+
+	zipbox = wx.BoxSizer(wx.VERTICAL)
+	str = _("Algorithm for transparently compressing") + " *" + headerdata.SF_COMPRESSED_EXT + " " + _("files:")
+	zipbox.Add(wx.StaticText(self,-1,str),0,wx.ALIGN_LEFT)
+	self.compress = wx.Choice(self,SFCONFIG_COMPRESS,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_COMPRESSION_STRINGS)
+	self.compress.SetStringSelection(self.config.Read(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
+	zipbox.Add(self.compress,1,wx.EXPAND)
+	root.Add(zipbox,0,wx.EXPAND)
 
 	rngbox = wx.BoxSizer(wx.VERTICAL)
 	rngl = wx.StaticText(self,-1,"Preferred pseudo-random number generator:")
@@ -65,7 +69,7 @@ class sfconfig(wx.Dialog):
 	wx.EVT_BUTTON(self,SFCONFIG_OK,self.onok)
 	wx.EVT_BUTTON(self,SFCONFIG_CANCEL,self.oncancel)
 	wx.EVT_BUTTON(self,SFCONFIG_APPLY,self.onapply)
-	wx.EVT_CHECKBOX(self,SFCONFIG_COMPRESS,self.onchange)
+	wx.EVT_CHOICE(self,SFCONFIG_COMPRESS,self.onchange)
 	wx.EVT_CHOICE(self,SFCONFIG_RNG,self.onchange)
 
     def onchange(self,event):
@@ -73,10 +77,7 @@ class sfconfig(wx.Dialog):
 	self.updategui()
 
     def writesettings(self):
-        if self.compress.GetValue():
-	    self.config.WriteInt(headerdata.SF_CONFIGKEY_COMPRESS,1)
-	else:
-	    self.config.WriteInt(headerdata.SF_CONFIGKEY_COMPRESS,0)
+	self.config.Write(headerdata.SF_CONFIGKEY_COMPRESS,self.compress.GetStringSelection())
 	self.config.Write(headerdata.SF_CONFIGKEY_RNG,self.rng.GetStringSelection())
 	self.config.Flush(True)
 
