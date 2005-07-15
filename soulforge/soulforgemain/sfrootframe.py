@@ -108,6 +108,7 @@ class sfrootframe(wx.Frame):
 
 	pan.SetSizer(root)
 	self.Centre(wx.BOTH)
+	self.ProcessEvent(wx.SizeEvent(self.GetSize()))
 
 	self.updategui()
 
