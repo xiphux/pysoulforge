@@ -32,22 +32,28 @@ class sfsheet(wx.Frame):
 
 	self.universe = univ
 
+	pan = wx.Panel(self,-1)
+	ts = wx.BoxSizer(wx.VERTICAL)
+	ts.Add(pan,1,wx.EXPAND|wx.ALL)
+	self.SetSizer(ts)
+
 	root = wx.BoxSizer(wx.VERTICAL)
 
 	sh = sfuniverses.universe_sheets[univ]
-	self.sheet = sh(self,-1)
+	self.sheet = sh(pan,-1)
 
 	root.Add(self.sheet,0,wx.EXPAND)
 
 	controls = wx.BoxSizer(wx.HORIZONTAL)
-	self.okbutton = wx.Button(self,SFSHEET_OK, _("Ok"))
+	self.okbutton = wx.Button(pan,SFSHEET_OK, _("Ok"))
 	controls.Add(self.okbutton,1,wx.EXPAND)
 
-	controls.Add(wx.Button(self,SFSHEET_CANCEL, _("Cancel")),1,wx.EXPAND)
+	controls.Add(wx.Button(pan,SFSHEET_CANCEL, _("Cancel")),1,wx.EXPAND)
 
 	root.Add(controls,0,wx.EXPAND)
 
-	self.SetSizerAndFit(root)
+	pan.SetSizer(root)
+	self.Fit()
 	self.Centre(wx.BOTH)
 
 	wx.EVT_BUTTON(self,SFSHEET_OK,self.onok)

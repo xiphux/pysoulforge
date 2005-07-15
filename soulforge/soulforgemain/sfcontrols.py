@@ -54,8 +54,6 @@ class sfdot(buttons.GenToggleButton):
         self.Bind(wx.EVT_KILL_FOCUS,       self.OnLoseFocus)
         self.Bind(wx.EVT_KEY_DOWN,         self.OnKeyDown)
         self.Bind(wx.EVT_KEY_UP,           self.OnKeyUp)
-	if wx.Platform != '__WXMSW__':
-            self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_PAINT,            self.OnPaint)
 
     def OnPaint(self, event):
@@ -129,8 +127,6 @@ class sfbox(buttons.GenToggleButton):
         self.Bind(wx.EVT_KILL_FOCUS,       self.OnLoseFocus)
         self.Bind(wx.EVT_KEY_DOWN,         self.OnKeyDown)
         self.Bind(wx.EVT_KEY_UP,           self.OnKeyUp)
-	if wx.Platform != '__WXMSW__':
-            self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_PAINT,            self.OnPaint)
 
     def OnPaint(self, event):
@@ -208,8 +204,6 @@ class sftristate(buttons.GenToggleButton):
         self.Bind(wx.EVT_KILL_FOCUS,       self.OnLoseFocus)
         self.Bind(wx.EVT_KEY_DOWN,         self.OnKeyDown)
         self.Bind(wx.EVT_KEY_UP,           self.OnKeyUp)
-	if wx.Platform != '__WXMSW__':
-            self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_PAINT,            self.OnPaint)
 
     def setvalue(self, value):

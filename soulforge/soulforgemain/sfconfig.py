@@ -35,33 +35,39 @@ class sfconfig(wx.Dialog):
 	self.modified = False
 	self.config = wx.Config.Get()
 
+	pan = wx.Panel(self,-1)
+	ts = wx.BoxSizer(wx.VERTICAL)
+	ts.Add(pan,1,wx.EXPAND|wx.ALL)
+	self.SetSizer(ts)
+
         root = wx.BoxSizer(wx.VERTICAL)
 
 	zipbox = wx.BoxSizer(wx.VERTICAL)
 	str = _("Algorithm for transparently compressing") + " *" + headerdata.SF_COMPRESSED_EXT + " " + _("files:")
-	zipbox.Add(wx.StaticText(self,-1,str),0,wx.ALIGN_LEFT)
-	self.compress = wx.Choice(self,SFCONFIG_COMPRESS,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_COMPRESSION_STRINGS)
+	zipbox.Add(wx.StaticText(pan,-1,str),0,wx.ALIGN_LEFT)
+	self.compress = wx.Choice(pan,SFCONFIG_COMPRESS,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_COMPRESSION_STRINGS)
 	self.compress.SetStringSelection(self.config.Read(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
 	zipbox.Add(self.compress,1,wx.EXPAND)
 	root.Add(zipbox,0,wx.EXPAND)
 
 	rngbox = wx.BoxSizer(wx.VERTICAL)
-	rngl = wx.StaticText(self,-1,"Preferred pseudo-random number generator:")
+	rngl = wx.StaticText(pan,-1,"Preferred pseudo-random number generator:")
 	rngbox.Add(rngl,0,wx.ALIGN_LEFT)
-	self.rng = wx.Choice(self,SFCONFIG_RNG,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_DIEROLLER_RNGSTRINGS)
+	self.rng = wx.Choice(pan,SFCONFIG_RNG,wx.DefaultPosition,wx.DefaultSize,headerdata.SF_DIEROLLER_RNGSTRINGS)
 	self.rng.SetStringSelection(self.config.Read(headerdata.SF_CONFIGKEY_RNG,headerdata.SF_CONFIGDEFAULT_RNG))
 	rngbox.Add(self.rng,1,wx.EXPAND)
 	root.Add(rngbox,0,wx.EXPAND)
 
 	bbox = wx.BoxSizer(wx.HORIZONTAL)
-	self.apply = wx.Button(self,SFCONFIG_APPLY,_("Apply"))
+	self.apply = wx.Button(pan,SFCONFIG_APPLY,_("Apply"))
 	bbox.Add(self.apply,1,wx.EXPAND)
-	bbox.Add(wx.Button(self,SFCONFIG_CANCEL,_("Cancel")),1,wx.EXPAND)
-	self.ok = wx.Button(self,SFCONFIG_OK,_("Ok"))
+	bbox.Add(wx.Button(pan,SFCONFIG_CANCEL,_("Cancel")),1,wx.EXPAND)
+	self.ok = wx.Button(pan,SFCONFIG_OK,_("Ok"))
 	bbox.Add(self.ok,1,wx.EXPAND)
 	root.Add(bbox,0,wx.EXPAND)
 
-	self.SetSizerAndFit(root)
+	pan.SetSizer(root)
+	self.Fit()
 	self.Centre(wx.BOTH)
 
 	self.updategui()
