@@ -107,8 +107,8 @@ class sfrootframe(wx.Frame):
 	root.Add(self.edit,1,wx.EXPAND)
 
 	pan.SetSizer(root)
+	pan.Fit()
 	self.Centre(wx.BOTH)
-	self.Layout()
 
 	self.updategui()
 
