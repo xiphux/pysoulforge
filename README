@@ -15,7 +15,7 @@ programming language, wxWidgets, and XML.
 There are basically three files you will need to edit.
 
 
-soulforgemain/sfuniverses.py:
+soulforge/common/sfuniverses.py:
 This holds the data on the universes - which ones are available,
 and what to do for each one.  You'll want to import the modules
 that your other universe code is in (we'll get to those shortly).
@@ -48,7 +48,7 @@ they point to the functions used to translate the data from the character
 sheet object to the XML DOM that gets saved to a file, and vice versa.
 
 
-soulforgemain/sheets/<your_universe>.py:
+soulforge/common/sheets/<your_universe>.py:
 (with, of course, <your_universe> replaced with the actual universe name)
 Technically, you don't even have to call it that.  It's just the convention
 I used, so you should probably stick with it.  Inside this file is the class
@@ -66,7 +66,7 @@ that matters is how _many_ boxes are filled, e.g. how many blood points the
 character has in his/her pool.
 
 
-soulforgemain/sheets/<your_universe>_data.py:
+soulforge/common/sheets/<your_universe>_data.py:
 This file contains the sheet2xml and xml2sheet functions.  Again, there's too
 much to go into about here; I recommend just looking at the existing
 vampire_the_masquerade functions to get an idea of what's going on.  I also

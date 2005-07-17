@@ -20,8 +20,8 @@
 #
 
 import wx
-from soulforge.libsoulforge import headerdata
-from soulforge.soulforgemain import sfcontrols,sfuniverses
+from soulforge.lib import headerdata
+from soulforge.common import sfcontrols,sfuniverses
 
 SFSHEET_OK = 401
 SFSHEET_CANCEL = 402

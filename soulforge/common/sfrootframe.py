@@ -22,8 +22,8 @@
 from os import path
 from xml.dom import minidom
 import wx
-from soulforge.libsoulforge import xmlutils,headerdata
-from soulforge.soulforgemain import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
+from soulforge.lib import xmlutils,headerdata
+from soulforge.common import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102

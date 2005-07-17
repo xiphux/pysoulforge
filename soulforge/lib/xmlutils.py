@@ -23,7 +23,7 @@ import re
 import bz2
 import gzip
 from xml.dom import minidom
-from soulforge.libsoulforge import headerdata
+from soulforge.lib import headerdata
 
 def getnodetext(node):
     string = ""

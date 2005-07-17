@@ -20,8 +20,8 @@
 #
 
 import wx
-from soulforge.soulforgemain.sfcontrols import sfstat, sfpool, sfhealth
-from soulforge.soulforgemain.sheets import vampire_the_masquerade_data
+from soulforge.common.sfcontrols import sfstat, sfpool, sfhealth
+from soulforge.common.sheets import vampire_the_masquerade_data
 
 class vampire_the_masquerade(wx.ScrolledWindow):
     def __init__(self, *args, **kwds):

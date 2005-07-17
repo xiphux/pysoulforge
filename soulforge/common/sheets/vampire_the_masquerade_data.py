@@ -21,7 +21,7 @@
 
 from xml.dom import minidom
 import wx
-from soulforge.libsoulforge import xmlutils, headerdata
+from soulforge.lib import xmlutils, headerdata
 
 universe = 'Vampire: The Masquerade'
 
