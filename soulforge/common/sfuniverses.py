@@ -24,18 +24,25 @@ from soulforge.common.sheets import vampire_the_masquerade,vampire_the_masquerad
 
 def _(message): return message
 
-universes = [ _('Vampire: The Masquerade') ]
+class universe:
+    def __init__(self):
+        pass
 
-universe_sheets = {
-	'Vampire: The Masquerade': vampire_the_masquerade.vampire_the_masquerade
-}
+    def name(self):
+        return ''
 
-universe_sheet2xml = {
-	'Vampire: The Masquerade': vampire_the_masquerade_data.sheet2xml
-}
+    def dtd(self):
+        return ''
 
-universe_xml2sheet = {
-	'Vampire: The Masquerade': vampire_the_masquerade_data.xml2sheet
-}
+    def sheet(self, *args, **kwargs):
+        raise NotImplementedError("This method must be implemented!")
+
+    def sheet2xml(self, *args, **kwargs):
+        raise NotImplementedError("This method must be implemented!")
+
+    def xml2sheet(self, *args, **kwargs):
+        raise NotImplementedError("This method must be implemented!")
+
+universes = [ 'Vampire: The Masquerade' ]
 
 del _

@@ -19,8 +19,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+import sys
 import gettext
 gettext.install('soulforge',unicode=1)
+
+SF_DATADIR = sys.prefix + "/share/soulforge"
 
 SF_VERSION = "%prog 0.0.1"
 

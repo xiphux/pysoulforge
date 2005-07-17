@@ -28,7 +28,7 @@ SFSHEET_CANCEL = 402
 
 class sfsheet(wx.Frame):
     def __init__(self,parent,ID,univ):
-        wx.Frame.__init__(self, parent, ID, univ, wx.DefaultPosition, wx.DefaultSize)
+        wx.Frame.__init__(self, parent, ID, univ.name(), wx.DefaultPosition, wx.DefaultSize)
 
 	self.universe = univ
 
@@ -39,8 +39,7 @@ class sfsheet(wx.Frame):
 
 	root = wx.BoxSizer(wx.VERTICAL)
 
-	sh = sfuniverses.universe_sheets[univ]
-	self.sheet = sh(pan,-1)
+	self.sheet = self.universe.sheet(pan,-1)
 
 	root.Add(self.sheet,0,wx.EXPAND)
 

@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+import sys
 import re
 import bz2
 import gzip
@@ -48,9 +49,15 @@ def loaddata(filename):
 	        raise IOError, 'Could not read file data'
     return data
 
-def savedata(dom, filename, compress):
+def savedata(dom, filename, compress, dtd = ''):
     filedescriptor = None
-    dtd = open("soulforge/data/vampire_the_masquerade.dtd", "r")
+    dtdfile = None
+    if dtd:
+        try:
+            dtdfile = open(dtd, "r")
+	except:
+	    if headerdata.options.verbose:
+	        sys.stderr.write("Could not open DTD file, ignoring...")
     if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
         if compress == "bzip2":
             filedescriptor = bz2.BZ2File(filename, "w")
@@ -60,10 +67,13 @@ def savedata(dom, filename, compress):
 	    filedescriptor = open(filename, "w")
     else:
         filedescriptor = open(filename, "w")
-    filedescriptor.write("<?xml version=\"1.0\" ?>\n\n")
-    filedescriptor.write("<!DOCTYPE soulforge_character [\n")
-    filedescriptor.write(dtd.read())
-    filedescriptor.write("]>")
-    filedescriptor.write("\n")
-    filedescriptor.write(dom.toprettyxml()[22:])
+    if dtdfile:
+        filedescriptor.write("<?xml version=\"1.0\" ?>\n\n")
+        filedescriptor.write("<!DOCTYPE soulforge_character [\n")
+        filedescriptor.write(dtdfile.read())
+        filedescriptor.write("]>")
+        filedescriptor.write("\n")
+        filedescriptor.write(dom.toprettyxml()[22:])
+    else:
+        filedescriptor.write(dom.toprettyxml())
     filedescriptor.close()

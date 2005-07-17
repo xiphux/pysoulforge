@@ -24,6 +24,7 @@ from xml.dom import minidom
 import wx
 from soulforge.lib import xmlutils,headerdata
 from soulforge.common import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
+from soulforge.common.sheets import universes
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102
@@ -50,6 +51,7 @@ class sfrootframe(wx.Frame):
 	self.config.SetPath("/lastrun")
 	self.history.Load(self.config)
 	self.config.SetPath("/")
+	self.universe = None
 	
 	pan = wx.Panel(self,-1)
 	ts = wx.BoxSizer(wx.VERTICAL)
@@ -97,8 +99,8 @@ class sfrootframe(wx.Frame):
 	self.player = wx.TextCtrl(pan,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
 	root.Add(self.player,1,wx.EXPAND)
 	root.Add(wx.StaticText(pan,-1, _("Universe:")),0,wx.ALIGN_CENTER_VERTICAL)
-	self.universe = wx.TextCtrl(pan,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
-	root.Add(self.universe,1,wx.EXPAND)
+	self.univname = wx.TextCtrl(pan,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
+	root.Add(self.univname,1,wx.EXPAND)
 	root.Add(wx.StaticText(pan,-1, _("Filename:")),0,wx.ALIGN_CENTER_VERTICAL)
 	self.filename = wx.TextCtrl(pan,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
 	root.Add(self.filename,1,wx.EXPAND)
@@ -207,7 +209,7 @@ class sfrootframe(wx.Frame):
 
     def writefile(self):
 	if self.file:
-	    xmlutils.savedata(self.dom, self.file, self.config.Read(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS))
+	    xmlutils.savedata(self.dom, self.file, self.config.Read(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS), headerdata.SF_DATADIR + '/dtd/' + self.universe.dtd())
 	    self.modified = False
 	    self.history.AddFileToHistory(self.file)
 	self.populatefields()
@@ -256,9 +258,9 @@ class sfrootframe(wx.Frame):
 	uni = wx.SingleChoiceDialog(self, _("Choose a universe:"), _("Universe"),un)
 	ret = uni.ShowModal()
 	if ret == wx.ID_OK:
-	    ch = uni.GetStringSelection()
-	    if ch:
-                self.sh = sfsheet.sfsheet(self,-1,ch)
+	    self.universe = universes.getuniverse(uni.GetStringSelection())()
+	    if self.universe:
+                self.sh = sfsheet.sfsheet(self,-1,self.universe)
 	        self.sh.Show()
 	uni.Destroy()
 
@@ -266,7 +268,7 @@ class sfrootframe(wx.Frame):
         if self.dom:
 	    self.dom.unlink()
 	self.dom = minidom.getDOMImplementation().createDocument(None,"soulforge_character",None)
-	sfuniverses.universe_sheet2xml[self.sh.universe](self.sh.sheet,self.dom)
+	self.universe.sheet2xml(self.sh.sheet,self.dom)
 	self.sh.Destroy()
 	self.populatefields()
 	self.modified = True
@@ -274,9 +276,11 @@ class sfrootframe(wx.Frame):
 
     def onedit(self,event):
         uni = self.dom.documentElement.getAttribute("universe")
-        self.sh = sfsheet.sfsheet(self,-1,uni)
-	sfuniverses.universe_xml2sheet[uni](self.dom,self.sh.sheet)
-	self.sh.Show()
+	self.universe = universes.getuniverse(uni)()
+	if self.universe:
+            self.sh = sfsheet.sfsheet(self,-1,self.universe)
+	    self.universe.xml2sheet(self.dom,self.sh.sheet)
+	    self.sh.Show()
 
     def onoptions(self,event):
         conf = sfconfig.sfconfig(self,-1)
@@ -286,15 +290,15 @@ class sfrootframe(wx.Frame):
         if self.sh:
 	    self.name.SetValue(self.sh.sheet.name.GetValue())
 	    self.player.SetValue(self.sh.sheet.player.GetValue())
-	    self.universe.SetValue(self.sh.universe)
+	    self.univname.SetValue(self.sh.universe.name())
 	elif self.dom:
 	    self.name.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("name")[0]))
 	    self.player.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("player")[0]))
-	    self.universe.SetValue(self.dom.documentElement.getAttribute("universe"))
+	    self.univname.SetValue(self.dom.documentElement.getAttribute("universe"))
 	else:
 	    self.name.SetValue(u"")
 	    self.player.SetValue(u"")
-	    self.universe.SetValue(u"")
+	    self.univname.SetValue(u"")
 	if self.file:
 	    self.filename.SetValue(self.file)
 	else:
