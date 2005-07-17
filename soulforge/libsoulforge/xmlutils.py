@@ -42,11 +42,15 @@ def loaddata(filename):
 	    gzd = gzip.GzipFile(filename, "r")
 	    data = minidom.parseString(gzd.read())
 	except:
-            data = minidom.parse(filename)
+	    try:
+                data = minidom.parse(filename)
+	    except:
+	        raise IOError, 'Could not read file data'
     return data
 
 def savedata(dom, filename, compress):
     filedescriptor = None
+    dtd = open("soulforge/data/vampire_the_masquerade.dtd", "r")
     if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
         if compress == "bzip2":
             filedescriptor = bz2.BZ2File(filename, "w")
@@ -56,5 +60,10 @@ def savedata(dom, filename, compress):
 	    filedescriptor = open(filename, "w")
     else:
         filedescriptor = open(filename, "w")
-    dom.writexml(filedescriptor, "    ", "    ", "\n")
+    filedescriptor.write("<?xml version=\"1.0\" ?>\n\n")
+    filedescriptor.write("<!DOCTYPE soulforge_character [\n")
+    filedescriptor.write(dtd.read())
+    filedescriptor.write("]>")
+    filedescriptor.write("\n")
+    filedescriptor.write(dom.toprettyxml()[22:])
     filedescriptor.close()

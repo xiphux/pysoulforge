@@ -147,26 +147,51 @@ class sfrootframe(wx.Frame):
         dr = dieroller.dieroller(self,-1, _("Dieroller"))
 	dr.Show(True)
 
-    def parsefile(self):
-	self.dom = xmlutils.loaddata(self.file)
+    def invalid(self):
+	err = wx.MessageDialog(self, _("Error: Selected file is not a valid Soulforge character"), _("Error!"),wx.OK)
+	err.Centre(wx.BOTH)
+	err.ShowModal()
+	err.Destroy()
+
+    def parsefile(self, fp):
+        try:
+	    t = xmlutils.loaddata(fp)
+	except:
+	    self.invalid()
+	    return False
+	rt = t.documentElement
+	if rt.nodeName != "soulforge_character":
+	    self.invalid()
+	    return False
+	return t
+	
+    def loadfile(self, fp):
+        if self.file == fp:
+	    return
+	ret = self.parsefile(fp)
+	if ret:
+	    if self.dom and self.modified:
+	        err = wx.MessageDialog(self, _("If you load this character sheet, current character's changes will be cleared.  Are you sure?"), _("Are you sure?"),wx.OK|wx.CANCEL)
+		err.Centre(wx.BOTH)
+		rc = err.ShowModal()
+		err.Destroy()
+		if rc == wx.ID_CANCEL:
+		    return
+	    self.dom = ret
+	    self.file = fp
+	else:
+	    return
+	self.modified = False
 	self.populatefields()
 	self.updategui()
+	self.history.AddFileToHistory(self.file)
+	self.config.Write(headerdata.SF_CONFIGKEY_LOADDIR, path.dirname(self.file))
+	self.config.Flush(True)
 
     def onload(self,event):
         loaddlg = wx.FileDialog(self, _("Load character"),self.config.Read(headerdata.SF_CONFIGKEY_LOADDIR),"", headerdata.SF_FILEMASK,wx.OPEN|wx.FILE_MUST_EXIST)
 	if loaddlg.ShowModal() == wx.ID_OK:
-	    if self.dom:
-	        err = wx.MessageDialog(self, _("If you load this character sheet, current character data will be cleared.  Are you sure?"), _("Are you sure?"),wx.OK|wx.CANCEL)
-		err.Centre(wx.BOTH)
-		ret = err.ShowModal()
-		err.Destroy()
-		if ret == wx.ID_CANCEL:
-		    return
-	    self.file = loaddlg.GetPath()
-	    self.history.AddFileToHistory(self.file)
-	    self.config.Write(headerdata.SF_CONFIGKEY_LOADDIR, path.dirname(self.file))
-	    self.config.Flush(True)
-	    self.parsefile()
+	    self.loadfile(loaddlg.GetPath())
 	loaddlg.Destroy()
     
     def onrecent(self,event):
@@ -178,9 +203,7 @@ class sfrootframe(wx.Frame):
 		err.ShowModal()
 		err.Destroy()
 		return
-	    self.file = recentfile
-	    self.history.AddFileToHistory(recentfile)
-	    self.parsefile()
+	    self.loadfile(recentfile)
 
     def writefile(self):
 	if self.file:

@@ -1,0 +1,99 @@
+<!ELEMENT soulforge_character (name, player, chronicle, nature, demeanor, clan, generation, haven, concept, attributes, abilities, advantages, merits_flaws, humanity_path, willpower, bloodpool, health, experience)>
+<!ATTLIST soulforge_character
+	  universe	CDATA	#REQUIRED
+>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT player (#PCDATA)>
+<!ELEMENT chronicle (#PCDATA)>
+<!ELEMENT nature (#PCDATA)>
+<!ELEMENT demeanor (#PCDATA)>
+<!ELEMENT clan (#PCDATA)>
+<!ELEMENT generation (#PCDATA)>
+<!ELEMENT haven (#PCDATA)>
+<!ELEMENT concept (#PCDATA)>
+<!ELEMENT attributes (physical, social, mental)>
+<!ELEMENT physical (strength, dexterity, stamina)>
+<!ELEMENT strength (#PCDATA)>
+<!ELEMENT dexterity (#PCDATA)>
+<!ELEMENT stamina (#PCDATA)>
+<!ELEMENT social (charisma, manipulation, appearance)>
+<!ELEMENT charisma (#PCDATA)>
+<!ELEMENT manipulation (#PCDATA)>
+<!ELEMENT appearance (#PCDATA)>
+<!ELEMENT mental (perception, intelligence, wits)>
+<!ELEMENT perception (#PCDATA)>
+<!ELEMENT intelligence (#PCDATA)>
+<!ELEMENT wits (#PCDATA)>
+<!ELEMENT abilities (talents, skills, knowledges)>
+<!ELEMENT talents (alertness, athletics, brawl, dodge, empathy, expression, intimidation, leadership, streetwise, subterfuge)>
+<!ELEMENT alertness (#PCDATA)>
+<!ELEMENT athletics (#PCDATA)>
+<!ELEMENT brawl (#PCDATA)>
+<!ELEMENT dodge (#PCDATA)>
+<!ELEMENT empathy (#PCDATA)>
+<!ELEMENT expression (#PCDATA)>
+<!ELEMENT intimidation (#PCDATA)>
+<!ELEMENT leadership (#PCDATA)>
+<!ELEMENT streetwise (#PCDATA)>
+<!ELEMENT subterfuge (#PCDATA)>
+<!ELEMENT skills (animalken, crafts, drive, etiquette, firearms, melee, performance, security, stealth, survival)>
+<!ELEMENT animalken (#PCDATA)>
+<!ELEMENT crafts (#PCDATA)>
+<!ELEMENT drive (#PCDATA)>
+<!ELEMENT etiquette (#PCDATA)>
+<!ELEMENT firearms (#PCDATA)>
+<!ELEMENT melee (#PCDATA)>
+<!ELEMENT performance (#PCDATA)>
+<!ELEMENT security (#PCDATA)>
+<!ELEMENT stealth (#PCDATA)>
+<!ELEMENT survival (#PCDATA)>
+<!ELEMENT knowledges (academics, computer, finance, investigation, law, linguistics, medicine, occult, politics, science)>
+<!ELEMENT academics (#PCDATA)>
+<!ELEMENT computer (#PCDATA)>
+<!ELEMENT finance (#PCDATA)>
+<!ELEMENT investigation (#PCDATA)>
+<!ELEMENT law (#PCDATA)>
+<!ELEMENT linguistics (#PCDATA)>
+<!ELEMENT medicine (#PCDATA)>
+<!ELEMENT occult (#PCDATA)>
+<!ELEMENT politics (#PCDATA)>
+<!ELEMENT science (#PCDATA)>
+<!ELEMENT advantages (backgrounds, disciplines, virtues)>
+<!ELEMENT backgrounds (background*)>
+<!ELEMENT background (background_name, background_level)>
+<!ELEMENT background_name (#PCDATA)>
+<!ELEMENT background_level (#PCDATA)>
+<!ELEMENT disciplines (discipline*)>
+<!ELEMENT discipline (discipline_name, discipline_level)>
+<!ELEMENT discipline_name (#PCDATA)>
+<!ELEMENT discipline_level (#PCDATA)>
+<!ELEMENT virtues (conscience_conviction, selfcontrol_instinct, courage)>
+<!ELEMENT conscience_conviction (conscience_conviction_name, conscience_conviction_level)>
+<!ELEMENT conscience_conviction_name (#PCDATA)>
+<!ELEMENT conscience_conviction_level (#PCDATA)>
+<!ELEMENT selfcontrol_instinct (selfcontrol_instinct_name, selfcontrol_instinct_level)>
+<!ELEMENT selfcontrol_instinct_name (#PCDATA)>
+<!ELEMENT selfcontrol_instinct_level (#PCDATA)>
+<!ELEMENT courage (courage_name, courage_level)>
+<!ELEMENT courage_name (#PCDATA)>
+<!ELEMENT courage_level (#PCDATA)>
+<!ELEMENT merits_flaws (merit*, flaw*)>
+<!ELEMENT merit (merit_name, merit_value?)>
+<!ELEMENT merit_name (#PCDATA)>
+<!ELEMENT merit_value (#PCDATA)>
+<!ELEMENT flaw (flaw_name, flaw_value?)>
+<!ELEMENT flaw_name (#PCDATA)>
+<!ELEMENT flaw_value (#PCDATA)>
+<!ELEMENT humanity_path (humanity | path+)>
+<!ELEMENT humanity (#PCDATA)>
+<!ELEMENT path (path_name, path_level)>
+<!ELEMENT path_name (#PCDATA)>
+<!ELEMENT path_level (#PCDATA)>
+<!ELEMENT willpower (willpower_max, willpower_current)>
+<!ELEMENT willpower_max (#PCDATA)>
+<!ELEMENT willpower_current (#PCDATA)>
+<!ELEMENT bloodpool (#PCDATA)>
+<!ELEMENT health (aggravated, normal)>
+<!ELEMENT aggravated (#PCDATA)>
+<!ELEMENT normal (#PCDATA)>
+<!ELEMENT experience (#PCDATA)>

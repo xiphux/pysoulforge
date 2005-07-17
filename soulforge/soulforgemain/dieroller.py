@@ -49,13 +49,15 @@ class dieroller(wx.Frame):
 
 	poolbox = wx.BoxSizer(wx.HORIZONTAL)
 	poolbox.Add(wx.StaticText(pan,-1,_("Dice pool:")),0,wx.ALIGN_CENTER_VERTICAL)
-	self.poolctl = wx.SpinCtrl(pan,DIEROLLER_POOL,u"",wx.DefaultPosition,wx.DefaultSize,0,1,99,self.dicepool.pool)
+	self.poolctl = wx.SpinCtrl(pan,DIEROLLER_POOL,u"",wx.DefaultPosition,wx.DefaultSize,0,1,99)
+	self.poolctl.SetValue(self.dicepool.pool)
 	poolbox.Add(self.poolctl,1,wx.ALIGN_CENTER_VERTICAL)
 	controls.Add(poolbox,1,wx.EXPAND)
 
 	facebox = wx.BoxSizer(wx.HORIZONTAL)
 	facebox.Add(wx.StaticText(pan,-1,_("Die faces:")),0,wx.ALIGN_CENTER_VERTICAL)
-	self.facectl = wx.SpinCtrl(pan,DIEROLLER_FACES,u"",wx.DefaultPosition,wx.DefaultSize,0,2,99,self.dicepool.faces)
+	self.facectl = wx.SpinCtrl(pan,DIEROLLER_FACES,u"",wx.DefaultPosition,wx.DefaultSize,0,2,99)
+	self.facectl.SetValue(self.dicepool.faces)
 	facebox.Add(self.facectl,1,wx.ALIGN_CENTER_VERTICAL)
 	controls.Add(facebox,1,wx.EXPAND)
 
