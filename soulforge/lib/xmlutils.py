@@ -67,9 +67,11 @@ def savedata(dom, filename, compress, dtd = ''):
     if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
         if compress == "bzip2":
             filedescriptor = bz2.BZ2File(filename, "w")
-	    print "Saving to BZ2-compressed Soulforge data file"
+	    if headerdata.options.verbose:
+	        print "Saving to BZ2-compressed Soulforge data file"
 	elif compress == "gzip":
 	    filedescriptor = gzip.GzipFile(filename, "w")
+	    if headerdata.options.verbose:
 	        print "Saving to Gzip-compressed Soulforge data file"
 	else:
 	    filedescriptor = open(filename, "w")
