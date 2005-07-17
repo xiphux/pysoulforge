@@ -63,6 +63,14 @@ if __name__ == "__main__":
         else:
             q = False
         compile_dir(".", force=options.force, quiet=q)
+
+    if options.verbose:
+        print "Verbose execution enabled"
+
+    if options.debug:
+        print "Debugging output enabled"
+	print "If the debugging output shows any suspicious errors,"
+	print "please email the output to the author."
     
 try:
     import psyco

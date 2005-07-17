@@ -34,19 +34,25 @@ def getnodetext(node):
     return re.sub('[^A-Za-z\ _\-0-9]*', '', string).strip()
 
 def loaddata(filename):
-    data = None
     try:
         bzd = bz2.BZ2File(filename, "r")
 	data = minidom.parseString(bzd.read())
+	if headerdata.options.verbose:
+	    print "BZ2-compressed Soulforge data file loaded"
     except:
         try:
 	    gzd = gzip.GzipFile(filename, "r")
 	    data = minidom.parseString(gzd.read())
+	    if headerdata.options.verbose:
+	        print "Gzip-compressed Soulforge data file loaded"
 	except:
 	    try:
                 data = minidom.parse(filename)
+		if headerdata.options.verbose:
+		    print "Plaintext data file loaded"
 	    except:
 	        raise IOError, 'Could not read file data'
+		return
     return data
 
 def savedata(dom, filename, compress, dtd = ''):
@@ -61,12 +67,18 @@ def savedata(dom, filename, compress, dtd = ''):
     if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
         if compress == "bzip2":
             filedescriptor = bz2.BZ2File(filename, "w")
+	    print "Saving to BZ2-compressed Soulforge data file"
 	elif compress == "gzip":
 	    filedescriptor = gzip.GzipFile(filename, "w")
+	        print "Saving to Gzip-compressed Soulforge data file"
 	else:
 	    filedescriptor = open(filename, "w")
+	    if headerdata.options.verbose:
+	        print "Saving to plaintext Soulforge data file"
     else:
         filedescriptor = open(filename, "w")
+	if headerdata.options.verbose:
+	    print "Saving to legacy XML document"
     if dtdfile:
         filedescriptor.write("<?xml version=\"1.0\" ?>\n\n")
         filedescriptor.write("<!DOCTYPE soulforge_character [\n")

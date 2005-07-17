@@ -19,8 +19,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from os import path
+import sys
+import os
 from xml.dom import minidom
+from xml.parsers.xmlproc import xmlval
+from xml.parsers.xmlproc.utils import validate_doc, load_dtd, ErrorPrinter, ErrorRaiser
 import wx
 from soulforge.lib import xmlutils,headerdata
 from soulforge.common import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
@@ -165,6 +168,29 @@ class sfrootframe(wx.Frame):
 	if rt.nodeName != "soulforge_character":
 	    self.invalid()
 	    return False
+        uni = rt.getAttribute("universe")
+	if uni:
+	    if t.doctype:
+	        parser = xmlval.XMLValidator()
+	        parser.set_error_handler(ErrorRaiser(parser))
+	        try:
+	            parser.parse_resource(fp)
+	            del parser
+	        except:
+	            err = wx.MessageDialog(self, _("Error: Character data is malformed"), _("Error!"),wx.OK)
+	            err.Centre(wx.BOTH)
+	            err.ShowModal()
+	            err.Destroy()
+	            return False
+	    else:
+	        if headerdata.options.debug:
+		    print "Character has no DOCTYPE structure definition, proceed with caution..."
+	else:
+	    err = wx.MessageDialog(self, _("Error: Character has invalid or no universe"), _("Error!"),wx.OK)
+	    err.Centre(wx.BOTH)
+	    err.ShowModal()
+	    err.Destroy()
+	    return False
 	return t
 	
     def loadfile(self, fp):
@@ -187,7 +213,7 @@ class sfrootframe(wx.Frame):
 	self.populatefields()
 	self.updategui()
 	self.history.AddFileToHistory(self.file)
-	self.config.Write(headerdata.SF_CONFIGKEY_LOADDIR, path.dirname(self.file))
+	self.config.Write(headerdata.SF_CONFIGKEY_LOADDIR, os.path.dirname(self.file))
 	self.config.Flush(True)
 
     def onload(self,event):
@@ -199,7 +225,7 @@ class sfrootframe(wx.Frame):
     def onrecent(self,event):
         recentfile = self.history.GetHistoryFile(event.GetId() - wx.ID_FILE1)
 	if recentfile:
-	    if not path.exists(recentfile):
+	    if not os.path.exists(recentfile):
 	        err = wx.MessageDialog(self, _("Error: Selected file no longer exists"), _("Error!"),wx.OK)
 		err.Centre(wx.BOTH)
 		err.ShowModal()
@@ -225,7 +251,7 @@ class sfrootframe(wx.Frame):
 	savedlg = wx.FileDialog(self, _("Save character"),self.config.Read(headerdata.SF_CONFIGKEY_SAVEDIR),"", headerdata.SF_FILEMASK,wx.SAVE|wx.OVERWRITE_PROMPT)
 	if savedlg.ShowModal() == wx.ID_OK:
 	    self.file = savedlg.GetPath()
-	    self.config.Write(headerdata.SF_CONFIGKEY_SAVEDIR, path.dirname(self.file))
+	    self.config.Write(headerdata.SF_CONFIGKEY_SAVEDIR, os.path.dirname(self.file))
 	    self.config.Flush(True)
 	savedlg.Destroy()
 	self.writefile()
