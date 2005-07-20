@@ -110,3 +110,9 @@ def savedata(dom, filename, compress, dtd = ''):
     filedescriptor.close()
     if dtd:
         insert_dtd(filename, compress, dtd)
+
+def mktextnode(dom,element,value):
+    node = dom.createElement(element)
+    node2 = dom.createTextNode(str(value))
+    node.appendChild(node2)
+    return node
