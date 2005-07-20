@@ -21,9 +21,11 @@
 
 import sys
 import os
-from xml.dom import minidom
-from xml.parsers.xmlproc import xmlval
-from xml.parsers.xmlproc.utils import validate_doc, load_dtd, ErrorPrinter, ErrorRaiser
+import cStringIO
+from codecs import getencoder,getdecoder
+from xml import dom
+from xml.parsers.xmlproc import xmlval, dtdparser, xmldtd
+from xml.parsers.xmlproc.utils import validate_doc, ErrorRaiser
 import wx
 from soulforge.lib import xmlutils,headerdata
 from soulforge.common import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
@@ -170,11 +172,34 @@ class sfrootframe(wx.Frame):
 	    return False
         uni = rt.getAttribute("universe")
 	if uni:
-	    if t.doctype:
+	    tmp = universes.getuniverse(uni)
+	    if tmp:
+	        self.universe = tmp()
+	    dtd = self.universe.dtd()
+	    if dtd:
+	        if headerdata.options.debug:
+		    print dtd
+	        docstring = xmlutils.load(fp)
+		dtddata = xmldtd.load_dtd_string(dtd)
+	        if headerdata.options.debug:
+                    from xml.parsers.xmlproc.utils import ErrorPrinter
+		    docpointer = cStringIO.StringIO(docstring)
+		    parser = xmlval.XMLValidator()
+		    parser.dtd = dtddata
+		    parser.set_error_handler(ErrorPrinter(parser,out=sys.stderr))
+		    parser.read_from(docpointer)
+		    parser.close()
+		    docpointer.close()
+		    del docpointer
+		    del parser
+		docpointer = cStringIO.StringIO(docstring)
 	        parser = xmlval.XMLValidator()
+		parser.dtd = dtddata
 	        parser.set_error_handler(ErrorRaiser(parser))
 	        try:
-	            parser.parse_resource(fp)
+	            parser.read_from(docpointer)
+		    parser.close()
+		    docpointer.close()
 	            del parser
 	        except:
 	            err = wx.MessageDialog(self, _("Error: Character data is malformed"), _("Error!"),wx.OK)
@@ -182,6 +207,8 @@ class sfrootframe(wx.Frame):
 	            err.ShowModal()
 	            err.Destroy()
 	            return False
+		if headerdata.options.debug:
+		    print "Character data is legitimate"
 	    else:
 	        if headerdata.options.debug:
 		    print "Character has no DOCTYPE structure definition, proceed with caution..."
@@ -235,7 +262,7 @@ class sfrootframe(wx.Frame):
 
     def writefile(self):
 	if self.file:
-	    xmlutils.savedata(self.dom, self.file, self.config.Read(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS), headerdata.SF_DATADIR + '/dtd/' + self.universe.dtd())
+	    xmlutils.savedata(self.dom, self.file, self.config.Read(headerdata.SF_CONFIGKEY_COMPRESS,headerdata.SF_CONFIGDEFAULT_COMPRESS), self.universe.dtd())
 	    self.modified = False
 	    self.history.AddFileToHistory(self.file)
 	self.populatefields()
@@ -271,7 +298,7 @@ class sfrootframe(wx.Frame):
 	    ret = err.ShowModal()
 	    err.Destroy()
 	    if ret == wx.ID_OK:
-	        self.dom.unlink()
+	        del self.dom
 		self.dom = None
 		self.file = None
 		self.populatefields()
@@ -291,9 +318,9 @@ class sfrootframe(wx.Frame):
 	uni.Destroy()
 
     def onsheetok(self,event):
-        if self.dom:
-	    self.dom.unlink()
-	self.dom = minidom.getDOMImplementation().createDocument(None,"soulforge_character",None)
+        del self.dom
+	doctype = dom.getDOMImplementation().createDocumentType("soulforge_character", None, '')
+	self.dom = dom.getDOMImplementation().createDocument(None,"soulforge_character",doctype)
 	self.universe.sheet2xml(self.sh.sheet,self.dom)
 	self.sh.Destroy()
 	self.populatefields()
@@ -352,9 +379,8 @@ class sfrootframe(wx.Frame):
 	    if ret == wx.ID_CANCEL:
 	        return
 	self.file = None
-	if self.dom:
-	    self.dom.unlink()
-	    self.dom = None
+	del self.dom
+	self.dom = None
 	if self.sh:
 	    self.sh.Destroy()
 	    self.sh = None

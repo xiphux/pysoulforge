@@ -23,7 +23,9 @@ import sys
 import re
 import bz2
 import gzip
-from xml.dom import minidom
+import cStringIO
+from xml.dom.ext import PrettyPrint
+from xml.dom.ext.reader import Sax2
 from soulforge.lib import headerdata
 
 def getnodetext(node):
@@ -33,37 +35,43 @@ def getnodetext(node):
             string = string + nod.data
     return re.sub('[^A-Za-z\ _\-0-9]*', '', string).strip()
 
-def loaddata(filename):
+def load(filename):
+    data = None
     try:
-        bzd = bz2.BZ2File(filename, "r")
-	data = minidom.parseString(bzd.read())
+        dat = bz2.BZ2File(filename, "r")
+	data = dat.read()
 	if headerdata.options.verbose:
 	    print "BZ2-compressed Soulforge data file loaded"
     except:
         try:
-	    gzd = gzip.GzipFile(filename, "r")
-	    data = minidom.parseString(gzd.read())
+	    dat = gzip.GzipFile(filename, "r")
+	    data = dat.read()
 	    if headerdata.options.verbose:
 	        print "Gzip-compressed Soulforge data file loaded"
 	except:
 	    try:
-                data = minidom.parse(filename)
+                dat = open(filename, "r")
+		data = dat.read()
 		if headerdata.options.verbose:
 		    print "Plaintext data file loaded"
 	    except:
 	        raise IOError, 'Could not read file data'
 		return
+    dat.close()
     return data
 
-def savedata(dom, filename, compress, dtd = ''):
+def loaddata(filename):
+    try:
+        fd = load(filename)
+    except:
+	raise IOError, 'Could not read file data'
+        return None
+    reader = Sax2.Reader()
+    doc = reader.fromString(fd)
+    return doc
+
+def save(filename, compress):
     filedescriptor = None
-    dtdfile = None
-    if dtd:
-        try:
-            dtdfile = open(dtd, "r")
-	except:
-	    if headerdata.options.verbose:
-	        sys.stderr.write("Could not open DTD file, ignoring...")
     if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
         if compress == "bzip2":
             filedescriptor = bz2.BZ2File(filename, "w")
@@ -81,13 +89,24 @@ def savedata(dom, filename, compress, dtd = ''):
         filedescriptor = open(filename, "w")
 	if headerdata.options.verbose:
 	    print "Saving to legacy XML document"
-    if dtdfile:
-        filedescriptor.write("<?xml version=\"1.0\" ?>\n\n")
-        filedescriptor.write("<!DOCTYPE soulforge_character [\n")
-        filedescriptor.write(dtdfile.read())
-        filedescriptor.write("]>")
-        filedescriptor.write("\n")
-        filedescriptor.write(dom.toprettyxml()[22:])
-    else:
-        filedescriptor.write(dom.toprettyxml())
+    return filedescriptor
+
+def insert_dtd(filename, compress, dtd):
+    data = cStringIO.StringIO(load(filename))
+    prolog = data.readline()
+    stringdata = data.readlines()
+    data.close()
+    fd = save(filename, compress)
+    fd.write(prolog)
+    fd.write("<!DOCTYPE soulforge_character [\n")
+    fd.write(dtd)
+    fd.write("]>\n")
+    fd.writelines(stringdata)
+    fd.close()
+
+def savedata(dom, filename, compress, dtd = ''):
+    filedescriptor = save(filename, compress)
+    PrettyPrint(dom,filedescriptor)
     filedescriptor.close()
+    if dtd:
+        insert_dtd(filename, compress, dtd)

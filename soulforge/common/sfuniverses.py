@@ -31,6 +31,9 @@ class universe:
     def name(self):
         return ''
 
+    def dtdfile(self):
+        return ''
+
     def dtd(self):
         return ''
 

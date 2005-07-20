@@ -29,8 +29,11 @@ class vampire_the_masquerade_universe(sfuniverses.universe):
     def name(self):
         return 'Vampire: The Masquerade'
 
-    def dtd(self):
+    def dtdfile(self):
         return 'vampire_the_masquerade.dtd'
+
+    def dtd(self):
+        return vampire_the_masquerade_data.dtd()
 
     def sheet(self, *args, **kwargs):
         return vampire_the_masquerade.vampire_the_masquerade(*args, **kwargs)

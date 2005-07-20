@@ -64,14 +64,16 @@ if __name__ == "__main__":
             q = False
         compile_dir(".", force=options.force, quiet=q)
 
-    if options.verbose:
-        print "Verbose execution enabled"
-
     if options.debug:
         print "Debugging output enabled"
 	print "If the debugging output shows any suspicious errors,"
 	print "please email the output to the author."
+	print "Verbose output automatically enabled"
+	options.verbose = 1
     
+    if options.verbose:
+        print "Verbose execution enabled"
+
 try:
     import psyco
     psyco.full()
