@@ -35,28 +35,34 @@ def getnodetext(node):
             string = string + nod.data
     return re.sub('[^A-Za-z\ _\-0-9]*', '', string).strip()
 
+def mktextnode(dom, element, value):
+    node = dom.createElement(element)
+    node2 = dom.createTextNode(str(value))
+    node.appendChild(node2)
+    return node
+
 def load(filename):
     data = None
     try:
         dat = bz2.BZ2File(filename, "r")
-	data = dat.read()
-	if headerdata.options.verbose:
-	    print "BZ2-compressed Soulforge data file loaded"
+        data = dat.read()
+        if headerdata.options.verbose:
+            print "BZ2-compressed Soulforge data file loaded"
     except:
         try:
-	    dat = gzip.GzipFile(filename, "r")
-	    data = dat.read()
-	    if headerdata.options.verbose:
-	        print "Gzip-compressed Soulforge data file loaded"
-	except:
-	    try:
+            dat = gzip.GzipFile(filename, "r")
+            data = dat.read()
+            if headerdata.options.verbose:
+                print "Gzip-compressed Soulforge data file loaded"
+        except:
+            try:
                 dat = open(filename, "r")
-		data = dat.read()
-		if headerdata.options.verbose:
-		    print "Plaintext data file loaded"
-	    except:
-	        raise IOError, 'Could not read file data'
-		return
+                data = dat.read()
+                if headerdata.options.verbose:
+                    print "Plaintext data file loaded"
+            except:
+                raise IOError, 'Could not read file data'
+                return
     dat.close()
     return data
 
@@ -64,7 +70,7 @@ def loaddata(filename):
     try:
         fd = load(filename)
     except:
-	raise IOError, 'Could not read file data'
+        raise IOError, 'Could not read file data'
         return None
     reader = Sax2.Reader()
     doc = reader.fromString(fd)
@@ -75,20 +81,20 @@ def save(filename, compress):
     if filename.lower().endswith(headerdata.SF_COMPRESSED_EXT):
         if compress == "bzip2":
             filedescriptor = bz2.BZ2File(filename, "w")
-	    if headerdata.options.verbose:
-	        print "Saving to BZ2-compressed Soulforge data file"
-	elif compress == "gzip":
-	    filedescriptor = gzip.GzipFile(filename, "w")
-	    if headerdata.options.verbose:
-	        print "Saving to Gzip-compressed Soulforge data file"
-	else:
-	    filedescriptor = open(filename, "w")
-	    if headerdata.options.verbose:
-	        print "Saving to plaintext Soulforge data file"
+            if headerdata.options.verbose:
+                print "Saving to BZ2-compressed Soulforge data file"
+        elif compress == "gzip":
+            filedescriptor = gzip.GzipFile(filename, "w")
+            if headerdata.options.verbose:
+                print "Saving to Gzip-compressed Soulforge data file"
+        else:
+            filedescriptor = open(filename, "w")
+            if headerdata.options.verbose:
+                print "Saving to plaintext Soulforge data file"
     else:
         filedescriptor = open(filename, "w")
-	if headerdata.options.verbose:
-	    print "Saving to legacy XML document"
+        if headerdata.options.verbose:
+            print "Saving to legacy XML document"
     return filedescriptor
 
 def insert_dtd(filename, compress, dtd):
@@ -111,8 +117,3 @@ def savedata(dom, filename, compress, dtd = ''):
     if dtd:
         insert_dtd(filename, compress, dtd)
 
-def mktextnode(dom,element,value):
-    node = dom.createElement(element)
-    node2 = dom.createTextNode(str(value))
-    node.appendChild(node2)
-    return node

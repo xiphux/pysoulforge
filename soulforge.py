@@ -37,7 +37,7 @@ class Soulforge(wx.App):
 
     def OnExit(self):
         config = wx.Config.Get()
-	del config
+        del config
 
 if __name__ == "__main__":
     parser = OptionParser(version=headerdata.SF_VERSION)
@@ -66,11 +66,11 @@ if __name__ == "__main__":
 
     if options.debug:
         print "Debugging output enabled"
-	print "If the debugging output shows any suspicious errors,"
-	print "please email the output to the author."
-	print "Verbose output automatically enabled"
-	options.verbose = 1
-    
+        print "If the debugging output shows any suspicious errors,"
+        print "please email the output to the author."
+        print "Verbose output automatically enabled"
+        options.verbose = 1
+
     if options.verbose:
         print "Verbose execution enabled"
 

@@ -45,10 +45,10 @@ class dicepool:
         elif rngname == headerdata.SF_DIEROLLER_RNGSTRINGS[2]:
             self.rng = random.SystemRandom()
             self.rngfunc = self.rng.randint
-	else:
-	    return false
-	if headerdata.options.verbose:
-	    print "Using RNG: " + rngname
+        else:
+            return False
+        if headerdata.options.verbose:
+            print "Using RNG: " + rngname
 
     def roll(self):
         self.successes = 0

@@ -21,7 +21,7 @@
 
 import sys
 import gettext
-gettext.install('soulforge',unicode=1)
+gettext.install('soulforge', unicode=1)
 
 SF_DATADIR = sys.prefix + "/share/soulforge"
 
@@ -43,7 +43,8 @@ SF_DIEROLLER_DIFFICULTY = 6
 SF_DIEROLLER_TABULATE = False
 SF_DIEROLLER_RNGSTRINGS = [ "Mersenne Twister", "Wichmann-Hill", "urandom()" ]
 
-SF_FILEMASK = _("Soulforge Data") + " (*.sfd)|*.sfd|XML (*.xml)|*.xml|" + _("All files") + " (*.*)|*.*"
+SF_FILEMASK = _("Soulforge Data") + " (*.sfd)|*.sfd|XML (*.xml)|*.xml|" +\
+              _("All files") + " (*.*)|*.*"
 
 SF_COMPRESSION_STRINGS = [ "bzip2", "gzip", "None" ]
 

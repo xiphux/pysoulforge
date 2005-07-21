@@ -19,7 +19,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from xml.dom import minidom
 import wx
 from soulforge.lib import xmlutils, headerdata
 
