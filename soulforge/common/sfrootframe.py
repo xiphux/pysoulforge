@@ -22,14 +22,12 @@
 import sys
 import os
 import cStringIO
-from codecs import getencoder,getdecoder
 from xml import dom
-from xml.parsers.xmlproc import xmlval, dtdparser, xmldtd
-from xml.parsers.xmlproc.utils import validate_doc, ErrorRaiser
+from xml.parsers.xmlproc import xmlval, xmldtd
+from xml.parsers.xmlproc.utils import ErrorRaiser
 import wx
-from soulforge.lib import xmlutils,headerdata
-from soulforge.common import dieroller,sfcontrols,sfsheet,sfuniverses,sfconfig
-from soulforge.common.sheets import universes
+from soulforge.lib import xmlutils, headerdata
+from soulforge.common import dieroller, sfsheet, sfuniverses, sfconfig
 
 SFROOTFRAME_ABOUT = 101
 SFROOTFRAME_QUIT = 102
@@ -118,6 +116,7 @@ class sfrootframe(wx.Frame):
 	self.Centre(wx.BOTH)
 
 	self.updategui()
+	self.populatefields()
 
 	wx.EVT_MENU(self,SFROOTFRAME_QUIT,self.onquit)
 	wx.EVT_MENU(self,SFROOTFRAME_ABOUT,self.onabout)
@@ -172,7 +171,7 @@ class sfrootframe(wx.Frame):
 	    return False
         uni = rt.getAttribute("universe")
 	if uni:
-	    tmp = universes.getuniverse(uni)
+	    tmp = sfuniverses.getuniverse(uni)
 	    if tmp:
 	        self.universe = tmp()
 	    dtd = self.universe.dtd()
@@ -311,7 +310,7 @@ class sfrootframe(wx.Frame):
 	uni = wx.SingleChoiceDialog(self, _("Choose a universe:"), _("Universe"),un)
 	ret = uni.ShowModal()
 	if ret == wx.ID_OK:
-	    self.universe = universes.getuniverse(uni.GetStringSelection())()
+	    self.universe = sfuniverses.getuniverse(uni.GetStringSelection())()
 	    if self.universe:
                 self.sh = sfsheet.sfsheet(self,-1,self.universe)
 	        self.sh.Show()
@@ -329,7 +328,7 @@ class sfrootframe(wx.Frame):
 
     def onedit(self,event):
         uni = self.dom.documentElement.getAttribute("universe")
-	self.universe = universes.getuniverse(uni)()
+	self.universe = sfuniverses.getuniverse(uni)()
 	if self.universe:
             self.sh = sfsheet.sfsheet(self,-1,self.universe)
 	    self.universe.xml2sheet(self.dom,self.sh.sheet)
@@ -341,20 +340,31 @@ class sfrootframe(wx.Frame):
 
     def populatefields(self):
         if self.sh:
+	    self.name.Enable(True)
+	    self.player.Enable(True)
+	    self.univname.Enable(True)
 	    self.name.SetValue(self.sh.sheet.name.GetValue())
 	    self.player.SetValue(self.sh.sheet.player.GetValue())
 	    self.univname.SetValue(self.sh.universe.name())
 	elif self.dom:
+	    self.name.Enable(True)
+	    self.player.Enable(True)
+	    self.univname.Enable(True)
 	    self.name.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("name")[0]))
 	    self.player.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("player")[0]))
 	    self.univname.SetValue(self.dom.documentElement.getAttribute("universe"))
 	else:
+	    self.name.Enable(False)
+	    self.player.Enable(False)
+	    self.univname.Enable(False)
 	    self.name.SetValue(u"")
 	    self.player.SetValue(u"")
 	    self.univname.SetValue(u"")
 	if self.file:
+	    self.filename.Enable(True)
 	    self.filename.SetValue(self.file)
 	else:
+	    self.filename.Enable(False)
 	    self.filename.SetValue(u"")
 
     def updategui(self):

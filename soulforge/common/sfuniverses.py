@@ -22,7 +22,7 @@
 from soulforge.lib import headerdata
 from soulforge.common.sheets import vampire_the_masquerade,vampire_the_masquerade_data
 
-def _(message): return message
+universes = [ 'Vampire: The Masquerade' ]
 
 class universe:
     def __init__(self):
@@ -46,6 +46,31 @@ class universe:
     def xml2sheet(self, *args, **kwargs):
         raise NotImplementedError("This method must be implemented!")
 
-universes = [ 'Vampire: The Masquerade' ]
 
-del _
+class vampire_the_masquerade_universe(universe):
+    def __init__(self):
+        pass
+
+    def name(self):
+        return 'Vampire: The Masquerade'
+
+    def dtdfile(self):
+        return 'vampire_the_masquerade.dtd'
+
+    def dtd(self):
+        return vampire_the_masquerade_data.dtd()
+
+    def sheet(self, *args, **kwargs):
+        return vampire_the_masquerade.vampire_the_masquerade(*args, **kwargs)
+
+    def sheet2xml(self, *args, **kwargs):
+        return vampire_the_masquerade_data.sheet2xml(*args, **kwargs)
+
+    def xml2sheet(self, *args, **kwargs):
+        return vampire_the_masquerade_data.xml2sheet(*args, **kwargs)
+
+def getuniverse(univ):
+    if univ == 'Vampire: The Masquerade':
+        return vampire_the_masquerade_universe
+    else:
+        return None

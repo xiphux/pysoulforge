@@ -19,7 +19,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import sys
 import re
 import bz2
 import gzip
@@ -99,15 +98,14 @@ def save(filename, compress):
 
 def insert_dtd(filename, compress, dtd):
     data = cStringIO.StringIO(load(filename))
-    prolog = data.readline()
     stringdata = data.readlines()
     data.close()
     fd = save(filename, compress)
-    fd.write(prolog)
+    fd.write(stringdata[0])
     fd.write("<!DOCTYPE soulforge_character [\n")
     fd.write(dtd)
     fd.write("]>\n")
-    fd.writelines(stringdata)
+    fd.writelines(stringdata[1:])
     fd.close()
 
 def savedata(dom, filename, compress, dtd = ''):
