@@ -51,9 +51,9 @@ if __name__ == "__main__":
     parser.add_option("-d", "--debug", action="store_true",
       dest="debug", help="print debugging info")
     parser.add_option("-p", "--profile", action="store", type="string",
-      dest="profile", help="gather performance profiling info", metavar="PROFILELOG")
+      dest="profile", help="gather performance profiling info", metavar="PROFILE")
     parser.add_option("-s", "--pstats", action="store", type="string",
-      dest="stats", help="parse profiling output", metavar="PROFILELOG")
+      dest="stats", help="parse profiling output", metavar="PROFILE")
     parser.set_defaults(verbose=False)
     parser.set_defaults(force=False)
     parser.set_defaults(compile=False)

@@ -145,15 +145,15 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         self.static_line_8 = wx.StaticLine(self, -1)
         self.label_22 = wx.StaticText(self, -1, _("Merits"))
         self.static_line_9 = wx.StaticLine(self, -1)
-        self.merit_1 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
-        self.merit_2 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
-        self.merit_3 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+        self.merit_1 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN|wx.CB_SORT)
+        self.merit_2 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN|wx.CB_SORT)
+        self.merit_3 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN|wx.CB_SORT)
         self.static_line_8a = wx.StaticLine(self, -1)
         self.label_22a = wx.StaticText(self, -1, _("Flaws"))
         self.static_line_9a = wx.StaticLine(self, -1)
-        self.flaw_1 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
-        self.flaw_2 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
-        self.flaw_3 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+        self.flaw_1 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN|wx.CB_SORT)
+        self.flaw_2 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN|wx.CB_SORT)
+        self.flaw_3 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN|wx.CB_SORT)
         self.static_line_10 = wx.StaticLine(self, -1)
         self.label_23 = wx.StaticText(self, -1, _("Humanity/Path"))
         self.static_line_11 = wx.StaticLine(self, -1)
@@ -233,13 +233,13 @@ class vampire_the_masquerade(wx.ScrolledWindow):
 	self.flaw_2.Append('',None)
 	self.flaw_3.Append('',None)
 	for i,j in vampire_the_masquerade_data.merits.iteritems():
-	    for k in j:
+	    for k in j.tolist():
 	        st = i + " (" + str(k) + "-pt. Merit)"
 		self.merit_1.Append(st,(i,k,))
 		self.merit_2.Append(st,(i,k,))
 		self.merit_3.Append(st,(i,k,))
         for i,j in vampire_the_masquerade_data.flaws.iteritems():
-	    for k in j:
+	    for k in j.tolist():
 	        st = i + " (" + str(k) + "-pt. Flaw)"
 		self.flaw_1.Append(st,(i,k,))
 		self.flaw_2.Append(st,(i,k,))
