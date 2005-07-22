@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+import sys
 from optparse import OptionParser
 from compileall import compile_dir
 import wx
@@ -49,10 +50,17 @@ if __name__ == "__main__":
       dest="compile", help="byte-compile")
     parser.add_option("-d", "--debug", action="store_true",
       dest="debug", help="print debugging info")
+    parser.add_option("-p", "--profile", action="store", type="string",
+      dest="profile", help="gather performance profiling info", metavar="PROFILELOG")
+    parser.add_option("-s", "--pstats", action="store", type="string",
+      dest="stats", help="parse profiling output", metavar="PROFILELOG")
     parser.set_defaults(verbose=False)
     parser.set_defaults(force=False)
     parser.set_defaults(compile=False)
     parser.set_defaults(debug=False)
+    parser.set_defaults(parser=False)
+    parser.set_defaults(profile='')
+    parser.set_defaults(stats='')
     (options, args) = parser.parse_args()
 
     headerdata.options = options
@@ -74,6 +82,13 @@ if __name__ == "__main__":
     if options.verbose:
         print "Verbose execution enabled"
 
+    if options.stats:
+        import pstats
+	p = pstats.Stats(options.stats)
+	p.sort_stats('cumulative').print_stats(10)
+	p.sort_stats('time').print_stats(10)
+	sys.exit()
+
 try:
     import psyco
     psyco.full()
@@ -82,4 +97,11 @@ except ImportError:
         print "Could not import psyco, ignoring..."
 
     sf = Soulforge(0)
-    sf.MainLoop()
+
+    if options.profile:
+        print "Program execution will be profiled."
+	print "Expect it to run a lot slower."
+	import profile
+	profile.run('sf.MainLoop()', options.profile)
+    else:	
+        sf.MainLoop()

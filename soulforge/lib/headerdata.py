@@ -25,7 +25,7 @@ gettext.install('soulforge', unicode=1)
 
 SF_DATADIR = sys.prefix + "/share/soulforge"
 
-SF_VERSION = "%prog 0.0.1"
+SF_VERSION = "%prog 0.0.3"
 
 SF_COMPRESSED_EXT = ".sfd"
 
