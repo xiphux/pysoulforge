@@ -18,6 +18,8 @@
 # along with Soulforge; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+# $Id: sfuniverses.py 110 2005-07-22 10:24:48Z xiphux $
+#
 
 from soulforge.lib import headerdata
 from soulforge.common.sheets import vampire_the_masquerade,vampire_the_masquerade_data

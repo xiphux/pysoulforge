@@ -1,3 +1,5 @@
+; $Id: setup.nsi 110 2005-07-22 10:24:48Z xiphux $
+
 !define py2exeOutputDir 'dist' 
 !define exe             'soulforge.exe' 
 !define icon            'C:\python24\py.ico' 
