@@ -18,22 +18,21 @@
 # along with Soulforge; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-# $Id: sfuniverses.py 110 2005-07-22 10:24:48Z xiphux $
+# $Id: sfuniverses.py 111 2005-07-22 16:14:09Z xiphux $
 #
 
 from soulforge.lib import headerdata
 from soulforge.common.sheets import vampire_the_masquerade,vampire_the_masquerade_data
 
-universes = [ 'Vampire: The Masquerade' ]
+VTMSTRING = 'Vampire: The Masquerade'
+
+universes = [ VTMSTRING ]
 
 class universe:
     def __init__(self):
         pass
 
     def name(self):
-        return ''
-
-    def dtdfile(self):
         return ''
 
     def dtd(self):
@@ -54,10 +53,7 @@ class vampire_the_masquerade_universe(universe):
         pass
 
     def name(self):
-        return 'Vampire: The Masquerade'
-
-    def dtdfile(self):
-        return 'vampire_the_masquerade.dtd'
+        return VTMSTRING
 
     def dtd(self):
         return vampire_the_masquerade_data.dtd()
@@ -72,7 +68,7 @@ class vampire_the_masquerade_universe(universe):
         return vampire_the_masquerade_data.xml2sheet(*args, **kwargs)
 
 def getuniverse(univ):
-    if univ == 'Vampire: The Masquerade':
+    if univ == VTMSTRING:
         return vampire_the_masquerade_universe
     else:
         return None

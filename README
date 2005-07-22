@@ -1,4 +1,4 @@
-$Id: README 110 2005-07-22 10:24:48Z xiphux $
+$Id: README 111 2005-07-22 16:14:09Z xiphux $
 
 Soulforge
 Christopher Han <xiphux@gmail.com
@@ -32,23 +32,32 @@ universes = ['Vampire: The Masquerade','World of Darkness,'Vampire: The Requiem'
 
 would make those three universes available.
 
-"universe_sheets" is a dictionary that will map the universe's identifier
-to the class that makes the character sheet GUI.  The key is the
-identifier you chose for your universe, and the data is the class.
-So, for example,
+There is an abstract base class "universe", which defines the methods
+you'd need to implement in an actual universe, but raises exceptions
+if run bare.  These are the methods you will need to implement in a
+derived universe class:
 
-universe_sheets = {
-	'Vampire: The Masquerade': vampire_the_masquerade.vampire_the_masquerade,
-	'World of Darkness': world_of_darkness.wod_sheet
-}
+  __init__(self): This can be used to set up runtime variables if necessary.
+Otherwise it's just fine to leave it empty with a 'pass'.
+  name(self): This should return the name of the universe - the unique identifier
+that you used in the universes[] list.
+  dtd(self): If you want, your universe can have an XML DTD that will be used
+to verify whether or not a character file is valid.  This function returns that
+DTD as one giant string - probably a triple-quoted string literal.  It's not
+necessary, though - if you just leave it to return an empty string, soulforge will
+assume you don't have/want a DTD and work fine - but beware that incorrect or corrupt
+character data could crash the program.
+  sheet(self, *args, **kwargs):  This is pretty much just a wrapper function that,
+when called, will call the wxWidgets frame constructor for that particular universe's
+sheet panel (discussed later).
+  xml2sheet(self, *args, **kwargs):  This function will take an XML DOM in memory
+with character data, and use that data to fill in the fields on a character sheet.
+  sheet2xml(self, *args, **kwargs):  This is the opposite - when a sheet is OK'd, it
+reads the data from the sheet fields and puts it into the XML DOM structure.
 
-would map those universe identifiers to those character sheet objects.
-It doesn't matter what the classes are called, as long as you map them
-correctly in this file.
-"universe_sheet2xml" and "universe_xml2sheet" are the same way, except
-they point to the functions used to translate the data from the character
-sheet object to the XML DOM that gets saved to a file, and vice versa.
-
+And finally, the 'getuniverse(univ)' function is pretty self-explanatory.  Given a
+universe's identifier string, it will return the universe class for the program to use,
+or None if not found.
 
 soulforge/common/sheets/<your_universe>.py:
 (with, of course, <your_universe> replaced with the actual universe name)
