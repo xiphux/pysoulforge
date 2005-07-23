@@ -18,7 +18,7 @@
 # along with Soulforge; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-# $Id: sfrootframe.py 110 2005-07-22 10:24:48Z xiphux $
+# $Id: sfrootframe.py 112 2005-07-23 14:01:58Z xiphux $
 #
 
 import sys
@@ -97,16 +97,20 @@ class sfrootframe(wx.Frame):
 
 	root = wx.FlexGridSizer(6,2,0,0)
 	root.AddGrowableCol(1,1)
-	root.Add(wx.StaticText(pan,-1, _("Name:")),0,wx.ALIGN_CENTER_VERTICAL)
+	self.namelabel = wx.StaticText(pan,-1, _("Name:"))
+	root.Add(self.namelabel,0,wx.ALIGN_CENTER_VERTICAL)
 	self.name = wx.TextCtrl(pan,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
 	root.Add(self.name,1,wx.EXPAND)
-	root.Add(wx.StaticText(pan,-1, _("Player:")),0,wx.ALIGN_CENTER_VERTICAL)
+	self.playerlabel = wx.StaticText(pan,-1, _("Player:"))
+	root.Add(self.playerlabel,0,wx.ALIGN_CENTER_VERTICAL)
 	self.player = wx.TextCtrl(pan,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
 	root.Add(self.player,1,wx.EXPAND)
-	root.Add(wx.StaticText(pan,-1, _("Universe:")),0,wx.ALIGN_CENTER_VERTICAL)
+	self.univlabel = wx.StaticText(pan,-1, _("Universe:"))
+	root.Add(self.univlabel,0,wx.ALIGN_CENTER_VERTICAL)
 	self.univname = wx.TextCtrl(pan,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
 	root.Add(self.univname,1,wx.EXPAND)
-	root.Add(wx.StaticText(pan,-1, _("Filename:")),0,wx.ALIGN_CENTER_VERTICAL)
+	self.filelabel = wx.StaticText(pan,-1, _("Filename:"))
+	root.Add(self.filelabel,0,wx.ALIGN_CENTER_VERTICAL)
 	self.filename = wx.TextCtrl(pan,-1,u"",wx.DefaultPosition,wx.DefaultSize,wx.TE_READONLY)
 	root.Add(self.filename,1,wx.EXPAND)
 	root.Add(wx.Panel(pan,-1))
@@ -342,6 +346,9 @@ class sfrootframe(wx.Frame):
 
     def populatefields(self):
         if self.sh:
+	    self.namelabel.Enable(True)
+	    self.playerlabel.Enable(True)
+	    self.univlabel.Enable(True)
 	    self.name.Enable(True)
 	    self.player.Enable(True)
 	    self.univname.Enable(True)
@@ -349,6 +356,9 @@ class sfrootframe(wx.Frame):
 	    self.player.SetValue(self.sh.sheet.player.GetValue())
 	    self.univname.SetValue(self.sh.universe.name())
 	elif self.dom:
+	    self.namelabel.Enable(True)
+	    self.playerlabel.Enable(True)
+	    self.univlabel.Enable(True)
 	    self.name.Enable(True)
 	    self.player.Enable(True)
 	    self.univname.Enable(True)
@@ -356,6 +366,9 @@ class sfrootframe(wx.Frame):
 	    self.player.SetValue(xmlutils.getnodetext(self.dom.getElementsByTagName("player")[0]))
 	    self.univname.SetValue(self.dom.documentElement.getAttribute("universe"))
 	else:
+	    self.namelabel.Enable(False)
+	    self.playerlabel.Enable(False)
+	    self.univlabel.Enable(False)
 	    self.name.Enable(False)
 	    self.player.Enable(False)
 	    self.univname.Enable(False)
@@ -363,9 +376,11 @@ class sfrootframe(wx.Frame):
 	    self.player.SetValue(u"")
 	    self.univname.SetValue(u"")
 	if self.file:
+	    self.filelabel.Enable(True)
 	    self.filename.Enable(True)
 	    self.filename.SetValue(self.file)
 	else:
+	    self.filelabel.Enable(False)
 	    self.filename.Enable(False)
 	    self.filename.SetValue(u"")
 
