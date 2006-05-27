@@ -18,8 +18,6 @@
 # along with Soulforge; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-# $Id: sfrootframe.py 112 2005-07-23 14:01:58Z xiphux $
-#
 
 import sys
 import os

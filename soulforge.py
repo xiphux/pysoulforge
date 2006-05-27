@@ -19,8 +19,6 @@
 # along with Soulforge; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-# $Id: soulforge.py 110 2005-07-22 10:24:48Z xiphux $
-#
 
 import sys
 from optparse import OptionParser

@@ -1,5 +1,3 @@
-# $Id: makei18n.sh 110 2005-07-22 10:24:48Z xiphux $
-
 APP_NAME="soulforge"
 LANGUAGES="" 
 MESSAGES_PO="messages.po"
