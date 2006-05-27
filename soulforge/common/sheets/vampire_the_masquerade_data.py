@@ -449,7 +449,7 @@ def xml2sheet(dom,sheet):
     sheet.computer.setvalue(int(gettxt(knownode.getElementsByTagName("computer")[0])))
     sheet.finance.setvalue(int(gettxt(knownode.getElementsByTagName("finance")[0])))
     sheet.investigation.setvalue(int(gettxt(knownode.getElementsByTagName("investigation")[0])))
-    sheet.law.setvalue(int(gettxt(knownode.getElementsByTagName("investigation")[0])))
+    sheet.law.setvalue(int(gettxt(knownode.getElementsByTagName("law")[0])))
     sheet.linguistics.setvalue(int(gettxt(knownode.getElementsByTagName("linguistics")[0])))
     sheet.medicine.setvalue(int(gettxt(knownode.getElementsByTagName("medicine")[0])))
     sheet.occult.setvalue(int(gettxt(knownode.getElementsByTagName("occult")[0])))
