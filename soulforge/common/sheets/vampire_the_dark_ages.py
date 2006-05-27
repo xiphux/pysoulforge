@@ -18,16 +18,14 @@
 # along with Soulforge; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-# $Id: vampire_the_masquerade.py 110 2005-07-22 10:24:48Z xiphux $
-#
 
 import wx
 from soulforge.common.sfcontrols import sfstat, sfpool, sfhealth
-from soulforge.common.sheets import vampire_the_masquerade_data
+from soulforge.common.sheets import vampire_the_dark_ages_data
 
-class vampire_the_masquerade(wx.ScrolledWindow):
+class vampire_the_dark_ages(wx.ScrolledWindow):
     def __init__(self, *args, **kwds):
-        # begin wxGlade: vampire_the_masquerade.__init__
+        # begin wxGlade: vampire_the_dark_ages.__init__
         kwds["style"] = wx.TAB_TRAVERSAL
         wx.ScrolledWindow.__init__(self, *args, **kwds)
         self.label_1 = wx.StaticText(self, -1, _("Name:"))
@@ -69,36 +67,36 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         self.label_15 = wx.StaticText(self, -1, _("Talents"))
         self.label_16 = wx.StaticText(self, -1, _("Skills"))
         self.label_17 = wx.StaticText(self, -1, _("Knowledges"))
+	self.acting = sfstat(self, -1, label=_("Acting"))
         self.alertness = sfstat(self, -1, label=_("Alertness"))
         self.animalken = sfstat(self, -1, label=_("Animal Ken"))
         self.academics = sfstat(self, -1, label=_("Academics"))
         self.athletics = sfstat(self, -1, label=_("Athletics"))
+	self.archery = sfstat(self, -1, label=_("Archery"))
         self.crafts = sfstat(self, -1, label=_("Crafts"))
-        self.computer = sfstat(self, -1, label=_("Computer"))
+        self.hearth_wisdom = sfstat(self, -1, label=_("Hearth Wisdom"))
         self.brawl = sfstat(self, -1, label=_("Brawl"))
-        self.drive = sfstat(self, -1, label=_("Drive"))
-        self.finance = sfstat(self, -1, label=_("Finance"))
         self.dodge = sfstat(self, -1, label=_("Dodge"))
         self.etiquette = sfstat(self, -1, label=_("Etiquette"))
         self.investigation = sfstat(self, -1, label=_("Investigation"))
         self.empathy = sfstat(self, -1, label=_("Empathy"))
-        self.firearms = sfstat(self, -1, label=_("Firearms"))
+        self.herbalism = sfstat(self, -1, label=_("Herbalism"))
         self.law = sfstat(self, -1, label=_("Law"))
-        self.expression = sfstat(self, -1, label=_("Expression"))
         self.melee = sfstat(self, -1, label=_("Melee"))
         self.linguistics = sfstat(self, -1, label=_("Linguistics"))
         self.intimidation = sfstat(self, -1, label=_("Intimidation"))
-        self.performance = sfstat(self, -1, label=_("Performance"))
+	self.larceny = sfstat(self, -1, label=_("Larceny"))
+        self.music = sfstat(self, -1, label=_("Music"))
         self.medicine = sfstat(self, -1, label=_("Medicine"))
         self.leadership = sfstat(self, -1, label=_("Leadership"))
-        self.security = sfstat(self, -1, label=_("Security"))
+        self.ride = sfstat(self, -1, label=_("Ride"))
         self.occult = sfstat(self, -1, label=_("Occult"))
-        self.streetwise = sfstat(self, -1, label=_("Streetwise"))
         self.stealth = sfstat(self, -1, label=_("Stealth"))
         self.politics = sfstat(self, -1, label=_("Politics"))
         self.subterfuge = sfstat(self, -1, label=_("Subterfuge"))
         self.survival = sfstat(self, -1, label=_("Survival"))
         self.science = sfstat(self, -1, label=_("Science"))
+	self.seneschal = sfstat(self, -1, label=_("Seneschal"))
         self.static_line_5 = wx.StaticLine(self, -1)
         self.label_18 = wx.StaticText(self, -1, _("Advantages"))
         self.static_line_6 = wx.StaticLine(self, -1)
@@ -157,10 +155,10 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         self.flaw_2 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN|wx.CB_SORT)
         self.flaw_3 = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN|wx.CB_SORT)
         self.static_line_10 = wx.StaticLine(self, -1)
-        self.label_23 = wx.StaticText(self, -1, _("Humanity/Path"))
+        self.label_23 = wx.StaticText(self, -1, _("Road"))
         self.static_line_11 = wx.StaticLine(self, -1)
-        self.humanity_path_name = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
-        self.humanity_path_level = sfstat(self, -1, buttons=10)
+        self.road_name = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+        self.road_level = sfstat(self, -1, buttons=10)
         self.static_line_12 = wx.StaticLine(self, -1)
         self.label_24 = wx.StaticText(self, -1, _("Willpower"))
         self.static_line_13 = wx.StaticLine(self, -1)
@@ -199,12 +197,12 @@ class vampire_the_masquerade(wx.ScrolledWindow):
 	self.initfields()
 
     def initfields(self):
-	for i in vampire_the_masquerade_data.archetypes:
+	for i in vampire_the_dark_ages_data.archetypes:
 	    self.nature.Append(i,None)
 	    self.demeanor.Append(i,None)
-	for i in vampire_the_masquerade_data.clans:
+	for i in vampire_the_dark_ages_data.clans:
 	    self.clan.Append(i,None)
-	for i in vampire_the_masquerade_data.backgrounds:
+	for i in vampire_the_dark_ages_data.backgrounds:
 	    self.background_1_name.Append(i,None)
 	    self.background_2_name.Append(i,None)
 	    self.background_3_name.Append(i,None)
@@ -212,7 +210,7 @@ class vampire_the_masquerade(wx.ScrolledWindow):
 	    self.background_5_name.Append(i,None)
 	    self.background_6_name.Append(i,None)
 	    self.background_7_name.Append(i,None)
-	for i in vampire_the_masquerade_data.disciplines:
+	for i in vampire_the_dark_ages_data.disciplines:
 	    self.discipline_1_name.Append(i,None)
 	    self.discipline_2_name.Append(i,None)
 	    self.discipline_3_name.Append(i,None)
@@ -220,27 +218,27 @@ class vampire_the_masquerade(wx.ScrolledWindow):
 	    self.discipline_5_name.Append(i,None)
 	    self.discipline_6_name.Append(i,None)
 	    self.discipline_7_name.Append(i,None)
-	for i in vampire_the_masquerade_data.conscience_conviction:
+	for i in vampire_the_dark_ages_data.conscience_conviction:
 	    self.conscience_conviction_name.Append(i,None)
-	for i in vampire_the_masquerade_data.selfcontrol_instinct:
+	for i in vampire_the_dark_ages_data.selfcontrol_instinct:
 	    self.selfcontrol_instinct_name.Append(i,None)
-	for i in vampire_the_masquerade_data.courage:
+	for i in vampire_the_dark_ages_data.courage:
 	    self.courage_name.Append(i,None)
-	for i in vampire_the_masquerade_data.humanity_path:
-	    self.humanity_path_name.Append(i,None)
+	for i in vampire_the_dark_ages_data.roads:
+	    self.road_name.Append(i,None)
 	self.merit_1.Append('',None)
 	self.merit_2.Append('',None)
 	self.merit_3.Append('',None)
 	self.flaw_1.Append('',None)
 	self.flaw_2.Append('',None)
 	self.flaw_3.Append('',None)
-	for i,j in vampire_the_masquerade_data.merits.iteritems():
+	for i,j in vampire_the_dark_ages_data.merits.iteritems():
 	    for k in j.tolist():
 	        st = i + " (" + str(k) + "-pt. Merit)"
 		self.merit_1.Append(st,(i,k,))
 		self.merit_2.Append(st,(i,k,))
 		self.merit_3.Append(st,(i,k,))
-        for i,j in vampire_the_masquerade_data.flaws.iteritems():
+        for i,j in vampire_the_dark_ages_data.flaws.iteritems():
 	    for k in j.tolist():
 	        st = i + " (" + str(k) + "-pt. Flaw)"
 		self.flaw_1.Append(st,(i,k,))
@@ -248,7 +246,7 @@ class vampire_the_masquerade(wx.ScrolledWindow):
 		self.flaw_3.Append(st,(i,k,))
 
     def __set_properties(self):
-        # begin wxGlade: vampire_the_masquerade.__set_properties
+        # begin wxGlade: vampire_the_dark_ages.__set_properties
         self.SetScrollRate(10, 10)
         self.nature.SetSelection(0)
         self.demeanor.SetSelection(0)
@@ -276,11 +274,11 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         self.flaw_1.SetSelection(-1)
         self.flaw_2.SetSelection(-1)
         self.flaw_3.SetSelection(-1)
-        self.humanity_path_name.SetSelection(-1)
+        self.road_name.SetSelection(-1)
         # end wxGlade
 
     def __do_layout(self):
-        # begin wxGlade: vampire_the_masquerade.__do_layout
+        # begin wxGlade: vampire_the_dark_ages.__do_layout
         sizer_1 = wx.FlexGridSizer(6, 1, 0, 0)
         sizer_28 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_38 = wx.BoxSizer(wx.VERTICAL)
@@ -380,36 +378,36 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         grid_sizer_3.Add(self.label_15, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)
         grid_sizer_3.Add(self.label_16, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)
         grid_sizer_3.Add(self.label_17, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)
-        grid_sizer_3.Add(self.alertness, 1, wx.EXPAND, 0)
+	grid_sizer_3.Add(self.acting, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.animalken, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.academics, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.alertness, 1, wx.EXPAND, 0)
+	grid_sizer_3.Add(self.archery, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.hearth_wisdom, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.athletics, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.crafts, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.computer, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.brawl, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.drive, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.finance, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.dodge, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.etiquette, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.investigation, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.empathy, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.firearms, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.brawl, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.etiquette, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.law, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.expression, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.melee, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.dodge, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.herbalism, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.linguistics, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.intimidation, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.performance, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.empathy, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.melee, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.medicine, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.leadership, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.security, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.intimidation, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.music, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.occult, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.streetwise, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.stealth, 1, wx.EXPAND, 0)
+	grid_sizer_3.Add(self.larceny, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.ride, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.politics, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.leadership, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.stealth, 1, wx.EXPAND, 0)
+        grid_sizer_3.Add(self.science, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.subterfuge, 1, wx.EXPAND, 0)
         grid_sizer_3.Add(self.survival, 1, wx.EXPAND, 0)
-        grid_sizer_3.Add(self.science, 1, wx.EXPAND, 0)
+	grid_sizer_3.Add(self.seneschal, 1, wx.EXPAND, 0)
         sizer_1.Add(grid_sizer_3, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.static_line_5, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_18, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)
@@ -493,8 +491,8 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         sizer_33.Add(self.label_23, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)
         sizer_33.Add(self.static_line_11, 1, wx.EXPAND, 0)
         sizer_32.Add(sizer_33, 0, wx.EXPAND, 0)
-        sizer_32.Add(self.humanity_path_name, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
-        sizer_32.Add(self.humanity_path_level, 0, wx.EXPAND, 0)
+        sizer_32.Add(self.road_name, 0, wx.EXPAND|wx.FIXED_MINSIZE, 0)
+        sizer_32.Add(self.road_level, 0, wx.EXPAND, 0)
         sizer_31.Add(sizer_32, 1, wx.EXPAND, 0)
         sizer_35.Add(self.static_line_12, 1, wx.EXPAND, 0)
         sizer_35.Add(self.label_24, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 0)
@@ -546,6 +544,6 @@ class vampire_the_masquerade(wx.ScrolledWindow):
         sizer_1.SetSizeHints(self)
         # end wxGlade
 
-# end of class vampire_the_masquerade
+# end of class vampire_the_dark_ages
 
 

@@ -22,11 +22,12 @@
 #
 
 from soulforge.lib import headerdata
-from soulforge.common.sheets import vampire_the_masquerade,vampire_the_masquerade_data
+from soulforge.common.sheets import vampire_the_masquerade,vampire_the_masquerade_data,vampire_the_dark_ages,vampire_the_dark_ages_data
 
 VTMSTRING = 'Vampire: The Masquerade'
+VTDASTRING = 'Vampire: The Dark Ages'
 
-universes = [ VTMSTRING ]
+universes = [ VTMSTRING, VTDASTRING ]
 
 class universe:
     def __init__(self):
@@ -67,8 +68,29 @@ class vampire_the_masquerade_universe(universe):
     def xml2sheet(self, *args, **kwargs):
         return vampire_the_masquerade_data.xml2sheet(*args, **kwargs)
 
+class vampire_the_dark_ages_universe(universe):
+    def __init__(self):
+        pass
+
+    def name(self):
+        return VTDASTRING
+
+    def dtd(self):
+        return vampire_the_dark_ages_data.dtd()
+
+    def sheet(self, *args, **kwargs):
+        return vampire_the_dark_ages.vampire_the_dark_ages(*args, **kwargs)
+
+    def sheet2xml(self, *args, **kwargs):
+        return vampire_the_dark_ages_data.sheet2xml(*args, **kwargs)
+
+    def xml2sheet(self, *args, **kwargs):
+        return vampire_the_dark_ages_data.xml2sheet(*args, **kwargs)
+
 def getuniverse(univ):
     if univ == VTMSTRING:
         return vampire_the_masquerade_universe
+    elif univ == VTDASTRING:
+    	return vampire_the_dark_ages_universe
     else:
         return None
