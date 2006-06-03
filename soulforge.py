@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python -O
 #
 # Soulforge
 # Copyright (C) 2005 Christopher Han <xiphux@gmail.com>
