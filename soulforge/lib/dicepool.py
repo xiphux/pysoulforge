@@ -29,6 +29,7 @@ class dicepool:
         self.botch = headerdata.SF_DIEROLLER_BOTCH
         self.difficulty = headerdata.SF_DIEROLLER_DIFFICULTY
         self.tabulate = headerdata.SF_DIEROLLER_TABULATE
+	self.double = headerdata.SF_DIEROLLER_DOUBLE
         self.successes = 0
         self.failures = 0
         self.botches = 0
@@ -62,6 +63,8 @@ class dicepool:
             if self.tabulate:
                 if val >= self.difficulty:
                     self.successes += 1
+		    if self.double and val == self.faces:
+		        self.successes += 1
                 elif self.botch and val == 1:
                     self.botches += 1
                 else:

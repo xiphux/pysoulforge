@@ -30,6 +30,7 @@ DIEROLLER_RNG = 108
 DIEROLLER_BOTCH = 109
 DIEROLLER_TAB = 110
 DIEROLLER_DIFF = 111
+DIEROLLER_DOUBLE = 112
 
 class dieroller(wx.Frame):
     def __init__(self,parent,ID,title):
@@ -70,13 +71,17 @@ class dieroller(wx.Frame):
 	rngbox.Add(self.rngctl,1,wx.EXPAND)
 	controls.Add(rngbox,0,wx.EXPAND)
 	
+	self.tabctl = wx.CheckBox(pan,DIEROLLER_TAB, _("Tabulate"))
+	self.tabctl.SetValue(self.dicepool.tabulate)
+	controls.Add(self.tabctl,0,wx.EXPAND)
+
 	self.botchctl = wx.CheckBox(pan,DIEROLLER_BOTCH, _("Botches"))
 	self.botchctl.SetValue(self.dicepool.botch)
 	controls.Add(self.botchctl,0,wx.EXPAND)
 
-	self.tabctl = wx.CheckBox(pan,DIEROLLER_TAB, _("Tabulate"))
-	self.tabctl.SetValue(self.dicepool.tabulate)
-	controls.Add(self.tabctl,0,wx.EXPAND)
+	self.doublectl = wx.CheckBox(pan,DIEROLLER_DOUBLE, _("Double"))
+	self.doublectl.SetValue(self.dicepool.double)
+	controls.Add(self.doublectl,0,wx.EXPAND)
 
 	diffbox = wx.BoxSizer(wx.HORIZONTAL)
 	self.difflabel = wx.StaticText(pan,-1, _("Difficulty:"))
@@ -154,6 +159,7 @@ class dieroller(wx.Frame):
 	wx.EVT_SPINCTRL(self,DIEROLLER_DIFF,self.ondiff)
 	wx.EVT_CHECKBOX(self,DIEROLLER_BOTCH,self.onbotch)
 	wx.EVT_CHECKBOX(self,DIEROLLER_TAB,self.ontab)
+	wx.EVT_CHECKBOX(self,DIEROLLER_DOUBLE,self.ondouble)
 
     def onclose(self,event):
         self.Destroy()
@@ -166,7 +172,10 @@ class dieroller(wx.Frame):
 	    self.resultbox.AppendText('\n')
 	if self.dicepool.tabulate:
 	    self.successlabel.SetLabel(str(self.dicepool.successes) + "/" + str(self.dicepool.pool))
-	    self.successgauge.SetValue(self.dicepool.successes)
+	    if self.dicepool.successes > self.dicepool.pool:
+                self.successgauge.SetValue(self.dicepool.pool)
+            else:
+	        self.successgauge.SetValue(self.dicepool.successes)
 	    self.failurelabel.SetLabel(str(self.dicepool.failures) + "/" + str(self.dicepool.pool))
 	    self.failuregauge.SetValue(self.dicepool.failures)
 	    self.botchlabel.SetLabel(str(self.dicepool.botches) + "/" + str(self.dicepool.pool))
@@ -206,6 +215,10 @@ class dieroller(wx.Frame):
         self.dicepool.tabulate = self.tabctl.GetValue()
 	self.freshen()
 
+    def ondouble(self,event):
+        self.dicepool.double = self.doublectl.GetValue()
+	self.freshen()
+
     def freshen(self):
 	self.difflabel.Enable(self.dicepool.tabulate)
 	self.diffctl.Enable(self.dicepool.tabulate)
@@ -215,6 +228,8 @@ class dieroller(wx.Frame):
 	self.failuretag.Enable(self.dicepool.tabulate)
 	self.failurelabel.Enable(self.dicepool.tabulate)
 	self.failuregauge.Enable(self.dicepool.tabulate)
+	self.botchctl.Enable(self.dicepool.tabulate)
+	self.doublectl.Enable(self.dicepool.tabulate)
 	self.botchtag.Enable(self.dicepool.tabulate and self.dicepool.botch)
 	self.botchlabel.Enable(self.dicepool.tabulate and self.dicepool.botch)
 	self.botchgauge.Enable(self.dicepool.tabulate and self.dicepool.botch)

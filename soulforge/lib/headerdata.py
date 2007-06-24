@@ -41,6 +41,7 @@ SF_DIEROLLER_POOL = 1
 SF_DIEROLLER_BOTCH = True
 SF_DIEROLLER_DIFFICULTY = 6
 SF_DIEROLLER_TABULATE = False
+SF_DIEROLLER_DOUBLE = False
 SF_DIEROLLER_RNGSTRINGS = [ "Mersenne Twister", "Wichmann-Hill", "urandom()" ]
 
 SF_FILEMASK = _("Soulforge Data") + " (*.sfd)|*.sfd|XML (*.xml)|*.xml|" +\
